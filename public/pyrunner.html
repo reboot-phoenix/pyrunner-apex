@@ -1012,17 +1012,7 @@ function showErrBanner(err) {
   $('err-banner').classList.add('show');
 }
 function hideErrBanner() { $('err-banner').classList.remove('show'); }
-function askAIAboutError() {
-  if (!lastError) return;
-  if (!$('ai-key').value.trim()) {
-    $('ai-panel').classList.add('open');
-    updateNoKeyBanner();
-    return;
-  }
-  $('ai-panel').classList.add('open');
-  $('ai-input').value = `I got this error on line ${lastError.line}:\n\n${lastError.traceback}\n\nHelp me fix it.`;
-  $('ai-input').focus();
-}
+function askAIAboutError() { /* AI panel removed */ }
 
 // ── RUN ──
 async function runCode() {
@@ -1090,52 +1080,27 @@ $('term-input').addEventListener('keydown', e => { if (e.key === 'Enter') submit
 // ══════════════════════════════
 // AI ASSISTANT
 // ══════════════════════════════
-function updateNoKeyBanner() {
-  const hasKey = !!$('ai-key').value.trim();
-  $('ai-nokey').style.display = hasKey ? 'none' : 'block';
-  $('ai-send').disabled = !hasKey;
-}
-
-function toggleAI() {
-  $('ai-panel').classList.toggle('open');
-  if ($('ai-panel').classList.contains('open')) {
-    updateNoKeyBanner();
-    $('ai-input').focus();
-  }
-}
-function clearAIChat() { aiHistory = []; $('ai-msgs').innerHTML = ''; }
-
-// Persist settings
+function updateNoKeyBanner() {}
+function toggleAI() {}
+function clearAIChat() {}
+function askAIAboutError() {}
+function sendAI() {}
+function aiQuick() {}
+function addAIMsg() {}
+function renderMarkdown(text) { return text; }
+// AI panel removed — stub saved key references safely
 try {
   const savedModel = localStorage.getItem('pyr_ai_model');
   const savedKey   = localStorage.getItem('pyr_ai_key');
   const savedTheme = localStorage.getItem('pyr_theme');
   const savedFont  = localStorage.getItem('pyr_font');
-  if (savedModel) $('ai-model').value = savedModel;
-  if (savedKey)   $('ai-key').value = savedKey;
   if (savedTheme && savedTheme !== 'dark') setTheme(savedTheme);
   if (savedFont  && savedFont  !== 'md')   setFont(savedFont);
 } catch(_) {}
 
-$('ai-model').addEventListener('change', () => { try { localStorage.setItem('pyr_ai_model', $('ai-model').value); } catch(_){} });
-$('ai-key').addEventListener('input',  () => {
-  try { localStorage.setItem('pyr_ai_key', $('ai-key').value); } catch(_){}
-  updateNoKeyBanner();
-});
+// (AI panel removed — settings stubs above handle theme/font restore)
 
-function renderMarkdown(text) {
-  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  let out = esc(text);
-  out = out.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
-    const raw = code.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
-    const b64 = btoa(unescape(encodeURIComponent(raw)));
-    const isPy = !lang || /py/i.test(lang);
-    return `<pre><code>${esc(raw)}</code></pre>` +
-      (isPy ? `<button class="use-code-btn" onclick="useAICode('${b64}')"><i class="fa-solid fa-arrow-right-to-bracket"></i> Insert into editor</button>` : '');
-  });
-  out = out.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-  out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  return out;
+
 }
 function useAICode(b64) {
   const code = decodeURIComponent(escape(atob(b64)));
@@ -1144,127 +1109,6 @@ function useAICode(b64) {
   vfs[currentFile] = code;
   showToast('Inserted into editor');
 }
-function addAIMsg(role, text) {
-  const el = document.createElement('div');
-  el.className = 'ai-msg ' + role;
-  el.innerHTML = role === 'assistant' ? renderMarkdown(text) : text.replace(/</g,'&lt;');
-  $('ai-msgs').appendChild(el);
-  $('ai-msgs').scrollTop = $('ai-msgs').scrollHeight;
-  return el;
-}
-function aiQuick(kind) {
-  const code = editor ? editor.getValue() : '';
-  const q = {
-    explain: `Explain what this Python code does, step by step:\n\n\`\`\`python\n${code}\n\`\`\``,
-    fix:     `Find bugs in this Python code and give me a corrected version:\n\n\`\`\`python\n${code}\n\`\`\``,
-    optimize:`Suggest improvements for this Python code and show the improved version:\n\n\`\`\`python\n${code}\n\`\`\``,
-    comment: `Add clear beginner-friendly comments and return the whole file:\n\n\`\`\`python\n${code}\n\`\`\``,
-  }[kind] || '';
-  $('ai-input').value = q;
-  sendAI();
-}
-$('ai-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAI(); }
-});
-
-async function sendAI() {
-  const text = $('ai-input').value.trim();
-  if (!text) return;
-  const key = $('ai-key').value.trim();
-  if (!key) {
-    updateNoKeyBanner();
-    addAIMsg('err', 'Please paste an API key above to use the AI assistant.');
-    return;
-  }
-  const modelId = $('ai-model').value;
-  addAIMsg('user', text);
-  aiHistory.push({ role: 'user', content: text });
-  $('ai-input').value = '';
-  $('ai-send').disabled = true;
-  const holder = addAIMsg('assistant', 'Thinking…');
-  try {
-    const reply = await callAI(modelId, key, aiHistory);
-    aiHistory.push({ role: 'assistant', content: reply });
-    holder.innerHTML = renderMarkdown(reply);
-    $('ai-msgs').scrollTop = $('ai-msgs').scrollHeight;
-  } catch (err) {
-    holder.remove();
-    const msg = err.message || String(err);
-    // Show user-friendly error for common auth failures
-    if (msg.includes('401') || msg.includes('invalid_api_key') || msg.includes('API_KEY')) {
-      addAIMsg('err', 'Invalid API key. Double-check the key above matches the selected provider.');
-    } else if (msg.includes('429')) {
-      addAIMsg('err', 'Rate limit hit. Wait a moment and try again.');
-    } else {
-      addAIMsg('err', 'AI error: ' + msg.slice(0, 300));
-    }
-    aiHistory.pop();
-  } finally {
-    $('ai-send').disabled = !$('ai-key').value.trim();
-  }
-}
-
-const SYSTEM_PROMPT = 'You are a friendly Python coding assistant embedded in an in-browser Python IDE called PyRunner Apex (CPython 3.11 via Pyodide/WebAssembly). Help the user with Python code: explain, debug, fix, optimize. Keep answers concise and practical. When you show code, always wrap it in ```python fenced blocks so the user can insert it into their editor with one click.';
-
-async function callAI(modelId, key, history) {
-  const [provider, model] = modelId.split(':');
-  if (provider === 'gemini') return callGemini(model, key, history);
-  if (provider === 'openai') return callOpenAI(model, key, history);
-  if (provider === 'claude') return callClaude(model, key, history);
-  throw new Error('Unknown provider: ' + provider);
-}
-
-async function callOpenAI(model, key, history) {
-  const r = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    mode: 'cors',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-    body: JSON.stringify({ model, messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history], temperature: 0.4 }),
-  });
-  if (!r.ok) throw new Error(await r.text().then(t => t.slice(0, 400)));
-  const j = await r.json();
-  return j.choices?.[0]?.message?.content || '(empty response)';
-}
-
-async function callClaude(model, key, history) {
-  const r = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': key,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify({
-      model, max_tokens: 2048, system: SYSTEM_PROMPT,
-      messages: history.map(m => ({ role: m.role, content: m.content })),
-    }),
-  });
-  if (!r.ok) throw new Error(await r.text().then(t => t.slice(0, 400)));
-  const j = await r.json();
-  return j.content?.map(c => c.text || '').join('\n') || '(empty response)';
-}
-
-async function callGemini(model, key, history) {
-  const contents = history.map(m => ({
-    role: m.role === 'assistant' ? 'model' : 'user',
-    parts: [{ text: m.content }],
-  }));
-  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-      contents,
-      generationConfig: { temperature: 0.4 },
-    }),
-  });
-  if (!r.ok) throw new Error(await r.text().then(t => t.slice(0, 400)));
-  const j = await r.json();
-  return j.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('\n') || '(empty response)';
-}
-
 // ── KEYBOARD SHORTCUTS ──
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !runBtn.disabled) { e.preventDefault(); runCode(); }
