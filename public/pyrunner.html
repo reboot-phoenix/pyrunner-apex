@@ -51,29 +51,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.5/split.min.js"></script>
 <style>
-:root {
-  --bg-void: #0a0b0f;
-  --bg-deep: #0d0f18;
-  --bg-panel: #111420;
-  --bg-hover: #1c2030;
-  --bg-active: #1e2438;
-  --cyan: #00d4ff;
-  --cyan-dim: rgba(0,212,255,0.15);
-  --green: #00e676;
-  --purple: #b57bee;
-  --amber: #ffca28;
-  --red: #ff5252;
-  --orange: #ff9800;
-  --text-1: #e4e8f4;
-  --text-2: #7a849e;
-  --text-3: #3d4460;
-  --border: #181c2e;
-  --border-2: #232840;
-  --mono: 'JetBrains Mono', monospace;
-  --sans: 'Inter', system-ui, sans-serif;
+:root{
+  --bg-void:#0a0b0f;--bg-deep:#0d0f18;--bg-panel:#111420;
+  --bg-hover:#1c2030;--bg-active:#1e2438;
+  --cyan:#00d4ff;--cyan-dim:rgba(0,212,255,0.15);
+  --green:#00e676;--purple:#b57bee;--amber:#ffca28;
+  --red:#ff5252;--orange:#ff9800;
+  --text-1:#e4e8f4;--text-2:#7a849e;--text-3:#3d4460;
+  --border:#181c2e;--border-2:#232840;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',system-ui,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
@@ -81,65 +73,57 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 
 /* ── TOPBAR ── */
 #topbar{
-  height:48px;background:var(--bg-deep);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;
-  position:relative;
+  height:44px;background:var(--bg-deep);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0;position:relative;
 }
 #topbar::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);
-  opacity:0.35;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:.35;
 }
-.brand{display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:8px}
 .brand-icon{
-  width:28px;height:28px;border-radius:6px;
+  width:26px;height:26px;border-radius:6px;
   background:linear-gradient(135deg,var(--cyan),var(--purple));
-  display:flex;align-items:center;justify-content:center;font-size:14px;
-  box-shadow:0 0 14px rgba(0,212,255,0.3);
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  box-shadow:0 0 12px rgba(0,212,255,.3);
 }
 .brand-name{
-  font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   background:linear-gradient(90deg,var(--cyan),var(--purple));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 .spacer{flex:1}
-.status-row{display:flex;align-items:center;gap:7px}
-#status-dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;
-  animation:dot-pulse 1.4s infinite}
+.status-row{display:flex;align-items:center;gap:6px}
+#status-dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;animation:dot-pulse 1.4s infinite}
 #status-dot.ready{background:var(--green);animation:dot-ready 2.5s infinite}
 #status-dot.err{background:var(--red);animation:none}
 @keyframes dot-pulse{0%,100%{opacity:1;box-shadow:0 0 5px var(--amber)}50%{opacity:.4;box-shadow:none}}
 @keyframes dot-ready{0%,100%{opacity:1;box-shadow:0 0 7px var(--green)}60%{opacity:.7}}
-#status-txt{font-family:var(--mono);font-size:10.5px;color:var(--text-2)}
-.hbtn{
-  background:transparent;border:1px solid var(--border-2);color:var(--text-2);
-  font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:5px;
-  cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .18s;
-  white-space:nowrap;
-}
-.hbtn:hover{border-color:var(--text-3);color:var(--text-1);background:var(--bg-hover)}
-.hbtn.danger:hover{border-color:var(--red);color:var(--red)}
-.hbtn.ok{border-color:var(--green);color:var(--green);background:rgba(0,230,118,.06)}
-.hbtn.ok:hover{background:rgba(0,230,118,.14)}
-.hbtn.ai{border-color:var(--purple);color:var(--purple);background:rgba(181,123,238,.06)}
-.hbtn.ai:hover{background:rgba(181,123,238,.14)}
-#run-btn{
-  border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.06);
-  padding:5px 18px;font-weight:500;
-}
-#run-btn:hover:not(:disabled){
-  background:rgba(0,212,255,.14);box-shadow:0 0 18px rgba(0,212,255,.2);
-  transform:translateY(-1px);
-}
-#run-btn:disabled{border-color:var(--border-2);color:var(--text-3);cursor:not-allowed;background:transparent;transform:none;box-shadow:none}
-#run-btn:active:not(:disabled){transform:translateY(0)}
+#status-txt{font-family:var(--mono);font-size:10px;color:var(--text-2)}
 .seg{display:flex;border:1px solid var(--border-2);border-radius:5px;overflow:hidden}
 .seg button{
   background:transparent;border:none;color:var(--text-2);font-family:var(--mono);
-  font-size:10px;padding:5px 9px;cursor:pointer;transition:all .15s;white-space:nowrap;
+  font-size:10px;padding:5px 8px;cursor:pointer;transition:all .15s;
 }
 .seg button.on{background:var(--bg-active);color:var(--text-1)}
 .seg button:hover:not(.on){background:var(--bg-hover);color:var(--text-1)}
+.hbtn{
+  background:transparent;border:1px solid var(--border-2);color:var(--text-2);
+  font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:5px;
+  cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .18s;white-space:nowrap;
+}
+.hbtn:hover{border-color:var(--text-3);color:var(--text-1);background:var(--bg-hover)}
+.hbtn.danger{color:var(--text-2)}
+.hbtn.danger:hover{border-color:var(--red);color:var(--red)}
+.hbtn.ok{border-color:var(--green);color:var(--green);background:rgba(0,230,118,.06)}
+.hbtn.ok:hover{background:rgba(0,230,118,.14)}
+#run-btn{
+  border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.06);
+  padding:5px 16px;font-weight:600;font-size:12px;
+}
+#run-btn:hover:not(:disabled){background:rgba(0,212,255,.14);box-shadow:0 0 16px rgba(0,212,255,.2);transform:translateY(-1px)}
+#run-btn:disabled{border-color:var(--border-2);color:var(--text-3);cursor:not-allowed;background:transparent;transform:none;box-shadow:none}
+#run-btn:active:not(:disabled){transform:translateY(0)}
 
 /* ── WORKSPACE ── */
 #workspace{flex:1;display:flex;overflow:hidden;min-height:0}
@@ -147,63 +131,83 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 /* ── SIDEBAR ── */
 #sidebar{
   background:var(--bg-deep);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;min-width:130px;flex-shrink:0;
+  display:flex;flex-direction:column;flex-shrink:0;transition:width .2s;overflow:hidden;
+  width:150px;
 }
+#sidebar.collapsed{width:0;border-right:none}
 .sidebar-hd{
-  padding:9px 12px;font-size:9px;font-family:var(--mono);font-weight:600;
+  padding:8px 10px;font-size:9px;font-family:var(--mono);font-weight:600;
   letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);
-  border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:4px;
+  border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;
+  white-space:nowrap;
 }
-.sidebar-hd .hd-actions{display:flex;gap:2px}
 .sidebar-hd button{background:none;border:none;color:var(--text-3);font-size:12px;cursor:pointer;padding:2px 4px;transition:color .15s}
 .sidebar-hd button:hover{color:var(--cyan)}
 #file-list{flex:1;overflow-y:auto;padding:4px 0}
 .fi{
-  display:flex;align-items:center;gap:7px;padding:6px 12px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;padding:6px 10px;cursor:pointer;
   transition:all .13s;border-left:2px solid transparent;
 }
 .fi:hover{background:var(--bg-hover)}
 .fi.on{background:var(--bg-active);border-left-color:var(--cyan)}
-.fi .ficon{font-size:12px;color:#4a90d9;flex-shrink:0}
+.fi .ficon{font-size:11px;color:#4a90d9;flex-shrink:0}
 .fi.on .ficon{color:var(--cyan)}
-.fi .fname{font-size:11.5px;font-family:var(--mono);color:var(--text-2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fi .fname{font-size:11px;font-family:var(--mono);color:var(--text-2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .fi.on .fname{color:var(--text-1)}
 .fi .fdel{display:none;background:none;border:none;cursor:pointer;color:var(--text-3);font-size:10px;padding:1px 3px;transition:color .13s}
 .fi .fdel:hover{color:var(--red)}
 .fi:hover .fdel{display:block}
 #snippets-panel{border-top:1px solid var(--border)}
 .snippets-hd{
-  padding:7px 12px;font-size:9px;font-family:var(--mono);font-weight:600;
+  padding:6px 10px;font-size:9px;font-family:var(--mono);font-weight:600;
   letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);
-  display:flex;justify-content:space-between;align-items:center;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;cursor:pointer;white-space:nowrap;
 }
 .snippets-hd:hover{color:var(--text-2)}
 #snippet-list{display:none;padding:4px 0}
 #snippet-list.open{display:block}
 .snip{
-  padding:5px 12px;font-size:11px;font-family:var(--mono);color:var(--text-2);
-  cursor:pointer;transition:all .13s;display:flex;align-items:center;gap:6px;
+  padding:5px 10px;font-size:10.5px;font-family:var(--mono);color:var(--text-2);
+  cursor:pointer;transition:all .13s;display:flex;align-items:center;gap:6px;white-space:nowrap;
 }
 .snip:hover{background:var(--bg-hover);color:var(--cyan)}
-.snip i{font-size:11px;width:14px}
+.snip i{font-size:10px;width:13px}
+
+/* ── SIDEBAR TOGGLE (floating) ── */
+#sidebar-toggle{
+  position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:16px;height:40px;background:var(--bg-panel);border:1px solid var(--border-2);
+  border-left:none;border-radius:0 6px 6px 0;cursor:pointer;z-index:30;
+  display:flex;align-items:center;justify-content:center;color:var(--text-3);
+  transition:all .15s;font-size:9px;
+}
+#sidebar-toggle:hover{background:var(--bg-hover);color:var(--cyan)}
 
 /* ── EDITOR ZONE ── */
-#editor-zone{display:flex;flex-direction:column;overflow:hidden;background:#1e1e1e;flex:1;min-width:0}
+#editor-zone{display:flex;flex-direction:column;overflow:hidden;background:#1e1e1e;flex:1;min-width:0;position:relative}
+
+/* editor toolbar */
+#editor-toolbar{
+  background:#252526;display:flex;align-items:center;padding:4px 8px;gap:6px;
+  border-bottom:1px solid #1a1a1a;flex-shrink:0;overflow-x:auto;
+}
+#editor-toolbar::-webkit-scrollbar{height:2px}
+
 #tabs-bar{
-  background:#252526;display:flex;height:34px;flex-shrink:0;
+  background:#252526;display:flex;height:32px;flex-shrink:0;
   overflow-x:auto;border-bottom:1px solid #1a1a1a;
 }
 #tabs-bar::-webkit-scrollbar{height:2px}
 #tabs-bar::-webkit-scrollbar-thumb{background:var(--border-2)}
 .tab{
-  display:flex;align-items:center;gap:6px;padding:0 14px;
-  font-size:11.5px;font-family:var(--mono);cursor:pointer;
+  display:flex;align-items:center;gap:5px;padding:0 12px;
+  font-size:11px;font-family:var(--mono);cursor:pointer;
   white-space:nowrap;height:100%;border-right:1px solid #1a1a1a;
-  color:#777;transition:all .13s;position:relative;
+  color:#777;transition:all .13s;
 }
 .tab:hover{color:#bbb;background:#2a2a2a}
-.tab.on{color:#e0e0e0;background:#1e1e1e;border-top:1px solid var(--cyan)}
-.tab .ti{font-size:11px;color:#4a90d9}
+.tab.on{color:#e0e0e0;background:#1e1e1e;border-top:2px solid var(--cyan)}
+.tab .ti{font-size:10px;color:#4a90d9}
 .tab.on .ti{color:var(--cyan)}
 #editor-container{flex:1;position:relative;overflow:hidden}
 #ed-load{
@@ -216,56 +220,42 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .err-line-bg{background:rgba(255,82,82,.14)!important}
 .err-line-glyph{background:var(--red);width:3px!important;margin-left:3px}
 #err-banner{
-  position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  position:absolute;top:6px;left:50%;transform:translateX(-50%);
   z-index:20;background:#3a1a1a;border:1px solid var(--red);
-  color:#ffdada;font-family:var(--mono);font-size:11.5px;
-  padding:8px 14px 8px 12px;border-radius:6px;display:none;align-items:center;gap:10px;
+  color:#ffdada;font-family:var(--mono);font-size:11px;
+  padding:7px 12px 7px 10px;border-radius:6px;display:none;align-items:center;gap:8px;
   max-width:90%;box-shadow:0 4px 24px rgba(0,0,0,.4);
 }
 #err-banner.show{display:flex}
 #err-banner .eb-msg{white-space:pre-wrap;word-break:break-word}
 #err-banner .eb-close{background:none;border:none;color:#ffb0b0;cursor:pointer;font-size:12px}
-#err-banner .eb-ai{background:rgba(181,123,238,.15);border:1px solid var(--purple);color:var(--purple);
-  font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:4px;cursor:pointer;flex-shrink:0}
-#err-banner .eb-ai:hover{background:rgba(181,123,238,.28)}
 
 /* ── OUTPUT ── */
 #out-panel{
   background:var(--bg-void);border-left:1px solid var(--border);
-  display:flex;flex-direction:column;min-width:180px;
+  display:flex;flex-direction:column;min-width:160px;
 }
-.out-hd{
+/* output toolbar */
+#out-toolbar{
   background:var(--bg-deep);border-bottom:1px solid var(--border);
-  height:34px;padding:0 14px;display:flex;align-items:center;
-  justify-content:space-between;flex-shrink:0;
+  display:flex;align-items:center;padding:4px 10px;gap:6px;flex-shrink:0;
 }
-.out-title{font-size:9.5px;font-family:var(--mono);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);display:flex;align-items:center;gap:7px}
-#exec-time{font-family:var(--mono);font-size:10px;color:var(--text-3)}
-.out-hd-right{display:flex;align-items:center;gap:8px}
-.out-copy-btn{background:none;border:none;color:var(--text-3);font-size:11px;cursor:pointer;padding:2px 6px;border-radius:3px;font-family:var(--mono);transition:color .15s}
-.out-copy-btn:hover{color:var(--cyan)}
+#exec-time{font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto}
 #terminal{
-  flex:1;padding:13px 15px;background:var(--bg-void);
+  flex:1;padding:12px 14px;background:var(--bg-void);
   font-family:var(--mono);font-size:13px;line-height:1.8;
   overflow-y:auto;color:#c5cde0;white-space:pre-wrap;word-break:break-word;
 }
 #terminal::-webkit-scrollbar{width:3px}
 #terminal::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:2px}
-.t-prompt{color:var(--green)}
-.t-err{color:var(--red)}
-.t-sys{color:var(--purple)}
-.t-warn{color:var(--amber)}
-.t-in{color:#fff}
+.t-prompt{color:var(--green)}.t-err{color:var(--red)}.t-sys{color:var(--purple)}.t-warn{color:var(--amber)}.t-in{color:#fff}
 #input-row{
   display:none;align-items:center;
   background:var(--bg-panel);border-top:1px solid var(--border-2);
   padding:7px 12px;gap:8px;flex-shrink:0;
 }
 .in-arrow{font-family:var(--mono);font-size:14px;color:var(--green);flex-shrink:0}
-#term-input{
-  flex:1;background:transparent;border:none;color:#fff;
-  font-family:var(--mono);font-size:13px;outline:none;caret-color:var(--cyan);
-}
+#term-input{flex:1;background:transparent;border:none;color:#fff;font-family:var(--mono);font-size:13px;outline:none;caret-color:var(--cyan)}
 .in-hint{font-family:var(--mono);font-size:10px;color:var(--text-3);white-space:nowrap}
 
 /* gutter */
@@ -273,95 +263,14 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .gutter:hover{background:rgba(0,212,255,.3)}
 .gutter.gutter-horizontal{width:4px!important}
 
-/* ── AI PANEL ── */
-#ai-panel{
-  position:fixed;top:48px;right:0;bottom:22px;width:380px;max-width:95vw;
-  background:var(--bg-deep);border-left:1px solid var(--border-2);
-  display:none;flex-direction:column;z-index:150;
-  box-shadow:-8px 0 32px rgba(0,0,0,.5);
-}
-#ai-panel.open{display:flex}
-.ai-hd{
-  padding:12px 14px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:8px;
-}
-.ai-hd-title{
-  font-size:12px;font-weight:600;letter-spacing:.05em;flex:1;
-  background:linear-gradient(90deg,var(--cyan),var(--purple));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.ai-hd button{background:none;border:none;color:var(--text-2);cursor:pointer;font-size:14px;padding:4px 6px}
-.ai-hd button:hover{color:var(--text-1)}
-.ai-cfg{
-  padding:10px 14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;
-}
-.ai-row{display:flex;gap:8px;align-items:center}
-.ai-row label{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;width:60px}
-.ai-row select,.ai-row input{
-  flex:1;background:var(--bg-void);border:1px solid var(--border-2);color:var(--text-1);
-  font-family:var(--mono);font-size:11.5px;padding:6px 9px;border-radius:5px;outline:none;
-}
-.ai-row select:focus,.ai-row input:focus{border-color:var(--cyan)}
-.ai-note{font-family:var(--mono);font-size:10px;color:var(--text-3);line-height:1.5}
-.ai-note a{color:var(--cyan);text-decoration:none}
-.ai-note a:hover{text-decoration:underline}
-#ai-msgs{
-  flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;
-}
-.ai-msg{
-  font-size:12.5px;line-height:1.55;padding:9px 12px;border-radius:8px;
-  white-space:pre-wrap;word-break:break-word;
-}
-.ai-msg.user{background:var(--bg-active);color:var(--text-1);align-self:flex-end;max-width:88%;border:1px solid var(--border-2)}
-.ai-msg.assistant{background:rgba(181,123,238,.08);border:1px solid rgba(181,123,238,.25);color:var(--text-1);align-self:flex-start;max-width:95%}
-.ai-msg.err{background:rgba(255,82,82,.1);border:1px solid rgba(255,82,82,.3);color:#ffb0b0;align-self:stretch}
-.ai-msg pre{background:#0a0b0f;border:1px solid var(--border-2);padding:9px 11px;border-radius:5px;overflow-x:auto;font-family:var(--mono);font-size:11.5px;margin:6px 0;color:#c5cde0}
-.ai-msg code{font-family:var(--mono);font-size:11.5px;background:rgba(0,212,255,.08);padding:1px 5px;border-radius:3px;color:var(--cyan)}
-.ai-msg pre code{background:none;padding:0;color:inherit}
-.ai-msg .use-code-btn{display:inline-block;margin-top:4px;background:rgba(0,212,255,.1);border:1px solid var(--cyan);color:var(--cyan);font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:4px;cursor:pointer}
-.ai-msg .use-code-btn:hover{background:rgba(0,212,255,.2)}
-.ai-inp-wrap{
-  padding:10px 12px;border-top:1px solid var(--border);
-  display:flex;gap:8px;align-items:flex-end;
-}
-#ai-input{
-  flex:1;background:var(--bg-void);border:1px solid var(--border-2);color:var(--text-1);
-  font-family:var(--sans);font-size:12.5px;padding:8px 10px;border-radius:6px;outline:none;
-  resize:none;max-height:120px;min-height:36px;
-}
-#ai-input:focus{border-color:var(--purple)}
-#ai-send{
-  background:rgba(181,123,238,.14);border:1px solid var(--purple);color:var(--purple);
-  font-family:var(--mono);font-size:11px;padding:8px 14px;border-radius:6px;cursor:pointer;
-  transition:all .15s;
-}
-#ai-send:hover:not(:disabled){background:rgba(181,123,238,.25)}
-#ai-send:disabled{opacity:.5;cursor:not-allowed}
-.ai-quick{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 8px}
-.ai-quick button{
-  background:transparent;border:1px solid var(--border-2);color:var(--text-2);
-  font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:4px;cursor:pointer;
-}
-.ai-quick button:hover{border-color:var(--purple);color:var(--purple)}
-
-/* no-key warning */
-#ai-nokey{
-  margin:10px 14px;padding:10px 12px;border-radius:7px;
-  background:rgba(255,202,40,.07);border:1px solid rgba(255,202,40,.3);
-  font-family:var(--mono);font-size:11px;color:var(--amber);line-height:1.6;display:none;
-}
-#ai-nokey a{color:var(--cyan);text-decoration:none}
-#ai-nokey a:hover{text-decoration:underline}
-
-/* ── STATUSBAR ── */
+/* ── STATUS BAR ── */
 #statusbar{
   background:var(--bg-deep);border-top:1px solid var(--border);
-  height:22px;display:flex;align-items:center;padding:0 14px;
+  height:22px;display:flex;align-items:center;padding:0 12px;
   justify-content:space-between;flex-shrink:0;
 }
-.sb-left,.sb-right{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.sb-left,.sb-right{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:10px;color:var(--text-3)}
 .sb-item{display:flex;align-items:center;gap:4px}
-.credit{font-family:var(--mono);font-size:9.5px;color:var(--text-3)}
 .credit span{color:var(--cyan)}
 
 /* ── BOOT ── */
@@ -370,46 +279,26 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
   transition:opacity .5s;
 }
-.boot-logo{
-  font-size:42px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
-  background:linear-gradient(135deg,var(--cyan),var(--purple));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
+.boot-logo{font-size:40px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .boot-sub{font-family:var(--mono);font-size:12px;color:var(--text-3)}
-.boot-bar-wrap{width:220px;height:2px;background:var(--border-2);border-radius:2px;overflow:hidden}
+.boot-bar-wrap{width:200px;height:2px;background:var(--border-2);border-radius:2px;overflow:hidden}
 .boot-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));width:0;transition:width .12s linear;box-shadow:0 0 8px var(--cyan)}
 #boot-msg{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.04em}
 #boot-credits{position:absolute;bottom:18px;font-family:var(--mono);font-size:10px;color:var(--text-3)}
 #boot-credits span{color:var(--cyan)}
 
 /* ── MODAL ── */
-#modal-bg{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);
-  z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(3px);
-}
+#modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
 #modal-bg.open{display:flex}
-.modal{
-  background:var(--bg-panel);border:1px solid var(--border-2);
-  border-radius:10px;padding:22px;width:300px;
-  box-shadow:0 0 40px rgba(0,212,255,.07);
-}
-.modal h3{font-size:13px;font-weight:600;margin-bottom:14px;color:var(--text-1)}
-.modal input{
-  width:100%;background:var(--bg-void);border:1px solid var(--border-2);
-  color:var(--text-1);font-family:var(--mono);font-size:12.5px;
-  padding:7px 11px;border-radius:5px;outline:none;margin-bottom:14px;
-  transition:border-color .15s;
-}
+.modal{background:var(--bg-panel);border:1px solid var(--border-2);border-radius:10px;padding:20px;width:280px;box-shadow:0 0 40px rgba(0,212,255,.07)}
+.modal h3{font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text-1)}
+.modal input{width:100%;background:var(--bg-void);border:1px solid var(--border-2);color:var(--text-1);font-family:var(--mono);font-size:12px;padding:7px 10px;border-radius:5px;outline:none;margin-bottom:12px;transition:border-color .15s}
 .modal input:focus{border-color:var(--cyan)}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end}
-.mbtn{
-  font-family:var(--mono);font-size:11.5px;padding:6px 14px;border-radius:5px;
-  cursor:pointer;transition:all .15s;border:1px solid var(--border-2);
-  background:transparent;color:var(--text-2);
-}
+.mbtn{font-family:var(--mono);font-size:11px;padding:6px 12px;border-radius:5px;cursor:pointer;transition:all .15s;border:1px solid var(--border-2);background:transparent;color:var(--text-2)}
 .mbtn:hover{background:var(--bg-hover);color:var(--text-1)}
 .mbtn.primary{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.07)}
-.mbtn.primary:hover{background:rgba(0,212,255,.15);box-shadow:0 0 14px rgba(0,212,255,.15)}
+.mbtn.primary:hover{background:rgba(0,212,255,.15)}
 
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -417,7 +306,6 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 
 body.fs-sm #terminal{font-size:12px}
 body.fs-lg #terminal{font-size:15px}
-
 body.light-theme{
   --bg-void:#f5f6fa;--bg-deep:#ffffff;--bg-panel:#f0f1f8;
   --bg-hover:#e8eaf5;--bg-active:#dde0f5;
@@ -428,6 +316,53 @@ body.light-theme #terminal{background:#f8f9ff;color:#1a1d30}
 body.light-theme .t-err{color:#c62828}
 body.light-theme .t-sys{color:#6a1b9a}
 body.light-theme .t-in{color:#000}
+
+/* ══════════════════════════════
+   MOBILE
+══════════════════════════════ */
+@media(max-width:700px){
+  #sidebar{display:none!important}
+  #sidebar-toggle{display:none!important}
+  .gutter{display:none!important}
+
+  /* stack editor and output vertically */
+  #workspace{flex-direction:column}
+  #editor-zone,#out-panel{
+    width:100%!important;min-width:0;border-left:none;border-right:none;
+    flex:none;
+  }
+  #editor-zone{height:55vh}
+  #out-panel{
+    height:45vh;border-top:2px solid var(--border-2);
+    display:none; /* hidden by default on mobile, shown after run */
+  }
+  #out-panel.mobile-show{display:flex}
+
+  /* mobile bottom bar instead of split toolbars */
+  #mobile-bar{
+    display:flex;position:fixed;bottom:0;left:0;right:0;
+    background:var(--bg-deep);border-top:1px solid var(--border-2);
+    padding:8px 12px;gap:8px;z-index:50;
+  }
+  #mobile-bar button{flex:1;padding:10px 0;font-size:13px}
+  #mobile-back-btn{display:flex!important}
+
+  #topbar{padding:0 10px;gap:8px}
+  .brand-name{display:none}
+  #status-txt{display:none}
+  #statusbar{display:none}
+
+  #editor-toolbar{flex-wrap:wrap;gap:4px}
+  #out-toolbar{flex-wrap:wrap;gap:4px}
+  #exec-time{display:none}
+
+  /* make editor fill space above mobile bar */
+  #editor-zone{padding-bottom:52px}
+}
+@media(min-width:701px){
+  #mobile-bar{display:none!important}
+  #mobile-back-btn{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -453,16 +388,23 @@ body.light-theme .t-in{color:#000}
   </div>
 </div>
 
-<!-- Hidden file input for load .py -->
 <input type="file" id="file-input" accept=".py,text/x-python,text/plain" style="display:none">
 
 <!-- TOPBAR -->
 <div id="topbar">
+  <!-- sidebar toggle -->
+  <button class="hbtn" onclick="toggleSidebar()" title="Toggle file panel" style="padding:4px 8px" id="sidebar-btn">
+    <i class="fa-solid fa-bars"></i>
+  </button>
   <div class="brand">
-    <div class="brand-icon"><i class="fa-brands fa-python" style="color:#fff;font-size:14px"></i></div>
+    <div class="brand-icon"><i class="fa-brands fa-python" style="color:#fff;font-size:13px"></i></div>
     <span class="brand-name">PyRunner Apex</span>
   </div>
   <div class="spacer"></div>
+  <div class="status-row">
+    <div id="status-dot"></div>
+    <span id="status-txt">Loading engine...</span>
+  </div>
   <div class="seg" title="Font size">
     <button onclick="setFont('sm')" id="fs-sm">A-</button>
     <button onclick="setFont('md')" id="fs-md" class="on">A</button>
@@ -472,40 +414,16 @@ body.light-theme .t-in{color:#000}
     <button onclick="setTheme('dark')" id="th-dark" class="on"><i class="fa-solid fa-moon"></i></button>
     <button onclick="setTheme('light')" id="th-light"><i class="fa-solid fa-sun"></i></button>
   </div>
-  <div class="status-row">
-    <div id="status-dot"></div>
-    <span id="status-txt">Loading engine...</span>
-  </div>
-  <button class="hbtn" onclick="copyCode()" title="Copy code to clipboard">
-    <i class="fa-regular fa-clipboard"></i> Copy code
-  </button>
-  <button class="hbtn ok" onclick="saveFile()" title="Download current file as .py">
-    <i class="fa-solid fa-download"></i> Save .py
-  </button>
-  <button class="hbtn" onclick="loadFile()" title="Open a .py file from your device">
-    <i class="fa-solid fa-folder-open"></i> Open
-  </button>
-  <!-- AI button hidden until fixed -->
-  <!--<button class="hbtn ai" onclick="toggleAI()" title="AI help (Ctrl+I)">
-    <i class="fa-solid fa-wand-magic-sparkles"></i> AI
-  </button>-->
-  <button class="hbtn danger" onclick="clearCode()" title="Clear code editor">
-    <i class="fa-solid fa-file-circle-xmark"></i> Clear code
-  </button>
-  <button class="hbtn danger" onclick="clearOut()" title="Clear output">
-    <i class="fa-solid fa-trash-can"></i> Clear output
-  </button>
-  <button id="run-btn" class="hbtn" disabled onclick="runCode()">
-    <i class="fa-solid fa-circle-play"></i> Run
-  </button>
 </div>
 
 <!-- WORKSPACE -->
 <div id="workspace">
+
+  <!-- SIDEBAR -->
   <div id="sidebar">
     <div class="sidebar-hd">
       <span>Files</span>
-      <div class="hd-actions">
+      <div style="display:flex;gap:2px">
         <button onclick="loadFile()" title="Open .py"><i class="fa-solid fa-folder-open"></i></button>
         <button onclick="openModal()" title="New file"><i class="fa-solid fa-plus"></i></button>
       </div>
@@ -525,12 +443,21 @@ body.light-theme .t-in{color:#000}
         <div class="snip" onclick="insertSnippet('decorator')"><i class="fa-solid fa-at"></i>Decorator</div>
         <div class="snip" onclick="insertSnippet('try_except')"><i class="fa-solid fa-shield"></i>Try / Except</div>
         <div class="snip" onclick="insertSnippet('input_demo')"><i class="fa-solid fa-keyboard"></i>Input Demo</div>
-        <div class="snip" onclick="insertSnippet('numpy')"><i class="fa-solid fa-chart-line"></i>NumPy Quickstart</div>
+        <div class="snip" onclick="insertSnippet('numpy')"><i class="fa-solid fa-chart-line"></i>NumPy</div>
       </div>
     </div>
   </div>
 
+  <!-- EDITOR ZONE -->
   <div id="editor-zone">
+    <!-- toolbar ABOVE code -->
+    <div id="editor-toolbar">
+      <button class="hbtn" onclick="copyCode()" title="Copy code"><i class="fa-regular fa-clipboard"></i> Copy</button>
+      <button class="hbtn ok" onclick="saveFile()" title="Save as .py"><i class="fa-solid fa-download"></i> Save .py</button>
+      <button class="hbtn" onclick="loadFile()" title="Open .py"><i class="fa-solid fa-folder-open"></i> Open</button>
+      <button class="hbtn danger" onclick="clearCode()" title="Clear code"><i class="fa-solid fa-file-circle-xmark"></i> Clear</button>
+      <span id="pkg-stat" style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto"><i class="fa-solid fa-box"></i> stdlib</span>
+    </div>
     <div id="tabs-bar"></div>
     <div id="editor-container">
       <div id="ed-load">
@@ -540,20 +467,21 @@ body.light-theme .t-in{color:#000}
       <div id="err-banner">
         <i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i>
         <span class="eb-msg" id="eb-msg"></span>
-        <!-- Ask AI button hidden until fixed -->
-        <!--<button class="eb-ai" onclick="askAIAboutError()"><i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI</button>-->
         <button class="eb-close" onclick="hideErrBanner()"><i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>
   </div>
 
+  <!-- OUTPUT PANEL -->
   <div id="out-panel">
-    <div class="out-hd">
-      <div class="out-title"><i class="fa-solid fa-terminal"></i> Output</div>
-      <div class="out-hd-right">
-        <button class="out-copy-btn" onclick="copyOutput()" title="Copy output"><i class="fa-regular fa-copy"></i> copy</button>
-        <span id="exec-time"></span>
-      </div>
+    <!-- toolbar ABOVE output -->
+    <div id="out-toolbar">
+      <button id="mobile-back-btn" class="hbtn" onclick="mobileBack()" style="display:none"><i class="fa-solid fa-arrow-left"></i></button>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--text-3);display:flex;align-items:center;gap:6px"><i class="fa-solid fa-terminal"></i> Output</span>
+      <button class="hbtn" onclick="copyOutput()" title="Copy output"><i class="fa-regular fa-copy"></i> Copy</button>
+      <button class="hbtn danger" onclick="clearOut()" title="Clear output"><i class="fa-solid fa-trash-can"></i> Clear</button>
+      <button id="run-btn" class="hbtn" disabled onclick="runCode()"><i class="fa-solid fa-circle-play"></i> Run</button>
+      <span id="exec-time"></span>
     </div>
     <div id="terminal"></div>
     <div id="input-row">
@@ -564,60 +492,18 @@ body.light-theme .t-in{color:#000}
   </div>
 </div>
 
-<!-- AI PANEL -->
-<!-- AI panel hidden until fixed
-<div id="ai-panel">
-  <div class="ai-hd">
-    <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple)"></i>
-    <span class="ai-hd-title">AI Assistant</span>
-    <button onclick="clearAIChat()" title="Clear chat"><i class="fa-solid fa-broom"></i></button>
-    <button onclick="toggleAI()" title="Close"><i class="fa-solid fa-xmark"></i></button>
-  </div>
-  <div class="ai-cfg">
-    <div class="ai-row">
-      <label>Model</label>
-      <select id="ai-model">
-        <option value="gemini:gemini-2.0-flash">Gemini 2.0 Flash</option>
-        <option value="gemini:gemini-1.5-flash">Gemini 1.5 Flash</option>
-        <option value="gemini:gemini-1.5-pro">Gemini 1.5 Pro</option>
-      </select>
-    </div>
-    <div class="ai-row">
-      <label>API Key</label>
-      <input type="password" id="ai-key" placeholder="Paste your API key (saved locally)">
-    </div>
-    <div class="ai-note">
-      Your key stays in your browser only — never sent anywhere except Google.<br>
-      ✨ Gemini is <strong>completely free</strong> — no credit card needed!<br>
-      Get your free key → <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a>
-    </div>
-  </div>
-  <!-- shown when no key entered -->
-  <div id="ai-nokey">
-    <i class="fa-solid fa-key"></i> No API key set.<br>
-    Gemini is <strong>free</strong> — get your key at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a><br>
-    Then paste it above. No credit card needed!
-  </div>
-  <div id="ai-msgs"></div>
-  <div class="ai-quick">
-    <button onclick="aiQuick('explain')">Explain my code</button>
-    <button onclick="aiQuick('fix')">Fix errors</button>
-    <button onclick="aiQuick('optimize')">Optimize</button>
-    <button onclick="aiQuick('comment')">Add comments</button>
-  </div>
-  <div class="ai-inp-wrap">
-    <textarea id="ai-input" placeholder="Ask anything about your code… (Enter to send, Shift+Enter newline)" rows="1"></textarea>
-    <button id="ai-send" onclick="sendAI()"><i class="fa-solid fa-paper-plane"></i></button>
-  </div>
+<!-- MOBILE BOTTOM BAR -->
+<div id="mobile-bar">
+  <button class="hbtn" onclick="saveFile()"><i class="fa-solid fa-download"></i> Save</button>
+  <button class="hbtn danger" onclick="clearCode()"><i class="fa-solid fa-xmark"></i> Clear</button>
+  <button id="run-btn-mobile" class="hbtn" disabled onclick="runCode()" style="border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.08);font-weight:600"><i class="fa-solid fa-circle-play"></i> Run</button>
 </div>
--->
 
-<!-- STATUSBAR -->
+<!-- STATUS BAR (desktop only) -->
 <div id="statusbar">
   <div class="sb-left">
     <span class="sb-item"><i class="fa-brands fa-python"></i> Python 3.11</span>
-    <span class="sb-item"><i class="fa-solid fa-microchip"></i> WebAssembly</span>
-    <span class="sb-item" id="pkg-stat"><i class="fa-solid fa-box"></i> stdlib ready</span>
+    <span class="sb-item"><i class="fa-solid fa-microchip"></i> WASM</span>
   </div>
   <div class="sb-right">
     <span class="credit">made by <span>Ashtid D</span> · <span>Claude</span> · <span>Lovable</span> · <span>Gemini</span></span>
@@ -625,7 +511,6 @@ body.light-theme .t-in{color:#000}
 </div>
 
 <script>
-// ══════════════════════════════
 // STATE
 // ══════════════════════════════
 let vfs = { 'main.py': '# Write your Python here and click Run\nprint("Hello, World!")\n' };
@@ -1405,10 +1290,13 @@ window.onload = () => {
     bs.style.opacity = '0';
     setTimeout(() => bs.style.display = 'none', 480);
 
-    Split(['#sidebar', '#editor-zone', '#out-panel'], {
-      sizes: [14, 48, 38], minSize: [110, 260, 180], gutterSize: 4,
-      onDragEnd: () => { if (editor) editor.layout(); }
-    });
+    // Split only on desktop — mobile uses CSS stacking
+    if (window.innerWidth > 700) {
+      Split(['#sidebar', '#editor-zone', '#out-panel'], {
+        sizes: [14, 48, 38], minSize: [110, 260, 180], gutterSize: 4,
+        onDragEnd: () => { if (editor) editor.layout(); }
+      });
+    }
 
     loadMonaco(() => {
       $('status-txt').textContent = 'Loading Python…';
@@ -1420,6 +1308,40 @@ window.onload = () => {
     });
   });
 };
+
+// ── SIDEBAR TOGGLE ──
+function toggleSidebar() {
+  const sb = $('sidebar');
+  sb.classList.toggle('collapsed');
+  try { localStorage.setItem('pyr_sidebar', sb.classList.contains('collapsed') ? '0' : '1'); } catch(_){}
+  setTimeout(() => { if (editor) editor.layout(); }, 220);
+}
+
+// ── MOBILE BACK ──
+function mobileBack() {
+  $('out-panel').classList.remove('mobile-show');
+}
+
+// Sync mobile run button disabled state
+const runBtnMobile = $('run-btn-mobile');
+if (runBtnMobile) {
+  new MutationObserver(() => {
+    runBtnMobile.disabled = runBtn.disabled;
+  }).observe(runBtn, { attributes: true, attributeFilter: ['disabled'] });
+}
+
+// Mobile: show output when Run clicked
+const _origRunCode = window.runCode;
+window.runCode = async function() {
+  if (window.innerWidth <= 700) $('out-panel').classList.add('mobile-show');
+  await _origRunCode();
+};
+if (runBtnMobile) runBtnMobile.onclick = () => window.runCode();
+
+// Restore sidebar collapsed state
+try {
+  if (localStorage.getItem('pyr_sidebar') === '0') $('sidebar').classList.add('collapsed');
+} catch(_){}
 </script>
 </body>
 </html>
