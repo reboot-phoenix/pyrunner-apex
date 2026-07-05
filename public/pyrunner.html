@@ -485,9 +485,10 @@ body.light-theme .t-in{color:#000}
   <button class="hbtn" onclick="loadFile()" title="Open a .py file from your device">
     <i class="fa-solid fa-folder-open"></i> Open
   </button>
-  <button class="hbtn ai" onclick="toggleAI()" title="AI help (Ctrl+I)">
+  <!-- AI button hidden until fixed -->
+  <!--<button class="hbtn ai" onclick="toggleAI()" title="AI help (Ctrl+I)">
     <i class="fa-solid fa-wand-magic-sparkles"></i> AI
-  </button>
+  </button>-->
   <button class="hbtn danger" onclick="clearCode()" title="Clear code editor">
     <i class="fa-solid fa-file-circle-xmark"></i> Clear code
   </button>
@@ -539,7 +540,8 @@ body.light-theme .t-in{color:#000}
       <div id="err-banner">
         <i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i>
         <span class="eb-msg" id="eb-msg"></span>
-        <button class="eb-ai" onclick="askAIAboutError()"><i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI</button>
+        <!-- Ask AI button hidden until fixed -->
+        <!--<button class="eb-ai" onclick="askAIAboutError()"><i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI</button>-->
         <button class="eb-close" onclick="hideErrBanner()"><i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>
@@ -563,6 +565,7 @@ body.light-theme .t-in{color:#000}
 </div>
 
 <!-- AI PANEL -->
+<!-- AI panel hidden until fixed
 <div id="ai-panel">
   <div class="ai-hd">
     <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple)"></i>
@@ -607,6 +610,7 @@ body.light-theme .t-in{color:#000}
     <button id="ai-send" onclick="sendAI()"><i class="fa-solid fa-paper-plane"></i></button>
   </div>
 </div>
+-->
 
 <!-- STATUSBAR -->
 <div id="statusbar">
@@ -649,9 +653,19 @@ function tAppend(text, cls) {
   terminal.scrollTop = terminal.scrollHeight;
 }
 function tRaw(html) {
+  // Only used internally with trusted static HTML strings
   const d = document.createElement('div');
   d.innerHTML = html;
   terminal.appendChild(d);
+  terminal.scrollTop = terminal.scrollHeight;
+}
+// Safe version for dynamic content - escapes before inserting
+function tAppendHTML(text, cls) {
+  const el = document.createElement('span');
+  if (cls) el.className = cls;
+  el.textContent = text; // textContent auto-escapes, no XSS
+  terminal.appendChild(el);
+  terminal.appendChild(document.createElement('br'));
   terminal.scrollTop = terminal.scrollHeight;
 }
 function clearCode() {
@@ -721,22 +735,29 @@ function showToast(msg) {
   setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 1800);
 }
 
+// Escape HTML to prevent XSS
+function escHTML(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
 // ── VFS / FILES ──
 function renderUI() {
   const fl = $('file-list'), tabs = $('tabs-bar');
   fl.innerHTML = ''; tabs.innerHTML = '';
   Object.keys(vfs).forEach(fn => {
     const active = fn === currentFile;
+    const safeFn = escHTML(fn);
     const fi = document.createElement('div');
     fi.className = 'fi' + (active ? ' on' : '');
     fi.innerHTML = `<i class="fa-brands fa-python ficon"></i>
-      <span class="fname">${fn}</span>
-      ${fn !== 'main.py' ? `<button class="fdel" onclick="event.stopPropagation();delFile('${fn}')"><i class="fa-solid fa-xmark"></i></button>` : ''}`;
+      <span class="fname">${safeFn}</span>
+      ${fn !== 'main.py' ? `<button class="fdel" onclick="event.stopPropagation();delFile(this.dataset.fn)"><i class="fa-solid fa-xmark"></i></button>` : ''}`;
+    if (fn !== 'main.py') fi.querySelector('.fdel').dataset.fn = fn;
     fi.addEventListener('click', () => switchFile(fn));
     fl.appendChild(fi);
     const tab = document.createElement('div');
     tab.className = 'tab' + (active ? ' on' : '');
-    tab.innerHTML = `<i class="fa-brands fa-python ti"></i>${fn}`;
+    tab.innerHTML = `<i class="fa-brands fa-python ti"></i>${safeFn}`;
     tab.addEventListener('click', () => switchFile(fn));
     tabs.appendChild(tab);
   });
@@ -1127,7 +1148,7 @@ async function runCode() {
   runBtn.disabled = true;
   runBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running';
   clearOut();
-  tRaw(`<span class="t-prompt">❯ python ${currentFile}</span>`);
+  tRaw(`<span class="t-prompt">❯ python ${escHTML(currentFile)}</span>`);
 
   const t0 = performance.now();
 
@@ -1345,9 +1366,9 @@ async function callGemini(model, key, history) {
     role: m.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: m.content }],
   }));
-  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`, {
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
       contents,
