@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pyrunner.yourdomain.com/sitemap.xml

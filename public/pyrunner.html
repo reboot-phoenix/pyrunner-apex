@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyRunner Apex — Free Online Python 3 Editor & Compiler</title>
+<meta name="description" content="Run Python 3 instantly in your browser — no install needed. Free online Python compiler with Monaco editor, interactive input(), AI assistant (Gemini, ChatGPT, Claude), and auto package install.">
+<meta name="keywords" content="python online, python compiler, run python in browser, python editor, online IDE, python 3, pyodide, free python, python interpreter, AI python editor">
+<meta name="author" content="Ashtid D">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pyrunner.yourdomain.com/">
+
+<!-- Open Graph (Facebook, WhatsApp, Discord previews) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyrunner.yourdomain.com/">
+<meta property="og:title" content="PyRunner Apex — Free Online Python Editor">
+<meta property="og:description" content="Run Python 3 in your browser. Monaco editor, interactive input(), AI assistant, auto package install. No account needed.">
+<meta property="og:image" content="https://pyrunner.yourdomain.com/og-image.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PyRunner Apex — Free Online Python Editor">
+<meta name="twitter:description" content="Run Python 3 in your browser. Monaco editor, interactive input(), AI assistant, auto package install. No account needed.">
+<meta name="twitter:image" content="https://pyrunner.yourdomain.com/og-image.png">
+
+<!-- Structured Data for Google -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PyRunner Apex",
+  "url": "https://pyrunner.yourdomain.com/",
+  "description": "Free online Python 3 compiler and editor. Runs in your browser via WebAssembly — no install needed. Includes Monaco editor, interactive input(), AI assistant, and automatic package installation.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Ashtid D" },
+  "featureList": [
+    "Python 3.11 via WebAssembly",
+    "Monaco Code Editor (VS Code engine)",
+    "Interactive input() support",
+    "AI assistant with Gemini, ChatGPT, and Claude",
+    "Auto package installation (numpy, pandas, etc.)",
+    "Multi-file support",
+    "Dark and light themes",
+    "Save .py files",
+    "No account or install required"
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.5/split.min.js"></script>
+<style>
+:root {
+  --bg-void: #0a0b0f;
+  --bg-deep: #0d0f18;
+  --bg-panel: #111420;
+  --bg-hover: #1c2030;
+  --bg-active: #1e2438;
+  --cyan: #00d4ff;
+  --cyan-dim: rgba(0,212,255,0.15);
+  --green: #00e676;
+  --purple: #b57bee;
+  --amber: #ffca28;
+  --red: #ff5252;
+  --orange: #ff9800;
+  --text-1: #e4e8f4;
+  --text-2: #7a849e;
+  --text-3: #3d4460;
+  --border: #181c2e;
+  --border-2: #232840;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);display:flex;flex-direction:column}
+
+/* ── TOPBAR ── */
+#topbar{
+  height:48px;background:var(--bg-deep);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;
+  position:relative;
+}
+#topbar::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);
+  opacity:0.35;
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{
+  width:28px;height:28px;border-radius:6px;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  box-shadow:0 0 14px rgba(0,212,255,0.3);
+}
+.brand-name{
+  font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.spacer{flex:1}
+.status-row{display:flex;align-items:center;gap:7px}
+#status-dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;
+  animation:dot-pulse 1.4s infinite}
+#status-dot.ready{background:var(--green);animation:dot-ready 2.5s infinite}
+#status-dot.err{background:var(--red);animation:none}
+@keyframes dot-pulse{0%,100%{opacity:1;box-shadow:0 0 5px var(--amber)}50%{opacity:.4;box-shadow:none}}
+@keyframes dot-ready{0%,100%{opacity:1;box-shadow:0 0 7px var(--green)}60%{opacity:.7}}
+#status-txt{font-family:var(--mono);font-size:10.5px;color:var(--text-2)}
+.hbtn{
+  background:transparent;border:1px solid var(--border-2);color:var(--text-2);
+  font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:5px;
+  cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .18s;
+  white-space:nowrap;
+}
+.hbtn:hover{border-color:var(--text-3);color:var(--text-1);background:var(--bg-hover)}
+.hbtn.danger:hover{border-color:var(--red);color:var(--red)}
+.hbtn.ok{border-color:var(--green);color:var(--green);background:rgba(0,230,118,.06)}
+.hbtn.ok:hover{background:rgba(0,230,118,.14)}
+.hbtn.ai{border-color:var(--purple);color:var(--purple);background:rgba(181,123,238,.06)}
+.hbtn.ai:hover{background:rgba(181,123,238,.14)}
+#run-btn{
+  border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.06);
+  padding:5px 18px;font-weight:500;
+}
+#run-btn:hover:not(:disabled){
+  background:rgba(0,212,255,.14);box-shadow:0 0 18px rgba(0,212,255,.2);
+  transform:translateY(-1px);
+}
+#run-btn:disabled{border-color:var(--border-2);color:var(--text-3);cursor:not-allowed;background:transparent;transform:none;box-shadow:none}
+#run-btn:active:not(:disabled){transform:translateY(0)}
+.seg{display:flex;border:1px solid var(--border-2);border-radius:5px;overflow:hidden}
+.seg button{
+  background:transparent;border:none;color:var(--text-2);font-family:var(--mono);
+  font-size:10px;padding:5px 9px;cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.seg button.on{background:var(--bg-active);color:var(--text-1)}
+.seg button:hover:not(.on){background:var(--bg-hover);color:var(--text-1)}
+
+/* ── WORKSPACE ── */
+#workspace{flex:1;display:flex;overflow:hidden;min-height:0}
+
+/* ── SIDEBAR ── */
+#sidebar{
+  background:var(--bg-deep);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;min-width:130px;flex-shrink:0;
+}
+.sidebar-hd{
+  padding:9px 12px;font-size:9px;font-family:var(--mono);font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);
+  border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:4px;
+}
+.sidebar-hd .hd-actions{display:flex;gap:2px}
+.sidebar-hd button{background:none;border:none;color:var(--text-3);font-size:12px;cursor:pointer;padding:2px 4px;transition:color .15s}
+.sidebar-hd button:hover{color:var(--cyan)}
+#file-list{flex:1;overflow-y:auto;padding:4px 0}
+.fi{
+  display:flex;align-items:center;gap:7px;padding:6px 12px;cursor:pointer;
+  transition:all .13s;border-left:2px solid transparent;
+}
+.fi:hover{background:var(--bg-hover)}
+.fi.on{background:var(--bg-active);border-left-color:var(--cyan)}
+.fi .ficon{font-size:12px;color:#4a90d9;flex-shrink:0}
+.fi.on .ficon{color:var(--cyan)}
+.fi .fname{font-size:11.5px;font-family:var(--mono);color:var(--text-2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fi.on .fname{color:var(--text-1)}
+.fi .fdel{display:none;background:none;border:none;cursor:pointer;color:var(--text-3);font-size:10px;padding:1px 3px;transition:color .13s}
+.fi .fdel:hover{color:var(--red)}
+.fi:hover .fdel{display:block}
+#snippets-panel{border-top:1px solid var(--border)}
+.snippets-hd{
+  padding:7px 12px;font-size:9px;font-family:var(--mono);font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);
+  display:flex;justify-content:space-between;align-items:center;cursor:pointer;
+}
+.snippets-hd:hover{color:var(--text-2)}
+#snippet-list{display:none;padding:4px 0}
+#snippet-list.open{display:block}
+.snip{
+  padding:5px 12px;font-size:11px;font-family:var(--mono);color:var(--text-2);
+  cursor:pointer;transition:all .13s;display:flex;align-items:center;gap:6px;
+}
+.snip:hover{background:var(--bg-hover);color:var(--cyan)}
+.snip i{font-size:11px;width:14px}
+
+/* ── EDITOR ZONE ── */
+#editor-zone{display:flex;flex-direction:column;overflow:hidden;background:#1e1e1e;flex:1;min-width:0}
+#tabs-bar{
+  background:#252526;display:flex;height:34px;flex-shrink:0;
+  overflow-x:auto;border-bottom:1px solid #1a1a1a;
+}
+#tabs-bar::-webkit-scrollbar{height:2px}
+#tabs-bar::-webkit-scrollbar-thumb{background:var(--border-2)}
+.tab{
+  display:flex;align-items:center;gap:6px;padding:0 14px;
+  font-size:11.5px;font-family:var(--mono);cursor:pointer;
+  white-space:nowrap;height:100%;border-right:1px solid #1a1a1a;
+  color:#777;transition:all .13s;position:relative;
+}
+.tab:hover{color:#bbb;background:#2a2a2a}
+.tab.on{color:#e0e0e0;background:#1e1e1e;border-top:1px solid var(--cyan)}
+.tab .ti{font-size:11px;color:#4a90d9}
+.tab.on .ti{color:var(--cyan)}
+#editor-container{flex:1;position:relative;overflow:hidden}
+#ed-load{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;background:#1e1e1e;gap:14px;z-index:10;
+}
+.spinner{width:32px;height:32px;border:2px solid #2a2a2a;border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ed-load-txt{font-family:var(--mono);font-size:11px;color:var(--text-3)}
+.err-line-bg{background:rgba(255,82,82,.14)!important}
+.err-line-glyph{background:var(--red);width:3px!important;margin-left:3px}
+#err-banner{
+  position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  z-index:20;background:#3a1a1a;border:1px solid var(--red);
+  color:#ffdada;font-family:var(--mono);font-size:11.5px;
+  padding:8px 14px 8px 12px;border-radius:6px;display:none;align-items:center;gap:10px;
+  max-width:90%;box-shadow:0 4px 24px rgba(0,0,0,.4);
+}
+#err-banner.show{display:flex}
+#err-banner .eb-msg{white-space:pre-wrap;word-break:break-word}
+#err-banner .eb-close{background:none;border:none;color:#ffb0b0;cursor:pointer;font-size:12px}
+#err-banner .eb-ai{background:rgba(181,123,238,.15);border:1px solid var(--purple);color:var(--purple);
+  font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:4px;cursor:pointer;flex-shrink:0}
+#err-banner .eb-ai:hover{background:rgba(181,123,238,.28)}
+
+/* ── OUTPUT ── */
+#out-panel{
+  background:var(--bg-void);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;min-width:180px;
+}
+.out-hd{
+  background:var(--bg-deep);border-bottom:1px solid var(--border);
+  height:34px;padding:0 14px;display:flex;align-items:center;
+  justify-content:space-between;flex-shrink:0;
+}
+.out-title{font-size:9.5px;font-family:var(--mono);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);display:flex;align-items:center;gap:7px}
+#exec-time{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.out-hd-right{display:flex;align-items:center;gap:8px}
+.out-copy-btn{background:none;border:none;color:var(--text-3);font-size:11px;cursor:pointer;padding:2px 6px;border-radius:3px;font-family:var(--mono);transition:color .15s}
+.out-copy-btn:hover{color:var(--cyan)}
+#terminal{
+  flex:1;padding:13px 15px;background:var(--bg-void);
+  font-family:var(--mono);font-size:13px;line-height:1.8;
+  overflow-y:auto;color:#c5cde0;white-space:pre-wrap;word-break:break-word;
+}
+#terminal::-webkit-scrollbar{width:3px}
+#terminal::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:2px}
+.t-prompt{color:var(--green)}
+.t-err{color:var(--red)}
+.t-sys{color:var(--purple)}
+.t-warn{color:var(--amber)}
+.t-in{color:#fff}
+#input-row{
+  display:none;align-items:center;
+  background:var(--bg-panel);border-top:1px solid var(--border-2);
+  padding:7px 12px;gap:8px;flex-shrink:0;
+}
+.in-arrow{font-family:var(--mono);font-size:14px;color:var(--green);flex-shrink:0}
+#term-input{
+  flex:1;background:transparent;border:none;color:#fff;
+  font-family:var(--mono);font-size:13px;outline:none;caret-color:var(--cyan);
+}
+.in-hint{font-family:var(--mono);font-size:10px;color:var(--text-3);white-space:nowrap}
+
+/* gutter */
+.gutter{background:var(--border);cursor:col-resize;transition:background .15s}
+.gutter:hover{background:rgba(0,212,255,.3)}
+.gutter.gutter-horizontal{width:4px!important}
+
+/* ── AI PANEL ── */
+#ai-panel{
+  position:fixed;top:48px;right:0;bottom:22px;width:380px;max-width:95vw;
+  background:var(--bg-deep);border-left:1px solid var(--border-2);
+  display:none;flex-direction:column;z-index:150;
+  box-shadow:-8px 0 32px rgba(0,0,0,.5);
+}
+#ai-panel.open{display:flex}
+.ai-hd{
+  padding:12px 14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.ai-hd-title{
+  font-size:12px;font-weight:600;letter-spacing:.05em;flex:1;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.ai-hd button{background:none;border:none;color:var(--text-2);cursor:pointer;font-size:14px;padding:4px 6px}
+.ai-hd button:hover{color:var(--text-1)}
+.ai-cfg{
+  padding:10px 14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;
+}
+.ai-row{display:flex;gap:8px;align-items:center}
+.ai-row label{font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;width:60px}
+.ai-row select,.ai-row input{
+  flex:1;background:var(--bg-void);border:1px solid var(--border-2);color:var(--text-1);
+  font-family:var(--mono);font-size:11.5px;padding:6px 9px;border-radius:5px;outline:none;
+}
+.ai-row select:focus,.ai-row input:focus{border-color:var(--cyan)}
+.ai-note{font-family:var(--mono);font-size:10px;color:var(--text-3);line-height:1.5}
+.ai-note a{color:var(--cyan);text-decoration:none}
+.ai-note a:hover{text-decoration:underline}
+#ai-msgs{
+  flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;
+}
+.ai-msg{
+  font-size:12.5px;line-height:1.55;padding:9px 12px;border-radius:8px;
+  white-space:pre-wrap;word-break:break-word;
+}
+.ai-msg.user{background:var(--bg-active);color:var(--text-1);align-self:flex-end;max-width:88%;border:1px solid var(--border-2)}
+.ai-msg.assistant{background:rgba(181,123,238,.08);border:1px solid rgba(181,123,238,.25);color:var(--text-1);align-self:flex-start;max-width:95%}
+.ai-msg.err{background:rgba(255,82,82,.1);border:1px solid rgba(255,82,82,.3);color:#ffb0b0;align-self:stretch}
+.ai-msg pre{background:#0a0b0f;border:1px solid var(--border-2);padding:9px 11px;border-radius:5px;overflow-x:auto;font-family:var(--mono);font-size:11.5px;margin:6px 0;color:#c5cde0}
+.ai-msg code{font-family:var(--mono);font-size:11.5px;background:rgba(0,212,255,.08);padding:1px 5px;border-radius:3px;color:var(--cyan)}
+.ai-msg pre code{background:none;padding:0;color:inherit}
+.ai-msg .use-code-btn{display:inline-block;margin-top:4px;background:rgba(0,212,255,.1);border:1px solid var(--cyan);color:var(--cyan);font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:4px;cursor:pointer}
+.ai-msg .use-code-btn:hover{background:rgba(0,212,255,.2)}
+.ai-inp-wrap{
+  padding:10px 12px;border-top:1px solid var(--border);
+  display:flex;gap:8px;align-items:flex-end;
+}
+#ai-input{
+  flex:1;background:var(--bg-void);border:1px solid var(--border-2);color:var(--text-1);
+  font-family:var(--sans);font-size:12.5px;padding:8px 10px;border-radius:6px;outline:none;
+  resize:none;max-height:120px;min-height:36px;
+}
+#ai-input:focus{border-color:var(--purple)}
+#ai-send{
+  background:rgba(181,123,238,.14);border:1px solid var(--purple);color:var(--purple);
+  font-family:var(--mono);font-size:11px;padding:8px 14px;border-radius:6px;cursor:pointer;
+  transition:all .15s;
+}
+#ai-send:hover:not(:disabled){background:rgba(181,123,238,.25)}
+#ai-send:disabled{opacity:.5;cursor:not-allowed}
+.ai-quick{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 8px}
+.ai-quick button{
+  background:transparent;border:1px solid var(--border-2);color:var(--text-2);
+  font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:4px;cursor:pointer;
+}
+.ai-quick button:hover{border-color:var(--purple);color:var(--purple)}
+
+/* no-key warning */
+#ai-nokey{
+  margin:10px 14px;padding:10px 12px;border-radius:7px;
+  background:rgba(255,202,40,.07);border:1px solid rgba(255,202,40,.3);
+  font-family:var(--mono);font-size:11px;color:var(--amber);line-height:1.6;display:none;
+}
+#ai-nokey a{color:var(--cyan);text-decoration:none}
+#ai-nokey a:hover{text-decoration:underline}
+
+/* ── STATUSBAR ── */
+#statusbar{
+  background:var(--bg-deep);border-top:1px solid var(--border);
+  height:22px;display:flex;align-items:center;padding:0 14px;
+  justify-content:space-between;flex-shrink:0;
+}
+.sb-left,.sb-right{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:10px;color:var(--text-3)}
+.sb-item{display:flex;align-items:center;gap:4px}
+.credit{font-family:var(--mono);font-size:9.5px;color:var(--text-3)}
+.credit span{color:var(--cyan)}
+
+/* ── BOOT ── */
+#boot{
+  position:fixed;inset:0;background:var(--bg-void);z-index:200;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  transition:opacity .5s;
+}
+.boot-logo{
+  font-size:42px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.boot-sub{font-family:var(--mono);font-size:12px;color:var(--text-3)}
+.boot-bar-wrap{width:220px;height:2px;background:var(--border-2);border-radius:2px;overflow:hidden}
+.boot-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));width:0;transition:width .12s linear;box-shadow:0 0 8px var(--cyan)}
+#boot-msg{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.04em}
+#boot-credits{position:absolute;bottom:18px;font-family:var(--mono);font-size:10px;color:var(--text-3)}
+#boot-credits span{color:var(--cyan)}
+
+/* ── MODAL ── */
+#modal-bg{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);
+  z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(3px);
+}
+#modal-bg.open{display:flex}
+.modal{
+  background:var(--bg-panel);border:1px solid var(--border-2);
+  border-radius:10px;padding:22px;width:300px;
+  box-shadow:0 0 40px rgba(0,212,255,.07);
+}
+.modal h3{font-size:13px;font-weight:600;margin-bottom:14px;color:var(--text-1)}
+.modal input{
+  width:100%;background:var(--bg-void);border:1px solid var(--border-2);
+  color:var(--text-1);font-family:var(--mono);font-size:12.5px;
+  padding:7px 11px;border-radius:5px;outline:none;margin-bottom:14px;
+  transition:border-color .15s;
+}
+.modal input:focus{border-color:var(--cyan)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end}
+.mbtn{
+  font-family:var(--mono);font-size:11.5px;padding:6px 14px;border-radius:5px;
+  cursor:pointer;transition:all .15s;border:1px solid var(--border-2);
+  background:transparent;color:var(--text-2);
+}
+.mbtn:hover{background:var(--bg-hover);color:var(--text-1)}
+.mbtn.primary{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.07)}
+.mbtn.primary:hover{background:rgba(0,212,255,.15);box-shadow:0 0 14px rgba(0,212,255,.15)}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:2px}
+
+body.fs-sm #terminal{font-size:12px}
+body.fs-lg #terminal{font-size:15px}
+
+body.light-theme{
+  --bg-void:#f5f6fa;--bg-deep:#ffffff;--bg-panel:#f0f1f8;
+  --bg-hover:#e8eaf5;--bg-active:#dde0f5;
+  --border:#e0e2ef;--border-2:#ccd0e8;
+  --text-1:#1a1d30;--text-2:#5a6080;--text-3:#9096b8;
+}
+body.light-theme #terminal{background:#f8f9ff;color:#1a1d30}
+body.light-theme .t-err{color:#c62828}
+body.light-theme .t-sys{color:#6a1b9a}
+body.light-theme .t-in{color:#000}
+</style>
+</head>
+<body>
+
+<!-- BOOT -->
+<div id="boot">
+  <div class="boot-logo">PyRunner</div>
+  <div class="boot-sub">// Online Python 3 Interpreter</div>
+  <div class="boot-bar-wrap"><div class="boot-bar" id="boot-bar"></div></div>
+  <div id="boot-msg">Starting up...</div>
+  <div id="boot-credits">by <span>Ashtid D</span> · built with <span>Gemini</span> · <span>ChatGPT</span> · <span>Claude</span></div>
+</div>
+
+<!-- MODAL -->
+<div id="modal-bg">
+  <div class="modal">
+    <h3><i class="fa-solid fa-file-circle-plus" style="color:var(--cyan);margin-right:8px"></i>New file</h3>
+    <input type="text" id="modal-inp" placeholder="utils.py" autocomplete="off">
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModal()">Cancel</button>
+      <button class="mbtn primary" onclick="confirmNew()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden file input for load .py -->
+<input type="file" id="file-input" accept=".py,text/x-python,text/plain" style="display:none">
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="brand">
+    <div class="brand-icon"><i class="fa-brands fa-python" style="color:#fff;font-size:14px"></i></div>
+    <span class="brand-name">PyRunner Apex</span>
+  </div>
+  <div class="spacer"></div>
+  <div class="seg" title="Font size">
+    <button onclick="setFont('sm')" id="fs-sm">A-</button>
+    <button onclick="setFont('md')" id="fs-md" class="on">A</button>
+    <button onclick="setFont('lg')" id="fs-lg">A+</button>
+  </div>
+  <div class="seg" title="Theme">
+    <button onclick="setTheme('dark')" id="th-dark" class="on"><i class="fa-solid fa-moon"></i></button>
+    <button onclick="setTheme('light')" id="th-light"><i class="fa-solid fa-sun"></i></button>
+  </div>
+  <div class="status-row">
+    <div id="status-dot"></div>
+    <span id="status-txt">Loading engine...</span>
+  </div>
+  <button class="hbtn" onclick="copyCode()" title="Copy code to clipboard">
+    <i class="fa-regular fa-clipboard"></i> Copy code
+  </button>
+  <button class="hbtn ok" onclick="saveFile()" title="Download current file as .py">
+    <i class="fa-solid fa-download"></i> Save .py
+  </button>
+  <button class="hbtn" onclick="loadFile()" title="Open a .py file from your device">
+    <i class="fa-solid fa-folder-open"></i> Open
+  </button>
+  <button class="hbtn ai" onclick="toggleAI()" title="AI help (Ctrl+I)">
+    <i class="fa-solid fa-wand-magic-sparkles"></i> AI
+  </button>
+  <button class="hbtn danger" onclick="clearOut()" title="Clear output">
+    <i class="fa-solid fa-trash-can"></i> Clear
+  </button>
+  <button id="run-btn" class="hbtn" disabled onclick="runCode()">
+    <i class="fa-solid fa-circle-play"></i> Run
+  </button>
+</div>
+
+<!-- WORKSPACE -->
+<div id="workspace">
+  <div id="sidebar">
+    <div class="sidebar-hd">
+      <span>Files</span>
+      <div class="hd-actions">
+        <button onclick="loadFile()" title="Open .py"><i class="fa-solid fa-folder-open"></i></button>
+        <button onclick="openModal()" title="New file"><i class="fa-solid fa-plus"></i></button>
+      </div>
+    </div>
+    <div id="file-list"></div>
+    <div id="snippets-panel">
+      <div class="snippets-hd" onclick="toggleSnippets()">
+        <span>Snippets</span>
+        <i class="fa-solid fa-chevron-right" id="snip-arrow" style="font-size:9px;transition:transform .2s"></i>
+      </div>
+      <div id="snippet-list">
+        <div class="snip" onclick="insertSnippet('hello')"><i class="fa-solid fa-hand-sparkles"></i>Hello World</div>
+        <div class="snip" onclick="insertSnippet('fibonacci')"><i class="fa-solid fa-infinity"></i>Fibonacci</div>
+        <div class="snip" onclick="insertSnippet('list_comp')"><i class="fa-solid fa-list"></i>List Comprehension</div>
+        <div class="snip" onclick="insertSnippet('class')"><i class="fa-solid fa-cube"></i>Class Template</div>
+        <div class="snip" onclick="insertSnippet('file_io')"><i class="fa-solid fa-file"></i>File I/O</div>
+        <div class="snip" onclick="insertSnippet('decorator')"><i class="fa-solid fa-at"></i>Decorator</div>
+        <div class="snip" onclick="insertSnippet('try_except')"><i class="fa-solid fa-shield"></i>Try / Except</div>
+        <div class="snip" onclick="insertSnippet('input_demo')"><i class="fa-solid fa-keyboard"></i>Input Demo</div>
+        <div class="snip" onclick="insertSnippet('numpy')"><i class="fa-solid fa-chart-line"></i>NumPy Quickstart</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="editor-zone">
+    <div id="tabs-bar"></div>
+    <div id="editor-container">
+      <div id="ed-load">
+        <div class="spinner"></div>
+        <div class="ed-load-txt">Loading editor...</div>
+      </div>
+      <div id="err-banner">
+        <i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i>
+        <span class="eb-msg" id="eb-msg"></span>
+        <button class="eb-ai" onclick="askAIAboutError()"><i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI</button>
+        <button class="eb-close" onclick="hideErrBanner()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="out-panel">
+    <div class="out-hd">
+      <div class="out-title"><i class="fa-solid fa-terminal"></i> Output</div>
+      <div class="out-hd-right">
+        <button class="out-copy-btn" onclick="copyOutput()" title="Copy output"><i class="fa-regular fa-copy"></i> copy</button>
+        <span id="exec-time"></span>
+      </div>
+    </div>
+    <div id="terminal"></div>
+    <div id="input-row">
+      <span class="in-arrow">❯</span>
+      <input type="text" id="term-input" autocomplete="off" spellcheck="false" placeholder="type and press Enter…">
+      <span class="in-hint">Enter ↵</span>
+    </div>
+  </div>
+</div>
+
+<!-- AI PANEL -->
+<div id="ai-panel">
+  <div class="ai-hd">
+    <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple)"></i>
+    <span class="ai-hd-title">AI Assistant</span>
+    <button onclick="clearAIChat()" title="Clear chat"><i class="fa-solid fa-broom"></i></button>
+    <button onclick="toggleAI()" title="Close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="ai-cfg">
+    <div class="ai-row">
+      <label>Model</label>
+      <select id="ai-model">
+        <optgroup label="Google Gemini">
+          <option value="gemini:gemini-2.0-flash">Gemini 2.0 Flash</option>
+          <option value="gemini:gemini-1.5-flash">Gemini 1.5 Flash</option>
+          <option value="gemini:gemini-1.5-pro">Gemini 1.5 Pro</option>
+        </optgroup>
+        <optgroup label="OpenAI ChatGPT">
+          <option value="openai:gpt-4o-mini">GPT-4o mini</option>
+          <option value="openai:gpt-4o">GPT-4o</option>
+          <option value="openai:gpt-4-turbo">GPT-4 Turbo</option>
+        </optgroup>
+        <optgroup label="Anthropic Claude">
+          <option value="claude:claude-3-5-sonnet-latest">Claude 3.5 Sonnet</option>
+          <option value="claude:claude-3-5-haiku-latest">Claude 3.5 Haiku</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="ai-row">
+      <label>API Key</label>
+      <input type="password" id="ai-key" placeholder="Paste your API key (saved locally)">
+    </div>
+    <div class="ai-note">
+      Your key stays in your browser — never sent to any server except the AI you choose.<br>
+      Get a free key: <a href="https://aistudio.google.com/apikey" target="_blank">Gemini</a> ·
+      <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI</a> ·
+      <a href="https://console.anthropic.com/settings/keys" target="_blank">Claude</a>
+    </div>
+  </div>
+  <!-- shown when no key entered -->
+  <div id="ai-nokey">
+    <i class="fa-solid fa-key"></i> No API key set.<br>
+    Paste a key above to enable the AI assistant.<br>
+    Gemini has a <a href="https://aistudio.google.com/apikey" target="_blank">free tier</a> — easiest to start with.
+  </div>
+  <div id="ai-msgs"></div>
+  <div class="ai-quick">
+    <button onclick="aiQuick('explain')">Explain my code</button>
+    <button onclick="aiQuick('fix')">Fix errors</button>
+    <button onclick="aiQuick('optimize')">Optimize</button>
+    <button onclick="aiQuick('comment')">Add comments</button>
+  </div>
+  <div class="ai-inp-wrap">
+    <textarea id="ai-input" placeholder="Ask anything about your code… (Enter to send, Shift+Enter newline)" rows="1"></textarea>
+    <button id="ai-send" onclick="sendAI()"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<!-- STATUSBAR -->
+<div id="statusbar">
+  <div class="sb-left">
+    <span class="sb-item"><i class="fa-brands fa-python"></i> Python 3.11</span>
+    <span class="sb-item"><i class="fa-solid fa-microchip"></i> WebAssembly</span>
+    <span class="sb-item" id="pkg-stat"><i class="fa-solid fa-box"></i> stdlib ready</span>
+  </div>
+  <div class="sb-right">
+    <span class="credit">by <span>Ashtid D</span> · built with <span>Gemini</span> · <span>ChatGPT</span> · <span>Claude</span></span>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════
+// STATE
+// ══════════════════════════════
+let vfs = { 'main.py': '# Write your Python here and click Run\nprint("Hello, World!")\n' };
+let currentFile = 'main.py';
+let editor = null;
+let pyodide = null;
+let inputResolver = null;
+let isDark = true;
+let fontSize = 'md';
+let errDecorations = [];
+let lastError = null;
+let aiHistory = [];
+
+const $ = id => document.getElementById(id);
+const terminal = $('terminal');
+const runBtn = $('run-btn');
+
+// ── TERMINAL ──
+function tAppend(text, cls) {
+  const el = document.createElement('span');
+  if (cls) el.className = cls;
+  el.textContent = text;
+  terminal.appendChild(el);
+  terminal.appendChild(document.createElement('br'));
+  terminal.scrollTop = terminal.scrollHeight;
+}
+function tRaw(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  terminal.appendChild(d);
+  terminal.scrollTop = terminal.scrollHeight;
+}
+function clearOut() {
+  terminal.innerHTML = '';
+  $('exec-time').textContent = '';
+  hideErrBanner();
+}
+function copyOutput() {
+  const txt = terminal.innerText;
+  if (!txt.trim()) { showToast('Nothing to copy'); return; }
+  navigator.clipboard.writeText(txt).then(() => showToast('Output copied!')).catch(() => showToast('Copy failed'));
+}
+function copyCode() {
+  if (!editor) return;
+  navigator.clipboard.writeText(editor.getValue()).then(() => showToast('Code copied!')).catch(() => showToast('Copy failed'));
+}
+
+// ── SAVE / LOAD ──
+function saveFile() {
+  if (!editor) return;
+  vfs[currentFile] = editor.getValue();
+  const blob = new Blob([vfs[currentFile]], { type: 'text/x-python;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = currentFile.endsWith('.py') ? currentFile : currentFile + '.py';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+  showToast('Saved ' + a.download);
+}
+function loadFile() { $('file-input').click(); }
+$('file-input').addEventListener('change', e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    let name = f.name;
+    if (!name.endsWith('.py')) name += '.py';
+    let final = name, i = 1;
+    while (vfs[final] && final !== currentFile) { final = name.replace(/\.py$/, '') + '_' + i + '.py'; i++; }
+    if (editor) vfs[currentFile] = editor.getValue();
+    vfs[final] = ev.target.result;
+    currentFile = final;
+    renderUI();
+    if (editor) { editor.setValue(vfs[final]); editor.focus(); }
+    showToast('Loaded ' + final);
+  };
+  reader.readAsText(f);
+  e.target.value = '';
+});
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:40px;left:50%;transform:translateX(-50%);background:#1e2438;border:1px solid #2a2f4a;color:#00d4ff;font-family:var(--mono);font-size:11px;padding:6px 16px;border-radius:6px;z-index:999;pointer-events:none;opacity:1;transition:opacity .4s';
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 1800);
+}
+
+// ── VFS / FILES ──
+function renderUI() {
+  const fl = $('file-list'), tabs = $('tabs-bar');
+  fl.innerHTML = ''; tabs.innerHTML = '';
+  Object.keys(vfs).forEach(fn => {
+    const active = fn === currentFile;
+    const fi = document.createElement('div');
+    fi.className = 'fi' + (active ? ' on' : '');
+    fi.innerHTML = `<i class="fa-brands fa-python ficon"></i>
+      <span class="fname">${fn}</span>
+      ${fn !== 'main.py' ? `<button class="fdel" onclick="event.stopPropagation();delFile('${fn}')"><i class="fa-solid fa-xmark"></i></button>` : ''}`;
+    fi.addEventListener('click', () => switchFile(fn));
+    fl.appendChild(fi);
+    const tab = document.createElement('div');
+    tab.className = 'tab' + (active ? ' on' : '');
+    tab.innerHTML = `<i class="fa-brands fa-python ti"></i>${fn}`;
+    tab.addEventListener('click', () => switchFile(fn));
+    tabs.appendChild(tab);
+  });
+}
+function switchFile(fn) {
+  if (editor) vfs[currentFile] = editor.getValue();
+  currentFile = fn;
+  hideErrBanner();
+  renderUI();
+  if (editor) { editor.setValue(vfs[fn]); editor.focus(); }
+}
+function delFile(fn) {
+  if (!confirm(`Delete ${fn}?`)) return;
+  delete vfs[fn];
+  if (currentFile === fn) currentFile = 'main.py';
+  renderUI();
+  if (editor) editor.setValue(vfs[currentFile]);
+}
+function openModal() { $('modal-inp').value = ''; $('modal-bg').classList.add('open'); setTimeout(() => $('modal-inp').focus(), 40); }
+function closeModal() { $('modal-bg').classList.remove('open'); }
+function confirmNew() {
+  let fn = $('modal-inp').value.trim();
+  if (!fn) return;
+  if (!fn.endsWith('.py')) fn += '.py';
+  if (vfs[fn]) { alert('File already exists!'); return; }
+  if (editor) vfs[currentFile] = editor.getValue();
+  vfs[fn] = `# ${fn}\n`;
+  currentFile = fn;
+  closeModal();
+  renderUI();
+  if (editor) { editor.setValue(vfs[fn]); editor.focus(); }
+}
+$('modal-inp').addEventListener('keydown', e => { if (e.key === 'Enter') confirmNew(); if (e.key === 'Escape') closeModal(); });
+$('modal-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+
+// ── SNIPPETS ──
+const SNIPPETS = {
+  hello: '# Hello World\nprint("Hello, World!")\n',
+  fibonacci: `# Fibonacci sequence
+def fib(n):
+    a, b = 0, 1
+    for _ in range(n):
+        print(a, end=' ')
+        a, b = b, a + b
+    print()
+
+fib(10)
+`,
+  list_comp: `# List comprehension examples
+squares = [x**2 for x in range(1, 11)]
+evens   = [x for x in range(20) if x % 2 == 0]
+flat    = [n for row in [[1,2],[3,4],[5,6]] for n in row]
+
+print("Squares:", squares)
+print("Evens  :", evens)
+print("Flat   :", flat)
+`,
+  class: `# Class template
+class Animal:
+    def __init__(self, name: str, sound: str):
+        self.name = name
+        self.sound = sound
+
+    def speak(self):
+        print(f"{self.name} says {self.sound}!")
+
+    def __repr__(self):
+        return f"Animal({self.name!r})"
+
+dog = Animal("Dog", "Woof")
+cat = Animal("Cat", "Meow")
+dog.speak()
+cat.speak()
+print(dog)
+`,
+  file_io: `# File I/O (in-memory via Pyodide VFS)
+with open("/tmp/notes.txt", "w") as f:
+    f.write("Line 1\\nLine 2\\nLine 3\\n")
+
+with open("/tmp/notes.txt", "r") as f:
+    content = f.read()
+
+print("File contents:")
+print(content)
+`,
+  decorator: `# Decorator example
+import time, functools
+
+def timer(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        t0 = time.perf_counter()
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} took {time.perf_counter()-t0:.4f}s")
+        return result
+    return wrapper
+
+@timer
+def slow_sum(n):
+    return sum(range(n))
+
+print(slow_sum(1_000_000))
+`,
+  try_except: `# Try / Except
+def safe_divide(a, b):
+    try:
+        result = a / b
+    except ZeroDivisionError:
+        print("Error: cannot divide by zero!")
+        return None
+    except TypeError as e:
+        print(f"Type error: {e}")
+        return None
+    else:
+        print(f"{a} / {b} = {result}")
+        return result
+    finally:
+        print("(safe_divide finished)")
+
+safe_divide(10, 2)
+safe_divide(5, 0)
+safe_divide("x", 2)
+`,
+  input_demo: `# Input demo — tests the interactive input() feature
+name = input("What is your name? ")
+age  = input("How old are you? ")
+print(f"Hello {name}! In 10 years you'll be {int(age) + 10}.")
+`,
+  numpy: `# NumPy quickstart
+import numpy as np
+
+a = np.array([1, 2, 3, 4, 5])
+b = np.linspace(0, 1, 5)
+
+print("Array a     :", a)
+print("Array b     :", np.round(b, 2))
+print("a * 2       :", a * 2)
+print("dot(a, a)   :", np.dot(a, a))
+print("mean(a)     :", a.mean())
+print("std(a)      :", round(a.std(), 4))
+`
+};
+function insertSnippet(key) {
+  if (!editor) return;
+  vfs[currentFile] = SNIPPETS[key] || '';
+  editor.setValue(vfs[currentFile]);
+  editor.focus();
+  showToast('Snippet loaded!');
+}
+function toggleSnippets() {
+  const list = $('snippet-list');
+  list.classList.toggle('open');
+  $('snip-arrow').style.transform = list.classList.contains('open') ? 'rotate(90deg)' : '';
+}
+
+// ── THEME / FONT ──
+let monacoTheme = 'vs-dark';
+function setTheme(t) {
+  isDark = t === 'dark';
+  document.body.classList.toggle('light-theme', !isDark);
+  $('th-dark').classList.toggle('on', isDark);
+  $('th-light').classList.toggle('on', !isDark);
+  monacoTheme = isDark ? 'vs-dark' : 'vs';
+  if (editor) monaco.editor.setTheme(monacoTheme);
+  try { localStorage.setItem('pyr_theme', t); } catch(_) {}
+}
+function setFont(s) {
+  fontSize = s;
+  ['sm','md','lg'].forEach(x => { $('fs-'+x).classList.toggle('on', x === s); document.body.classList.remove('fs-'+x); });
+  if (s !== 'md') document.body.classList.add('fs-' + s);
+  const sz = s === 'sm' ? 12 : s === 'lg' ? 16 : 14;
+  if (editor) editor.updateOptions({ fontSize: sz });
+  try { localStorage.setItem('pyr_font', s); } catch(_) {}
+}
+
+// ── BOOT ──
+function boot(steps, done) {
+  const bar = $('boot-bar'), msg = $('boot-msg');
+  let i = 0;
+  const go = () => {
+    if (i >= steps.length) { done(); return; }
+    const [pct, txt, ms] = steps[i++];
+    bar.style.width = pct + '%';
+    msg.textContent = txt;
+    setTimeout(go, ms);
+  };
+  go();
+}
+
+// ── MONACO ──
+function loadMonaco(cb) {
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.js';
+  s.onload = () => {
+    require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs' } });
+    require(['vs/editor/editor.main'], () => {
+      $('ed-load').style.display = 'none';
+      const savedFont = fontSize;
+      const sz = savedFont === 'sm' ? 12 : savedFont === 'lg' ? 16 : 14;
+      editor = monaco.editor.create($('editor-container'), {
+        value: vfs[currentFile],
+        language: 'python',
+        theme: monacoTheme,
+        automaticLayout: true,
+        minimap: { enabled: false },
+        fontSize: sz,
+        fontFamily: "'JetBrains Mono', monospace",
+        fontLigatures: true,
+        padding: { top: 12 },
+        scrollBeyondLastLine: false,
+        smoothScrolling: true,
+        cursorBlinking: 'phase',
+        cursorSmoothCaretAnimation: 'on',
+        bracketPairColorization: { enabled: true },
+        wordWrap: 'off',
+        lineNumbers: 'on',
+        renderLineHighlight: 'line',
+        glyphMargin: true,
+        suggest: { preview: true },
+      });
+      editor.onDidChangeModelContent(() => {
+        vfs[currentFile] = editor.getValue();
+        if (errDecorations.length) {
+          errDecorations = editor.deltaDecorations(errDecorations, []);
+          monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
+        }
+      });
+      cb();
+    });
+  };
+  s.onerror = () => { showToast('Failed to load editor. Check your connection.'); };
+  document.body.appendChild(s);
+}
+
+// ── PYODIDE ──
+async function loadPy(cb) {
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js';
+  s.onload = async () => {
+    try {
+      pyodide = await globalThis.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/' });
+      pyodide.setStdout({ batched: m => tAppend(m) });
+      pyodide.setStderr({ batched: m => tAppend(m, 't-err') });
+
+      // Expose input bridge on globalThis so Python's `from js import` can find it.
+      // This returns a Promise — Python awaits it via the async input() we install below.
+      globalThis._js_input_fn = (prompt) => {
+        if (prompt) tAppend(prompt);
+        $('input-row').style.display = 'flex';
+        $('term-input').value = '';
+        $('term-input').focus();
+        return new Promise(resolve => { inputResolver = resolve; });
+      };
+
+      // Install async input() AND an AST transformer that rewrites every
+      // `input(...)` call in user code to `await input(...)` automatically.
+      // This is the only reliable way to handle input() in Pyodide — the async
+      // function must be awaited at the call site, and users can't write `await input()`.
+      await pyodide.runPythonAsync(`
+import builtins, ast
+from js import _js_input_fn
+
+# The async input replacement
+async def _async_input(prompt=""):
+    result = await _js_input_fn(str(prompt) if prompt else "")
+    return str(result)
+
+builtins.input = _async_input
+
+# AST transformer: input(...) -> await input(...)
+class _InputToAwait(ast.NodeTransformer):
+    def visit_Call(self, node):
+        self.generic_visit(node)
+        if isinstance(node.func, ast.Name) and node.func.id == 'input':
+            return ast.Await(value=node)
+        return node
+
+def _transform_user_code(source):
+    try:
+        tree = ast.parse(source)
+    except SyntaxError:
+        return source  # pass through; Pyodide will report the error
+    tree = _InputToAwait().visit(tree)
+    ast.fix_missing_locations(tree)
+    # Wrap everything in async def __main__(): ... then await __main__()
+    # so the await expressions inside are valid.
+    wrapper = ast.parse("async def __main__(): pass\\nawait __main__()")
+    wrapper.body[0].body = tree.body if tree.body else [ast.Pass()]
+    ast.fix_missing_locations(wrapper)
+    return ast.unparse(wrapper)
+
+# Export the transformer so JS can call it
+import js
+js.globalThis._py_transform = _transform_user_code
+`);
+      cb();
+    } catch (e) {
+      $('status-dot').classList.add('err');
+      $('status-txt').textContent = 'Engine failed';
+      tAppend('[Engine error] ' + (e.message || e), 't-err');
+      runBtn.disabled = false;
+    }
+  };
+  s.onerror = () => {
+    $('status-dot').classList.add('err');
+    $('status-txt').textContent = 'Failed to load Pyodide';
+    tAppend('[Network] Could not load Pyodide from CDN. Check your connection.', 't-err');
+    runBtn.disabled = false;
+  };
+  document.body.appendChild(s);
+}
+
+// ══════════════════════════════
+// ERROR HIGHLIGHTING
+// ══════════════════════════════
+// LINE_OFFSET: the AST transformer wraps user code in `async def __main__():` at line 1,
+// so user's line 1 becomes line 2 in the transformed code. Subtract 1.
+const WRAPPER_LINE_OFFSET = 1;
+
+function parseTraceback(tb, activeFile) {
+  const re = /File "([^"]+)", line (\d+)/g;
+  let m, last = null;
+  while ((m = re.exec(tb)) !== null) {
+    const file = m[1].replace(/^\/+/, '');
+    if (file.includes('pyodide') || file.startsWith('_')) continue;
+    // <exec> or <user_code> both mean the active file
+    last = { file: (file === '<exec>' || file === '<string>') ? activeFile : file, line: parseInt(m[2], 10) };
+  }
+  if (!last) {
+    const execMatch = /File "(?:<exec>|<string>)", line (\d+)/.exec(tb);
+    if (execMatch) last = { file: activeFile, line: parseInt(execMatch[1], 10) };
+  }
+  // Correct for the async wrapper adding one line at the top
+  if (last) last.line = Math.max(1, last.line - WRAPPER_LINE_OFFSET);
+
+  const lines = tb.trim().split('\n');
+  const errLine = lines[lines.length - 1] || 'Error';
+  return { file: last?.file || activeFile, line: last?.line || 1, message: errLine, traceback: tb };
+}
+
+function highlightError(err) {
+  lastError = err;
+  if (!editor) return;
+  if (err.file && err.file !== currentFile && vfs[err.file]) switchFile(err.file);
+  const model = editor.getModel();
+  if (!model) return;
+  const maxLine = model.getLineCount();
+  const line = Math.min(Math.max(1, err.line), maxLine);
+  errDecorations = editor.deltaDecorations(errDecorations, [{
+    range: new monaco.Range(line, 1, line, 1),
+    options: {
+      isWholeLine: true,
+      className: 'err-line-bg',
+      glyphMarginClassName: 'err-line-glyph',
+      hoverMessage: { value: '**Error:** ' + err.message },
+    },
+  }]);
+  monaco.editor.setModelMarkers(model, 'pyerr', [{
+    startLineNumber: line, startColumn: 1, endLineNumber: line, endColumn: model.getLineMaxColumn(line),
+    message: err.message, severity: monaco.MarkerSeverity.Error,
+  }]);
+  editor.revealLineInCenter(line);
+  showErrBanner(err);
+}
+function showErrBanner(err) {
+  $('eb-msg').textContent = `Line ${err.line} — ${err.message}`;
+  $('err-banner').classList.add('show');
+}
+function hideErrBanner() { $('err-banner').classList.remove('show'); }
+function askAIAboutError() {
+  if (!lastError) return;
+  if (!$('ai-key').value.trim()) {
+    $('ai-panel').classList.add('open');
+    updateNoKeyBanner();
+    return;
+  }
+  $('ai-panel').classList.add('open');
+  $('ai-input').value = `I got this error on line ${lastError.line}:\n\n${lastError.traceback}\n\nHelp me fix it.`;
+  $('ai-input').focus();
+}
+
+// ── RUN ──
+async function runCode() {
+  if (!editor) { showToast('Editor still loading…'); return; }
+  if (!pyodide) { showToast('Python engine still loading…'); return; }
+  vfs[currentFile] = editor.getValue();
+
+  runBtn.disabled = true;
+  runBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running';
+  clearOut();
+  tRaw(`<span class="t-prompt">❯ python ${currentFile}</span>`);
+
+  const t0 = performance.now();
+
+  // Write all files into Pyodide FS so multi-file imports work
+  for (const [fn, code] of Object.entries(vfs)) {
+    try { pyodide.FS.writeFile('/' + fn, code); } catch (_) {}
+  }
+
+  try {
+    $('pkg-stat').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading packages...';
+    await pyodide.loadPackagesFromImports(Object.values(vfs).join('\n'));
+    $('pkg-stat').innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
+  } catch (_) {
+    $('pkg-stat').innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
+  }
+
+  try {
+    const userCode = vfs[currentFile] || vfs['main.py'];
+    // Use the Python AST transformer installed at boot:
+    // it rewrites every input(...) -> await input(...) and wraps the
+    // whole script in `async def __main__(): ... / await __main__()`
+    // so every input() call is properly awaited regardless of where it appears.
+    const transformed = globalThis._py_transform(userCode);
+    await pyodide.runPythonAsync(transformed);
+  } catch (err) {
+    const msg = err.message || String(err);
+    tAppend(msg, 't-err');
+    highlightError(parseTraceback(msg, currentFile));
+  } finally {
+    const ms = ((performance.now() - t0) / 1000).toFixed(2);
+    tAppend('');
+    tAppend(`Finished in ${ms}s`, 't-sys');
+    $('exec-time').textContent = ms + 's';
+    runBtn.disabled = false;
+    runBtn.innerHTML = '<i class="fa-solid fa-circle-play"></i> Run';
+    // Only hide input row if no more input() calls are pending
+    if (!inputResolver) $('input-row').style.display = 'none';
+  }
+}
+
+// ── INPUT ──
+function submitInput() {
+  if (!inputResolver) return;
+  const val = $('term-input').value;
+  tAppend(val, 't-in');
+  $('term-input').value = '';
+  const res = inputResolver;
+  inputResolver = null;
+  $('input-row').style.display = 'none';
+  res(val); // resume Python AFTER state is clean
+}
+$('term-input').addEventListener('keydown', e => { if (e.key === 'Enter') submitInput(); });
+
+// ══════════════════════════════
+// AI ASSISTANT
+// ══════════════════════════════
+function updateNoKeyBanner() {
+  const hasKey = !!$('ai-key').value.trim();
+  $('ai-nokey').style.display = hasKey ? 'none' : 'block';
+  $('ai-send').disabled = !hasKey;
+}
+
+function toggleAI() {
+  $('ai-panel').classList.toggle('open');
+  if ($('ai-panel').classList.contains('open')) {
+    updateNoKeyBanner();
+    $('ai-input').focus();
+  }
+}
+function clearAIChat() { aiHistory = []; $('ai-msgs').innerHTML = ''; }
+
+// Persist settings
+try {
+  const savedModel = localStorage.getItem('pyr_ai_model');
+  const savedKey   = localStorage.getItem('pyr_ai_key');
+  const savedTheme = localStorage.getItem('pyr_theme');
+  const savedFont  = localStorage.getItem('pyr_font');
+  if (savedModel) $('ai-model').value = savedModel;
+  if (savedKey)   $('ai-key').value = savedKey;
+  if (savedTheme && savedTheme !== 'dark') setTheme(savedTheme);
+  if (savedFont  && savedFont  !== 'md')   setFont(savedFont);
+} catch(_) {}
+
+$('ai-model').addEventListener('change', () => { try { localStorage.setItem('pyr_ai_model', $('ai-model').value); } catch(_){} });
+$('ai-key').addEventListener('input',  () => {
+  try { localStorage.setItem('pyr_ai_key', $('ai-key').value); } catch(_){}
+  updateNoKeyBanner();
+});
+
+function renderMarkdown(text) {
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  let out = esc(text);
+  out = out.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+    const raw = code.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+    const b64 = btoa(unescape(encodeURIComponent(raw)));
+    const isPy = !lang || /py/i.test(lang);
+    return `<pre><code>${esc(raw)}</code></pre>` +
+      (isPy ? `<button class="use-code-btn" onclick="useAICode('${b64}')"><i class="fa-solid fa-arrow-right-to-bracket"></i> Insert into editor</button>` : '');
+  });
+  out = out.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+  out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  return out;
+}
+function useAICode(b64) {
+  const code = decodeURIComponent(escape(atob(b64)));
+  if (!editor) return;
+  editor.setValue(code);
+  vfs[currentFile] = code;
+  showToast('Inserted into editor');
+}
+function addAIMsg(role, text) {
+  const el = document.createElement('div');
+  el.className = 'ai-msg ' + role;
+  el.innerHTML = role === 'assistant' ? renderMarkdown(text) : text.replace(/</g,'&lt;');
+  $('ai-msgs').appendChild(el);
+  $('ai-msgs').scrollTop = $('ai-msgs').scrollHeight;
+  return el;
+}
+function aiQuick(kind) {
+  const code = editor ? editor.getValue() : '';
+  const q = {
+    explain: `Explain what this Python code does, step by step:\n\n\`\`\`python\n${code}\n\`\`\``,
+    fix:     `Find bugs in this Python code and give me a corrected version:\n\n\`\`\`python\n${code}\n\`\`\``,
+    optimize:`Suggest improvements for this Python code and show the improved version:\n\n\`\`\`python\n${code}\n\`\`\``,
+    comment: `Add clear beginner-friendly comments and return the whole file:\n\n\`\`\`python\n${code}\n\`\`\``,
+  }[kind] || '';
+  $('ai-input').value = q;
+  sendAI();
+}
+$('ai-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAI(); }
+});
+
+async function sendAI() {
+  const text = $('ai-input').value.trim();
+  if (!text) return;
+  const key = $('ai-key').value.trim();
+  if (!key) {
+    updateNoKeyBanner();
+    addAIMsg('err', 'Please paste an API key above to use the AI assistant.');
+    return;
+  }
+  const modelId = $('ai-model').value;
+  addAIMsg('user', text);
+  aiHistory.push({ role: 'user', content: text });
+  $('ai-input').value = '';
+  $('ai-send').disabled = true;
+  const holder = addAIMsg('assistant', 'Thinking…');
+  try {
+    const reply = await callAI(modelId, key, aiHistory);
+    aiHistory.push({ role: 'assistant', content: reply });
+    holder.innerHTML = renderMarkdown(reply);
+    $('ai-msgs').scrollTop = $('ai-msgs').scrollHeight;
+  } catch (err) {
+    holder.remove();
+    const msg = err.message || String(err);
+    // Show user-friendly error for common auth failures
+    if (msg.includes('401') || msg.includes('invalid_api_key') || msg.includes('API_KEY')) {
+      addAIMsg('err', 'Invalid API key. Double-check the key above matches the selected provider.');
+    } else if (msg.includes('429')) {
+      addAIMsg('err', 'Rate limit hit. Wait a moment and try again.');
+    } else {
+      addAIMsg('err', 'AI error: ' + msg.slice(0, 300));
+    }
+    aiHistory.pop();
+  } finally {
+    $('ai-send').disabled = !$('ai-key').value.trim();
+  }
+}
+
+const SYSTEM_PROMPT = 'You are a friendly Python coding assistant embedded in an in-browser Python IDE called PyRunner Apex (CPython 3.11 via Pyodide/WebAssembly). Help the user with Python code: explain, debug, fix, optimize. Keep answers concise and practical. When you show code, always wrap it in ```python fenced blocks so the user can insert it into their editor with one click.';
+
+async function callAI(modelId, key, history) {
+  const [provider, model] = modelId.split(':');
+  if (provider === 'gemini') return callGemini(model, key, history);
+  if (provider === 'openai') return callOpenAI(model, key, history);
+  if (provider === 'claude') return callClaude(model, key, history);
+  throw new Error('Unknown provider: ' + provider);
+}
+
+async function callOpenAI(model, key, history) {
+  const r = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+    body: JSON.stringify({ model, messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history], temperature: 0.4 }),
+  });
+  if (!r.ok) throw new Error(await r.text().then(t => t.slice(0, 400)));
+  const j = await r.json();
+  return j.choices?.[0]?.message?.content || '(empty response)';
+}
+
+async function callClaude(model, key, history) {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model, max_tokens: 2048, system: SYSTEM_PROMPT,
+      messages: history.map(m => ({ role: m.role, content: m.content })),
+    }),
+  });
+  if (!r.ok) throw new Error(await r.text().then(t => t.slice(0, 400)));
+  const j = await r.json();
+  return j.content?.map(c => c.text || '').join('\n') || '(empty response)';
+}
+
+async function callGemini(model, key, history) {
+  const contents = history.map(m => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }],
+  }));
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents,
+      generationConfig: { temperature: 0.4 },
+    }),
+  });
+  if (!r.ok) throw new Error(await r.text().then(t => t.slice(0, 400)));
+  const j = await r.json();
+  return j.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('\n') || '(empty response)';
+}
+
+// ── KEYBOARD SHORTCUTS ──
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !runBtn.disabled) { e.preventDefault(); runCode(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveFile(); }
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'i' || e.key === 'I')) { e.preventDefault(); toggleAI(); }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'C' || e.key === 'c')) { e.preventDefault(); copyCode(); }
+});
+
+// ── INIT ──
+window.onload = () => {
+  renderUI();
+  const steps = [
+    [8,  'Mounting filesystem...',        200],
+    [18, 'Loading Monaco Editor...',      80],
+    [36, 'Parsing Python grammar...',     500],
+    [52, 'Fetching Pyodide WASM...',      200],
+    [70, 'Bootstrapping CPython 3.11...', 400],
+    [85, 'Wiring I/O handlers...',        250],
+    [100,'Ready.',                        180],
+  ];
+  boot(steps, () => {
+    const bs = $('boot');
+    bs.style.opacity = '0';
+    setTimeout(() => bs.style.display = 'none', 480);
+
+    Split(['#sidebar', '#editor-zone', '#out-panel'], {
+      sizes: [14, 48, 38], minSize: [110, 260, 180], gutterSize: 4,
+      onDragEnd: () => { if (editor) editor.layout(); }
+    });
+
+    loadMonaco(() => {
+      $('status-txt').textContent = 'Loading Python…';
+      loadPy(() => {
+        $('status-dot').classList.add('ready');
+        $('status-txt').textContent = 'Python 3.11 ready · Ctrl+Enter to run';
+        runBtn.disabled = false;
+      });
+    });
+  });
+};
+</script>
+</body>
+</html>
