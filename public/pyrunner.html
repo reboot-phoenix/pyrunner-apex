@@ -1154,8 +1154,17 @@ window.onload = () => {
 // ── SIDEBAR TOGGLE ──
 function toggleSidebar() {
   const sb = $('sidebar');
-  sb.classList.toggle('collapsed');
-  try { localStorage.setItem('pyr_sidebar', sb.classList.contains('collapsed') ? '0' : '1'); } catch(_){}
+  const isCollapsed = sb.classList.toggle('collapsed');
+  // Split.js sets inline width — override it directly
+  sb.style.width = isCollapsed ? '0' : '';
+  sb.style.minWidth = isCollapsed ? '0' : '';
+  sb.style.overflow = isCollapsed ? 'hidden' : '';
+  // Hide/show the gutter next to sidebar
+  const gutter = sb.nextElementSibling;
+  if (gutter && gutter.classList.contains('gutter')) {
+    gutter.style.display = isCollapsed ? 'none' : '';
+  }
+  try { localStorage.setItem('pyr_sidebar', isCollapsed ? '0' : '1'); } catch(_){}
   setTimeout(() => { if (editor) editor.layout(); }, 220);
 }
 
@@ -1182,7 +1191,7 @@ if (runBtnMobile) runBtnMobile.onclick = () => window.runCode();
 
 // Restore sidebar collapsed state
 try {
-  if (localStorage.getItem('pyr_sidebar') === '0') $('sidebar').classList.add('collapsed');
+  if (localStorage.getItem('pyr_sidebar') === '0') toggleSidebar();
 } catch(_){}
 </script>
 </body>
