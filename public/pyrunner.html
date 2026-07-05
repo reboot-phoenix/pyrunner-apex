@@ -488,8 +488,11 @@ body.light-theme .t-in{color:#000}
   <button class="hbtn ai" onclick="toggleAI()" title="AI help (Ctrl+I)">
     <i class="fa-solid fa-wand-magic-sparkles"></i> AI
   </button>
+  <button class="hbtn danger" onclick="clearCode()" title="Clear code editor">
+    <i class="fa-solid fa-file-circle-xmark"></i> Clear code
+  </button>
   <button class="hbtn danger" onclick="clearOut()" title="Clear output">
-    <i class="fa-solid fa-trash-can"></i> Clear
+    <i class="fa-solid fa-trash-can"></i> Clear output
   </button>
   <button id="run-btn" class="hbtn" disabled onclick="runCode()">
     <i class="fa-solid fa-circle-play"></i> Run
@@ -571,20 +574,9 @@ body.light-theme .t-in{color:#000}
     <div class="ai-row">
       <label>Model</label>
       <select id="ai-model">
-        <optgroup label="Google Gemini">
-          <option value="gemini:gemini-2.0-flash">Gemini 2.0 Flash</option>
-          <option value="gemini:gemini-1.5-flash">Gemini 1.5 Flash</option>
-          <option value="gemini:gemini-1.5-pro">Gemini 1.5 Pro</option>
-        </optgroup>
-        <optgroup label="OpenAI ChatGPT">
-          <option value="openai:gpt-4o-mini">GPT-4o mini</option>
-          <option value="openai:gpt-4o">GPT-4o</option>
-          <option value="openai:gpt-4-turbo">GPT-4 Turbo</option>
-        </optgroup>
-        <optgroup label="Anthropic Claude">
-          <option value="claude:claude-3-5-sonnet-latest">Claude 3.5 Sonnet</option>
-          <option value="claude:claude-3-5-haiku-latest">Claude 3.5 Haiku</option>
-        </optgroup>
+        <option value="gemini:gemini-2.0-flash">Gemini 2.0 Flash</option>
+        <option value="gemini:gemini-1.5-flash">Gemini 1.5 Flash</option>
+        <option value="gemini:gemini-1.5-pro">Gemini 1.5 Pro</option>
       </select>
     </div>
     <div class="ai-row">
@@ -592,17 +584,16 @@ body.light-theme .t-in{color:#000}
       <input type="password" id="ai-key" placeholder="Paste your API key (saved locally)">
     </div>
     <div class="ai-note">
-      Your key stays in your browser — never sent to any server except the AI you choose.<br>
-      Get a free key: <a href="https://aistudio.google.com/apikey" target="_blank">Gemini</a> ·
-      <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI</a> ·
-      <a href="https://console.anthropic.com/settings/keys" target="_blank">Claude</a>
+      Your key stays in your browser only — never sent anywhere except Google.<br>
+      ✨ Gemini is <strong>completely free</strong> — no credit card needed!<br>
+      Get your free key → <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a>
     </div>
   </div>
   <!-- shown when no key entered -->
   <div id="ai-nokey">
     <i class="fa-solid fa-key"></i> No API key set.<br>
-    Paste a key above to enable the AI assistant.<br>
-    Gemini has a <a href="https://aistudio.google.com/apikey" target="_blank">free tier</a> — easiest to start with.
+    Gemini is <strong>free</strong> — get your key at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a><br>
+    Then paste it above. No credit card needed!
   </div>
   <div id="ai-msgs"></div>
   <div class="ai-quick">
@@ -663,7 +654,15 @@ function tRaw(html) {
   terminal.appendChild(d);
   terminal.scrollTop = terminal.scrollHeight;
 }
-function clearOut() {
+function clearCode() {
+  if (!editor) return;
+  if (!confirm('Clear all code in this file?')) return;
+  editor.setValue('');
+  vfs[currentFile] = '';
+  hideErrBanner();
+  showToast('Code cleared');
+}
+
   terminal.innerHTML = '';
   $('exec-time').textContent = '';
   hideErrBanner();
@@ -1311,6 +1310,7 @@ async function callAI(modelId, key, history) {
 async function callOpenAI(model, key, history) {
   const r = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
+    mode: 'cors',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
     body: JSON.stringify({ model, messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history], temperature: 0.4 }),
   });
@@ -1322,6 +1322,7 @@ async function callOpenAI(model, key, history) {
 async function callClaude(model, key, history) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
+    mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
       'x-api-key': key,
