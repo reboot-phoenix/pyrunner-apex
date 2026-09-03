@@ -158,21 +158,44 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .fi .fdel{display:none;background:none;border:none;cursor:pointer;color:var(--text-3);font-size:10px;padding:1px 3px;transition:color .13s}
 .fi .fdel:hover{color:var(--red)}
 .fi:hover .fdel{display:block}
-#snippets-panel{border-top:1px solid var(--border)}
-.snippets-hd{
+/* ── QUICK REFERENCE ── */
+#ref-panel{border-top:1px solid var(--border);overflow-y:auto;flex:1}
+.ref-section{}
+.ref-hd{
   padding:6px 10px;font-size:9px;font-family:var(--mono);font-weight:600;
   letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);
-  display:flex;justify-content:space-between;align-items:center;cursor:pointer;white-space:nowrap;
+  display:flex;justify-content:space-between;align-items:center;cursor:pointer;
+  border-bottom:1px solid var(--border);white-space:nowrap;
+  position:sticky;top:0;background:var(--bg-deep);z-index:1;
 }
-.snippets-hd:hover{color:var(--text-2)}
-#snippet-list{display:none;padding:4px 0}
-#snippet-list.open{display:block}
-.snip{
-  padding:5px 10px;font-size:10.5px;font-family:var(--mono);color:var(--text-2);
-  cursor:pointer;transition:all .13s;display:flex;align-items:center;gap:6px;white-space:nowrap;
+.ref-hd:hover{color:var(--text-2)}
+.ref-hd i{font-size:9px;transition:transform .2s}
+.ref-hd.open i{transform:rotate(90deg)}
+.ref-body{display:none;padding:6px 0}
+.ref-body.open{display:block}
+.ref-item{
+  padding:4px 10px 4px 10px;cursor:pointer;transition:background .13s;
 }
-.snip:hover{background:var(--bg-hover);color:var(--cyan)}
-.snip i{font-size:10px;width:13px}
+.ref-item:hover{background:var(--bg-hover)}
+.ref-item .ref-label{
+  font-size:10px;font-family:var(--mono);color:var(--cyan);font-weight:600;
+  margin-bottom:2px;
+}
+.ref-item .ref-desc{
+  font-size:10px;font-family:var(--sans);color:var(--text-2);line-height:1.4;
+}
+.ref-item .ref-code{
+  font-size:10px;font-family:var(--mono);color:var(--text-3);
+  background:var(--bg-void);border-radius:3px;padding:3px 6px;margin-top:3px;
+  white-space:pre;display:block;border-left:2px solid var(--border-2);
+}
+.ref-item:hover .ref-code{border-left-color:var(--cyan)}
+.ref-error-item{padding:4px 10px}
+.ref-error-item .ref-ename{font-size:10px;font-family:var(--mono);color:var(--red);font-weight:600;margin-bottom:1px}
+.ref-error-item .ref-edesc{font-size:10px;font-family:var(--sans);color:var(--text-2);line-height:1.4}
+.ref-builtin{padding:3px 10px;display:flex;gap:6px;align-items:baseline}
+.ref-builtin .rb-name{font-size:10px;font-family:var(--mono);color:var(--purple);font-weight:600;min-width:60px}
+.ref-builtin .rb-desc{font-size:10px;font-family:var(--sans);color:var(--text-2)}
 
 /* ── SIDEBAR TOGGLE (floating) ── */
 #sidebar-toggle{
@@ -452,22 +475,145 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
       </div>
     </div>
     <div id="file-list"></div>
-    <div id="snippets-panel">
-      <div class="snippets-hd" onclick="toggleSnippets()">
-        <span>Snippets</span>
-        <i class="fa-solid fa-chevron-right" id="snip-arrow" style="font-size:9px;transition:transform .2s"></i>
+    <div id="ref-panel">
+
+      <!-- SYNTAX -->
+      <div class="ref-section">
+        <div class="ref-hd open" onclick="toggleRef(this)">
+          <span><i class="fa-solid fa-code" style="margin-right:5px"></i>Syntax</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="ref-body open">
+          <div class="ref-item">
+            <div class="ref-label">if / elif / else</div>
+            <code class="ref-code">if condition:
+    ...
+elif condition:
+    ...
+else:
+    ...</code>
+          </div>
+          <div class="ref-item">
+            <div class="ref-label">for loop</div>
+            <code class="ref-code">for item in iterable:
+    ...</code>
+          </div>
+          <div class="ref-item">
+            <div class="ref-label">while loop</div>
+            <code class="ref-code">while condition:
+    ...</code>
+          </div>
+          <div class="ref-item">
+            <div class="ref-label">function</div>
+            <code class="ref-code">def name(param):
+    return value</code>
+          </div>
+          <div class="ref-item">
+            <div class="ref-label">class</div>
+            <code class="ref-code">class Name:
+    def __init__(self):
+        ...</code>
+          </div>
+          <div class="ref-item">
+            <div class="ref-label">try / except</div>
+            <code class="ref-code">try:
+    ...
+except ErrorType:
+    ...</code>
+          </div>
+          <div class="ref-item">
+            <div class="ref-label">list comprehension</div>
+            <code class="ref-code">[x for x in lst
+ if condition]</code>
+          </div>
+          <div class="ref-item">
+            <div class="ref-label">lambda</div>
+            <code class="ref-code">f = lambda x: x * 2</code>
+          </div>
+          <div class="ref-item">
+            <div class="ref-label">import</div>
+            <code class="ref-code">import module
+from module import name</code>
+          </div>
+        </div>
       </div>
-      <div id="snippet-list">
-        <div class="snip" onclick="insertSnippet('hello')"><i class="fa-solid fa-hand-sparkles"></i>Hello World</div>
-        <div class="snip" onclick="insertSnippet('fibonacci')"><i class="fa-solid fa-infinity"></i>Fibonacci</div>
-        <div class="snip" onclick="insertSnippet('list_comp')"><i class="fa-solid fa-list"></i>List Comprehension</div>
-        <div class="snip" onclick="insertSnippet('class')"><i class="fa-solid fa-cube"></i>Class Template</div>
-        <div class="snip" onclick="insertSnippet('file_io')"><i class="fa-solid fa-file"></i>File I/O</div>
-        <div class="snip" onclick="insertSnippet('decorator')"><i class="fa-solid fa-at"></i>Decorator</div>
-        <div class="snip" onclick="insertSnippet('try_except')"><i class="fa-solid fa-shield"></i>Try / Except</div>
-        <div class="snip" onclick="insertSnippet('input_demo')"><i class="fa-solid fa-keyboard"></i>Input Demo</div>
-        <div class="snip" onclick="insertSnippet('numpy')"><i class="fa-solid fa-chart-line"></i>NumPy</div>
+
+      <!-- COMMON ERRORS -->
+      <div class="ref-section">
+        <div class="ref-hd" onclick="toggleRef(this)">
+          <span><i class="fa-solid fa-triangle-exclamation" style="margin-right:5px;color:var(--red)"></i>Common Errors</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="ref-body">
+          <div class="ref-error-item">
+            <div class="ref-ename">SyntaxError</div>
+            <div class="ref-edesc">Code isn't valid Python. Check for missing colons, brackets, or quotes.</div>
+          </div>
+          <div class="ref-error-item">
+            <div class="ref-ename">IndentationError</div>
+            <div class="ref-edesc">Inconsistent spaces/tabs. Use 4 spaces per indent level consistently.</div>
+          </div>
+          <div class="ref-error-item">
+            <div class="ref-ename">NameError</div>
+            <div class="ref-edesc">Variable used before being defined. Check spelling and order of code.</div>
+          </div>
+          <div class="ref-error-item">
+            <div class="ref-ename">TypeError</div>
+            <div class="ref-edesc">Wrong type for an operation, e.g. adding a string to an int.</div>
+          </div>
+          <div class="ref-error-item">
+            <div class="ref-ename">IndexError</div>
+            <div class="ref-edesc">Accessing a list index that doesn't exist. Lists start at index 0.</div>
+          </div>
+          <div class="ref-error-item">
+            <div class="ref-ename">KeyError</div>
+            <div class="ref-edesc">Dictionary key doesn't exist. Use .get() for safe access.</div>
+          </div>
+          <div class="ref-error-item">
+            <div class="ref-ename">ZeroDivisionError</div>
+            <div class="ref-edesc">Dividing by zero. Add a check before dividing.</div>
+          </div>
+          <div class="ref-error-item">
+            <div class="ref-ename">AttributeError</div>
+            <div class="ref-edesc">Object doesn't have that method or property. Check the type.</div>
+          </div>
+          <div class="ref-error-item">
+            <div class="ref-ename">ValueError</div>
+            <div class="ref-edesc">Right type but wrong value, e.g. int("abc") or math.sqrt(-1).</div>
+          </div>
+        </div>
       </div>
+
+      <!-- BUILT-INS -->
+      <div class="ref-section">
+        <div class="ref-hd" onclick="toggleRef(this)">
+          <span><i class="fa-solid fa-toolbox" style="margin-right:5px;color:var(--purple)"></i>Built-ins</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="ref-body">
+          <div class="ref-builtin"><span class="rb-name">print()</span><span class="rb-desc">Output to console</span></div>
+          <div class="ref-builtin"><span class="rb-name">input()</span><span class="rb-desc">Read user input</span></div>
+          <div class="ref-builtin"><span class="rb-name">len()</span><span class="rb-desc">Length of list/string</span></div>
+          <div class="ref-builtin"><span class="rb-name">range()</span><span class="rb-desc">Generate number sequence</span></div>
+          <div class="ref-builtin"><span class="rb-name">type()</span><span class="rb-desc">Get type of a value</span></div>
+          <div class="ref-builtin"><span class="rb-name">int()</span><span class="rb-desc">Convert to integer</span></div>
+          <div class="ref-builtin"><span class="rb-name">float()</span><span class="rb-desc">Convert to decimal</span></div>
+          <div class="ref-builtin"><span class="rb-name">str()</span><span class="rb-desc">Convert to string</span></div>
+          <div class="ref-builtin"><span class="rb-name">list()</span><span class="rb-desc">Convert to list</span></div>
+          <div class="ref-builtin"><span class="rb-name">dict()</span><span class="rb-desc">Create dictionary</span></div>
+          <div class="ref-builtin"><span class="rb-name">sorted()</span><span class="rb-desc">Return sorted list</span></div>
+          <div class="ref-builtin"><span class="rb-name">enumerate()</span><span class="rb-desc">Index + value pairs</span></div>
+          <div class="ref-builtin"><span class="rb-name">zip()</span><span class="rb-desc">Pair up two lists</span></div>
+          <div class="ref-builtin"><span class="rb-name">map()</span><span class="rb-desc">Apply func to each item</span></div>
+          <div class="ref-builtin"><span class="rb-name">filter()</span><span class="rb-desc">Keep items matching func</span></div>
+          <div class="ref-builtin"><span class="rb-name">sum()</span><span class="rb-desc">Total of a list</span></div>
+          <div class="ref-builtin"><span class="rb-name">min()/max()</span><span class="rb-desc">Smallest / largest</span></div>
+          <div class="ref-builtin"><span class="rb-name">abs()</span><span class="rb-desc">Absolute value</span></div>
+          <div class="ref-builtin"><span class="rb-name">round()</span><span class="rb-desc">Round a number</span></div>
+          <div class="ref-builtin"><span class="rb-name">open()</span><span class="rb-desc">Open a file</span></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -701,124 +847,11 @@ function confirmNew() {
 $('modal-inp').addEventListener('keydown', e => { if (e.key === 'Enter') confirmNew(); if (e.key === 'Escape') closeModal(); });
 $('modal-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 
-// ── SNIPPETS ──
-const SNIPPETS = {
-  hello: '# Hello World\nprint("Hello, World!")\n',
-  fibonacci: `# Fibonacci sequence
-def fib(n):
-    a, b = 0, 1
-    for _ in range(n):
-        print(a, end=' ')
-        a, b = b, a + b
-    print()
-
-fib(10)
-`,
-  list_comp: `# List comprehension examples
-squares = [x**2 for x in range(1, 11)]
-evens   = [x for x in range(20) if x % 2 == 0]
-flat    = [n for row in [[1,2],[3,4],[5,6]] for n in row]
-
-print("Squares:", squares)
-print("Evens  :", evens)
-print("Flat   :", flat)
-`,
-  class: `# Class template
-class Animal:
-    def __init__(self, name: str, sound: str):
-        self.name = name
-        self.sound = sound
-
-    def speak(self):
-        print(f"{self.name} says {self.sound}!")
-
-    def __repr__(self):
-        return f"Animal({self.name!r})"
-
-dog = Animal("Dog", "Woof")
-cat = Animal("Cat", "Meow")
-dog.speak()
-cat.speak()
-print(dog)
-`,
-  file_io: `# File I/O (in-memory via Pyodide VFS)
-with open("/tmp/notes.txt", "w") as f:
-    f.write("Line 1\\nLine 2\\nLine 3\\n")
-
-with open("/tmp/notes.txt", "r") as f:
-    content = f.read()
-
-print("File contents:")
-print(content)
-`,
-  decorator: `# Decorator example
-import time, functools
-
-def timer(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        t0 = time.perf_counter()
-        result = func(*args, **kwargs)
-        print(f"{func.__name__} took {time.perf_counter()-t0:.4f}s")
-        return result
-    return wrapper
-
-@timer
-def slow_sum(n):
-    return sum(range(n))
-
-print(slow_sum(1_000_000))
-`,
-  try_except: `# Try / Except
-def safe_divide(a, b):
-    try:
-        result = a / b
-    except ZeroDivisionError:
-        print("Error: cannot divide by zero!")
-        return None
-    except TypeError as e:
-        print(f"Type error: {e}")
-        return None
-    else:
-        print(f"{a} / {b} = {result}")
-        return result
-    finally:
-        print("(safe_divide finished)")
-
-safe_divide(10, 2)
-safe_divide(5, 0)
-safe_divide("x", 2)
-`,
-  input_demo: `# Input demo — tests the interactive input() feature
-name = input("What is your name? ")
-age  = input("How old are you? ")
-print(f"Hello {name}! In 10 years you'll be {int(age) + 10}.")
-`,
-  numpy: `# NumPy quickstart
-import numpy as np
-
-a = np.array([1, 2, 3, 4, 5])
-b = np.linspace(0, 1, 5)
-
-print("Array a     :", a)
-print("Array b     :", np.round(b, 2))
-print("a * 2       :", a * 2)
-print("dot(a, a)   :", np.dot(a, a))
-print("mean(a)     :", a.mean())
-print("std(a)      :", round(a.std(), 4))
-`
-};
-function insertSnippet(key) {
-  if (!editor) return;
-  vfs[currentFile] = SNIPPETS[key] || '';
-  editor.setValue(vfs[currentFile]);
-  editor.focus();
-  showToast('Snippet loaded!');
-}
-function toggleSnippets() {
-  const list = $('snippet-list');
-  list.classList.toggle('open');
-  $('snip-arrow').style.transform = list.classList.contains('open') ? 'rotate(90deg)' : '';
+// ── QUICK REFERENCE ──
+function toggleRef(hd) {
+  hd.classList.toggle('open');
+  const body = hd.nextElementSibling;
+  body.classList.toggle('open');
 }
 
 // ── THEME / FONT ──
