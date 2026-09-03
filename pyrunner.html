@@ -370,77 +370,152 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
    MOBILE
 ══════════════════════════════ */
 @media(max-width:700px){
-  /* kill desktop layout */
+
+  /* ── 1. RESET BODY/HTML FOR MOBILE ── */
+  html,body{
+    height:100%;
+    height:100dvh; /* dynamic viewport height - handles browser chrome */
+    overflow:hidden;
+  }
+  body{
+    display:grid;
+    grid-template-rows:52px 1fr 68px;
+    grid-template-columns:1fr;
+  }
+
+  /* ── 2. HIDE DESKTOP-ONLY ELEMENTS ── */
   #sidebar{display:none!important}
   #sidebar-toggle{display:none!important}
+  #sidebar-btn{display:none!important}
   .gutter{display:none!important}
   #statusbar{display:none!important}
-  #out-toolbar{display:none!important}   /* hide desktop output toolbar on mobile */
-  #editor-toolbar{display:none!important} /* hide desktop editor toolbar on mobile */
+  #editor-toolbar{display:none!important}
+  #out-toolbar{display:none!important}
+  #tabs-bar{display:none!important}
+  #pkg-stat{display:none!important}
+  #status-txt{display:none!important}
+  #challenge-btn{display:none!important}
+  .seg[title="Font size"]{display:none!important}
+  /* hide desktop run button */
+  #run-btn{display:none!important}
 
-  /* full-screen workspace, no scroll */
+  /* ── 3. TOPBAR: grid row 1 ── */
+  #topbar{
+    grid-row:1;
+    height:52px;
+    padding:0 12px;gap:8px;
+    position:relative; /* not fixed - grid handles position */
+    border-bottom:1px solid var(--border-2);
+    z-index:10;
+  }
+  .brand-name{font-size:11px}
+  .hbtn{padding:5px 8px!important}
+
+  /* ── 4. WORKSPACE: grid row 2, overflow hidden ── */
   #workspace{
+    grid-row:2;
+    position:relative;
+    overflow:hidden;
+    display:block!important;
+    flex:unset;
+    min-height:0;
+  }
+
+  /* ── 5. EDITOR: absolute fill of workspace ── */
+  #editor-zone{
+    position:absolute;
+    top:0;left:0;right:0;bottom:0;
+    width:100%!important;
+    height:100%!important;
+    border:none!important;
+    display:flex!important;
     flex-direction:column;
-    position:fixed;top:48px;bottom:64px;left:0;right:0;
+    transition:transform .28s cubic-bezier(.4,0,.2,1);
+    transform:translateX(0);
+    will-change:transform;
     overflow:hidden;
   }
 
-  /* editor fills entire workspace by default */
-  #editor-zone{
-    position:absolute;inset:0;
-    width:100%!important;height:100%!important;
-    border:none;flex:none;
-    transition:transform .25s ease;
-    transform:translateX(0);
+  /* editor container fills zone */
+  #editor-container{
+    flex:1!important;
+    height:0!important; /* flex child: use flex, not content height */
+    min-height:0;
   }
 
-  /* output panel slides in from the right */
+  /* ── 6. OUTPUT PANEL: absolute, slides in from right ── */
   #out-panel{
-    position:absolute;inset:0;
-    width:100%!important;height:100%!important;
-    border:none;flex:none;display:flex!important;
-    transition:transform .25s ease;
-    transform:translateX(100%); /* hidden off-screen right */
-    background:var(--bg-void);
-  }
-
-  /* when output is active, slide both */
-  body.mobile-output #editor-zone{ transform:translateX(-100%); }
-  body.mobile-output #out-panel  { transform:translateX(0); }
-
-  /* topbar compact */
-  #topbar{
-    position:fixed;top:0;left:0;right:0;height:48px;
-    padding:0 10px;gap:6px;z-index:60;
-  }
-  .brand-name{font-size:11px}
-  #status-txt{display:none}
-  .seg button{padding:6px 8px;min-height:32px}
-  .hbtn{min-height:32px}
-
-  /* MOBILE BOTTOM BAR — always visible, context-aware */
-  #mobile-bar{
+    position:absolute;
+    top:0;left:0;right:0;bottom:0;
+    width:100%!important;
+    height:100%!important;
+    border:none!important;
     display:flex!important;
-    position:fixed;bottom:0;left:0;right:0;height:64px;
-    background:var(--bg-deep);border-top:1px solid var(--border-2);
-    padding:8px 12px;gap:8px;z-index:60;
-    padding-bottom:calc(8px + env(safe-area-inset-bottom));
+    flex-direction:column;
+    transition:transform .28s cubic-bezier(.4,0,.2,1);
+    transform:translateX(100%);
+    will-change:transform;
+    background:var(--bg-void);
+    overflow:hidden;
+  }
+
+  /* ── 7. SLIDE ANIMATION ── */
+  body.mobile-output #editor-zone{transform:translateX(-100%)}
+  body.mobile-output #out-panel  {transform:translateX(0)}
+
+  /* ── 8. TERMINAL fills output ── */
+  #terminal{
+    flex:1;
+    font-size:13px;
+    line-height:1.7;
+    padding:12px 14px;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    min-height:0;
+  }
+  #input-row{flex-shrink:0;padding:8px 12px}
+  #term-input{font-size:14px;padding:10px 12px}
+
+  /* ── 9. MOBILE BOTTOM BAR: grid row 3 ── */
+  #mobile-bar{
+    grid-row:3;
+    display:flex!important;
+    height:68px;
+    padding:10px 14px;
+    padding-bottom:max(10px, env(safe-area-inset-bottom));
+    gap:10px;
+    z-index:10;
+    background:var(--bg-deep);
+    border-top:1px solid var(--border-2);
     align-items:center;
+    position:relative; /* grid, not fixed */
   }
+
   #mobile-bar button{
-    flex:1;padding:0;font-size:13px;font-family:var(--mono);
-    min-height:44px;border-radius:8px;
-    background:var(--bg-panel);border:1px solid var(--border-2);
-    color:var(--text-2);cursor:pointer;display:flex;align-items:center;
-    justify-content:center;gap:6px;transition:all .15s;
+    flex:1;
+    height:46px;
+    border-radius:10px;
+    font-size:13px;font-weight:600;
+    font-family:var(--mono);
+    border:1px solid var(--border-2);
+    background:var(--bg-panel);
+    color:var(--text-2);
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    transition:background .15s,transform .1s;
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
   }
-  #mobile-bar button:hover{background:var(--bg-hover);color:var(--text-1)}
+  #mobile-bar button:active{transform:scale(.95)}
+
   #run-btn-mobile{
-    flex:2!important;
-    background:rgba(0,212,255,.8)!important;
-    border-color:var(--cyan)!important;
-    color:#fff!important;font-weight:700!important;
-    box-shadow:0 0 14px rgba(0,212,255,.35)!important;
+    flex:2.2!important;
+    background:linear-gradient(135deg,#00c8f0,#00a8d4)!important;
+    border-color:#00d4ff!important;
+    color:#fff!important;
+    font-size:15px!important;
+    font-weight:700!important;
+    box-shadow:0 2px 16px rgba(0,212,255,.35)!important;
   }
   #run-btn-mobile:disabled{
     background:var(--bg-panel)!important;
@@ -448,21 +523,20 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
     color:var(--text-3)!important;
     box-shadow:none!important;
   }
-  #mobile-back-btn{display:none!important} /* handled by body.mobile-output */
-  #mobile-output-back{display:none}
+
+  /* output view: swap save/clear for back button */
+  #mobile-output-back{display:none!important}
   body.mobile-output #mobile-output-back{display:flex!important}
   body.mobile-output #mobile-save-btn{display:none!important}
   body.mobile-output #mobile-clear-btn{display:none!important}
-  body.mobile-output #run-btn-mobile{display:flex!important}
 
-  /* terminal font on mobile */
-  #terminal{font-size:13px;padding:10px 12px}
-  #input-row{padding:8px 12px}
-  #term-input{font-size:13px}
+  /* ── 10. MODALS FULL WIDTH ── */
+  .sc-box,.share-box{width:calc(100vw - 32px)!important;max-width:none!important}
+  #challenge-panel{right:8px;left:8px;width:auto;bottom:76px}
 }
+
 @media(min-width:701px){
   #mobile-bar{display:none!important}
-  #mobile-back-btn{display:none!important}
 }
 
 /* ── TOAST ── */
@@ -577,6 +651,53 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
   </div>
 </div>
 
+<!-- SHARE MODAL -->
+<div id="share-modal">
+  <div class="share-box">
+    <h3><i class="fa-solid fa-share-nodes"></i> Share your code</h3>
+    <p class="share-sub">Anyone with this link can view and run your code instantly.</p>
+    <div class="share-url">
+      <input type="text" id="share-url-input" readonly placeholder="Generating link...">
+      <button class="mbtn primary" onclick="copyShareUrl()"><i class="fa-regular fa-copy"></i> Copy</button>
+    </div>
+    <div class="share-actions">
+      <button class="mbtn" onclick="closeShareModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHORTCUT MODAL -->
+<div id="shortcut-modal">
+  <div class="sc-box">
+    <h3><i class="fa-solid fa-keyboard"></i> Keyboard Shortcuts</h3>
+    <div class="sc-row"><span class="sc-desc">Run code</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>Enter</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Save file</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>S</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Copy code</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Find / Replace</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>H</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Comment line</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>/</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Indent line</span><span class="sc-key"><kbd>Tab</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Undo</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>Z</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Redo</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>Y</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Shortcuts panel</span><span class="sc-key"><kbd>?</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Close this panel</span><span class="sc-key"><kbd>Esc</kbd></span></div>
+    <div class="share-actions" style="margin-top:14px">
+      <button class="mbtn primary" onclick="closeShortcutModal()">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHALLENGE PANEL -->
+<div id="challenge-panel">
+  <div class="ch-header">
+    <span class="ch-title"><i class="fa-solid fa-fire" style="color:var(--amber)"></i> Daily Challenge</span>
+    <button class="ch-close" onclick="closeChallenge()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="ch-day" id="ch-day-label">Day 1 of 365</div>
+  <div class="ch-q" id="ch-question">Loading...</div>
+  <div class="ch-tags" id="ch-tags"></div>
+  <button class="ch-try" onclick="loadChallenge()">Try it <i class="fa-solid fa-arrow-right"></i></button>
+</div>
+
 <input type="file" id="file-input" accept=".py,text/x-python,text/plain" style="display:none">
 
 <!-- TOPBAR -->
@@ -603,6 +724,9 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
     <button onclick="setTheme('dark')" id="th-dark" class="on"><i class="fa-solid fa-moon"></i></button>
     <button onclick="setTheme('light')" id="th-light"><i class="fa-solid fa-sun"></i></button>
   </div>
+  <button class="hbtn" onclick="openShareModal()" title="Share code" style="padding:4px 8px"><i class="fa-solid fa-share-nodes"></i></button>
+  <button class="hbtn" id="challenge-btn" onclick="toggleChallenge()" title="Daily Challenge" style="padding:4px 8px"><i class="fa-solid fa-fire" style="color:var(--amber)"></i><span class="notif"></span></button>
+  <button class="hbtn" onclick="openShortcutModal()" title="Keyboard shortcuts (?)" style="padding:4px 8px"><i class="fa-solid fa-keyboard"></i></button>
 </div>
 
 <!-- WORKSPACE -->
@@ -819,6 +943,7 @@ from module import name</code>
   <div class="sb-left">
     <span class="sb-item"><i class="fa-brands fa-python"></i> Python 3.11</span>
     <span class="sb-item"><i class="fa-solid fa-microchip"></i> WASM</span>
+    <span class="sb-item" id="sb-lines"><i class="fa-solid fa-list-ol"></i> <span id="sb-line-count">1</span> lines</span>
   </div>
   <div class="sb-right">
 
@@ -1067,6 +1192,7 @@ function loadMonaco(cb) {
       });
       editor.onDidChangeModelContent(() => {
         vfs[currentFile] = editor.getValue();
+        updateLineCount();
         if (errDecorations.length) {
           errDecorations = editor.deltaDecorations(errDecorations, []);
           monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
@@ -1253,6 +1379,9 @@ async function runCode() {
   } catch (err) {
     const msg = err.message || String(err);
     tAppend(msg, 't-err');
+    // Show friendly tip
+    const tip = getFriendlyTip(msg);
+    if (tip) tAppend(tip, 't-sys');
     highlightError(parseTraceback(msg, currentFile));
   } finally {
     const ms = ((performance.now() - t0) / 1000).toFixed(2);
@@ -1309,13 +1438,267 @@ function useAICode(b64) {
   vfs[currentFile] = code;
   showToast('Inserted into editor');
 }
+// ══════════════════════════════
+// SHARE VIA URL
+// ══════════════════════════════
+function openShareModal() {
+  const code = vfs[currentFile] || '';
+  const compressed = btoa(unescape(encodeURIComponent(code)));
+  const url = location.origin + location.pathname + '?code=' + compressed;
+  $('share-url-input').value = url;
+  $('share-modal').classList.add('open');
+}
+function closeShareModal() {
+  $('share-modal').classList.remove('open');
+}
+function copyShareUrl() {
+  const val = $('share-url-input').value;
+  navigator.clipboard.writeText(val).then(() => showToast('Link copied! 🔗', 'ok'));
+}
+// Load shared code from URL on page load
+function loadSharedCode() {
+  try {
+    const params = new URLSearchParams(location.search);
+    const code = params.get('code');
+    if (code) {
+      const decoded = decodeURIComponent(escape(atob(code)));
+      vfs[currentFile] = decoded;
+      if (editor) editor.setValue(decoded);
+      showToast('Shared code loaded! ✅', 'ok');
+    }
+  } catch(_) {}
+}
+
+// ══════════════════════════════
+// SHORTCUT MODAL
+// ══════════════════════════════
+function openShortcutModal() {
+  $('shortcut-modal').classList.add('open');
+}
+function closeShortcutModal() {
+  $('shortcut-modal').classList.remove('open');
+}
+
+// ══════════════════════════════
+// DAILY CHALLENGE
+// ══════════════════════════════
+const CHALLENGES = [
+  { q:"Print the numbers 1 to 10 using a for loop.", tags:["loops","print"], hint:"for i in range(1, 11):" },
+  { q:"Write a function that returns the square of a number.", tags:["functions","math"], hint:"def square(n):" },
+  { q:"Check if a number entered by the user is odd or even.", tags:["input","if/else"], hint:"num % 2 == 0" },
+  { q:"Print the multiplication table of 5 (5×1 to 5×10).", tags:["loops","math"], hint:"for i in range(1, 11):" },
+  { q:"Write a program that counts down from 10 to 1 and prints 'Blast off!'", tags:["loops","while"], hint:"while count > 0:" },
+  { q:"Take two numbers as input and print their sum, difference, product, and quotient.", tags:["input","math"], hint:"int(input())" },
+  { q:"Print all even numbers between 1 and 50.", tags:["loops","conditions"], hint:"if n % 2 == 0:" },
+  { q:"Write a function that returns the larger of two numbers.", tags:["functions","if/else"], hint:"def max_of_two(a, b):" },
+  { q:"Reverse a string entered by the user.", tags:["strings","slicing"], hint:"s[::-1]" },
+  { q:"Count how many vowels are in a string.", tags:["strings","loops"], hint:"if char in 'aeiou':" },
+  { q:"Check if a word is a palindrome (same forwards and backwards).", tags:["strings","logic"], hint:"word == word[::-1]" },
+  { q:"Print the first 10 Fibonacci numbers.", tags:["loops","math"], hint:"a, b = 0, 1" },
+  { q:"Write a function that checks if a number is prime.", tags:["functions","math"], hint:"for i in range(2, n):" },
+  { q:"Create a list of squares of numbers from 1 to 10 using list comprehension.", tags:["lists","comprehension"], hint:"[x**2 for x in range(1,11)]" },
+  { q:"Find the largest number in a list without using max().", tags:["lists","loops"], hint:"largest = lst[0]" },
+  { q:"Write a program that asks for a name and greets the user.", tags:["input","strings"], hint:"input('Your name: ')" },
+  { q:"Convert Celsius to Fahrenheit. Formula: F = C × 9/5 + 32", tags:["math","input"], hint:"float(input())" },
+  { q:"Print a triangle of stars with 5 rows using nested loops.", tags:["loops","patterns"], hint:"for i in range(1, 6):" },
+  { q:"Sum all numbers in a list using a loop (no sum() allowed).", tags:["lists","loops"], hint:"total += item" },
+  { q:"Write a function that returns True if a list is empty.", tags:["functions","lists"], hint:"return len(lst) == 0" },
+  { q:"Create a dictionary of 3 students and their grades, then print each one.", tags:["dict","loops"], hint:"for k, v in d.items():" },
+  { q:"Remove duplicates from a list without using set().", tags:["lists","logic"], hint:"if item not in seen:" },
+  { q:"Write a calculator that takes two numbers and an operator (+,-,*,/) from input.", tags:["input","if/else"], hint:"if op == '+':" },
+  { q:"Sort a list of numbers in ascending order without using sort().", tags:["lists","algorithms"], hint:"bubble sort or selection sort" },
+  { q:"Print the ASCII value of each character in a string.", tags:["strings","built-ins"], hint:"ord(char)" },
+  { q:"Write a function that flattens a list of lists into one list.", tags:["lists","loops"], hint:"for item in sublist:" },
+  { q:"Count the frequency of each word in a sentence.", tags:["dict","strings"], hint:"dict.get(word, 0) + 1" },
+  { q:"Write a recursive function to compute factorial of n.", tags:["recursion","math"], hint:"return n * factorial(n-1)" },
+  { q:"Find the second largest number in a list.", tags:["lists","logic"], hint:"sorted(set(lst))[-2]" },
+  { q:"Write a program that prints the FizzBuzz sequence up to 30.", tags:["loops","conditions"], hint:"if n%3==0 and n%5==0:" },
+];
+
+function getDayIndex() {
+  const start = new Date('2025-01-01');
+  const now = new Date();
+  const diff = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  return diff % CHALLENGES.length;
+}
+
+function toggleChallenge() {
+  const panel = $('challenge-panel');
+  const isOpen = panel.classList.toggle('open');
+  if (isOpen) renderChallenge();
+}
+
+function closeChallenge() {
+  $('challenge-panel').classList.remove('open');
+}
+
+function renderChallenge() {
+  const idx = getDayIndex();
+  const ch = CHALLENGES[idx];
+  const dayNum = idx + 1;
+  $('ch-day-label').textContent = `Challenge #${dayNum} · ${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
+  $('ch-question').textContent = ch.q;
+  const tagsEl = $('ch-tags');
+  tagsEl.innerHTML = ch.tags.map(t => `<span class="ch-tag">#${t}</span>`).join('');
+}
+
+function loadChallenge() {
+  const idx = getDayIndex();
+  const ch = CHALLENGES[idx];
+  const starter = `# Daily Challenge\n# ${ch.q}\n# Hint: ${ch.hint}\n\n# Write your solution below:\n`;
+  vfs[currentFile] = starter;
+  if (editor) editor.setValue(starter);
+  closeChallenge();
+  showToast('Challenge loaded! Good luck 🔥', 'ok');
+}
+
+// ══════════════════════════════
+// FRIENDLY ERROR MESSAGES
+// ══════════════════════════════
+const FRIENDLY_ERRORS = [
+  { match: /NameError.*name '(.+?)' is not defined/, tip: (m) => `💡 "${m[1]}" doesn't exist yet. Did you spell it right or forget to define it above?` },
+  { match: /IndentationError/, tip: () => `💡 Indentation issue. Use 4 spaces consistently — don't mix tabs and spaces.` },
+  { match: /SyntaxError.*EOL while scanning string/, tip: () => `💡 You opened a string with " or ' but never closed it.` },
+  { match: /SyntaxError.*invalid syntax/, tip: () => `💡 Python can't read this line. Check for missing colons (:), brackets, or typos.` },
+  { match: /TypeError.*unsupported operand type.*str.*int/, tip: () => `💡 You're mixing a string and a number. Wrap the number in str() or convert the string with int().` },
+  { match: /TypeError.*'NoneType'/, tip: () => `💡 Something returned None when you expected a value. Check your function has a return statement.` },
+  { match: /TypeError.*takes (\d+) positional argument.*(\d+) given/, tip: (m) => `💡 Function expects ${m[1]} argument(s) but got ${m[2]}. Check how you're calling it.` },
+  { match: /IndexError.*list index out of range/, tip: () => `💡 You're trying to access a list position that doesn't exist. Remember lists start at index 0.` },
+  { match: /KeyError.*'(.+?)'/, tip: (m) => `💡 The key "${m[1]}" doesn't exist in the dictionary. Use .get() for safe access or check the key name.` },
+  { match: /ZeroDivisionError/, tip: () => `💡 You're dividing by zero. Add a check: if divisor != 0: before dividing.` },
+  { match: /AttributeError.*'(.+?)' object has no attribute '(.+?)'/, tip: (m) => `💡 "${m[1]}" doesn't have a ".${m[2]}" method. Check the type or spelling.` },
+  { match: /ValueError.*invalid literal.*int\(\).*'(.+?)'/, tip: (m) => `💡 Can't convert "${m[1]}" to an integer. Make sure the input is a plain number.` },
+  { match: /RecursionError/, tip: () => `💡 Infinite recursion — your function keeps calling itself. Make sure you have a base case that stops it.` },
+  { match: /FileNotFoundError/, tip: () => `💡 File not found. Check the filename and path are correct.` },
+  { match: /ModuleNotFoundError.*'(.+?)'/, tip: (m) => `💡 Module "${m[1]}" isn't installed. PyRunner will try to install it automatically — just run again.` },
+];
+
+function getFriendlyTip(errorMsg) {
+  for (const { match, tip } of FRIENDLY_ERRORS) {
+    const m = errorMsg.match(match);
+    if (m) return tip(m);
+  }
+  return null;
+}
+
+// Patch tAppend to inject friendly tips after errors
+const _origTAppend = tAppend;
+const tAppendPatched = function(text, cls) {
+  _origTAppend(text, cls);
+  if (cls === 't-err' && text) {
+    const tip = getFriendlyTip(text);
+    if (tip) _origTAppend(tip, 't-sys');
+  }
+};
+// Override all call sites that use tAppend after this point
+window._friendlyTAppend = tAppendPatched;
+
+// ══════════════════════════════
+// INPUT HISTORY
+// ══════════════════════════════
+let inputHistory = [];
+let inputHistoryIdx = -1;
+
+const _origSubmitInput = window.submitInput;
+window.submitInput = function() {
+  const val = $('term-input').value.trim();
+  if (val && (inputHistory.length === 0 || inputHistory[inputHistory.length-1] !== val)) {
+    inputHistory.push(val);
+    if (inputHistory.length > 20) inputHistory.shift();
+  }
+  inputHistoryIdx = inputHistory.length;
+  _origSubmitInput();
+};
+
+$('term-input').addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (inputHistoryIdx > 0) {
+      inputHistoryIdx--;
+      $('term-input').value = inputHistory[inputHistoryIdx];
+    }
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (inputHistoryIdx < inputHistory.length - 1) {
+      inputHistoryIdx++;
+      $('term-input').value = inputHistory[inputHistoryIdx];
+    } else {
+      inputHistoryIdx = inputHistory.length;
+      $('term-input').value = '';
+    }
+  }
+});
+
+// ══════════════════════════════
+// BOOT CANVAS PARTICLES
+// ══════════════════════════════
+function initBootCanvas() {
+  const canvas = $('boot-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = Array.from({length: 60}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.3,
+    dx: (Math.random() - 0.5) * 0.4,
+    dy: (Math.random() - 0.5) * 0.4,
+    opacity: Math.random() * 0.6 + 0.1,
+  }));
+
+  let animId;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 212, 255, ${p.opacity})`;
+      ctx.fill();
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+    }
+    // draw subtle grid lines
+    ctx.strokeStyle = 'rgba(0,212,255,0.04)';
+    ctx.lineWidth = 1;
+    const gap = 40;
+    for (let x = 0; x < canvas.width; x += gap) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+    }
+    for (let y = 0; y < canvas.height; y += gap) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+    }
+    animId = requestAnimationFrame(draw);
+  }
+  draw();
+  // Stop animation when boot screen hides
+  window._stopBootCanvas = () => cancelAnimationFrame(animId);
+}
+
+// ── LINE COUNT IN STATUS BAR ──
+function updateLineCount() {
+  const code = vfs[currentFile] || '';
+  const lines = code.split('\n').length;
+  const el = $('sb-line-count');
+  if (el) el.textContent = lines;
+}
+
 // ── KEYBOARD SHORTCUTS ──
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !runBtn.disabled) { e.preventDefault(); runCode(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveFile(); }
-
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'C' || e.key === 'c')) { e.preventDefault(); copyCode(); }
+  if (e.key === '?' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') { openShortcutModal(); }
+  if (e.key === 'Escape') { closeShortcutModal(); closeShareModal(); closeChallenge(); }
 });
+
+// close modals on backdrop click
+$('share-modal').addEventListener('click', e => { if (e.target === $('share-modal')) closeShareModal(); });
+$('shortcut-modal').addEventListener('click', e => { if (e.target === $('shortcut-modal')) closeShortcutModal(); });
 
 // ── INIT ──
 window.onload = () => {
@@ -1329,10 +1712,11 @@ window.onload = () => {
     [85, 'Wiring I/O handlers...',        250],
     [100,'Ready.',                        180],
   ];
+  initBootCanvas();
   boot(steps, () => {
     const bs = $('boot');
     bs.style.opacity = '0';
-    setTimeout(() => bs.style.display = 'none', 480);
+    setTimeout(() => { bs.style.display = 'none'; if(window._stopBootCanvas) window._stopBootCanvas(); }, 480);
 
     // Split only on desktop — mobile uses CSS stacking
     if (window.innerWidth > 700) {
@@ -1348,6 +1732,14 @@ window.onload = () => {
         $('status-dot').classList.add('ready');
         $('status-txt').textContent = 'Python 3.11 ready · Ctrl+Enter to run';
         runBtn.disabled = false;
+        if ($('run-btn-mobile')) $('run-btn-mobile').disabled = false;
+        loadSharedCode();
+        renderChallenge();
+        // Force Monaco to fill container on mobile via grid
+        if (window.innerWidth <= 700) {
+          setTimeout(() => { if (editor) editor.layout({}); }, 150);
+          setTimeout(() => { if (editor) editor.layout({}); }, 600);
+        }
       });
     });
   });
@@ -1373,6 +1765,7 @@ function toggleSidebar() {
 // ── MOBILE BACK ──
 function mobileBack() {
   document.body.classList.remove('mobile-output');
+  setTimeout(() => { if (editor) editor.layout({}); }, 300);
 }
 
 // Sync mobile run button disabled state
@@ -1392,6 +1785,18 @@ window.runCode = async function() {
   await _origRunCode();
 };
 if (runBtnMobile) runBtnMobile.onclick = () => window.runCode();
+
+// Force Monaco to fill its container on mobile
+if (window.innerWidth <= 700) {
+  // relayout on resize (orientation change, browser chrome show/hide)
+  window.addEventListener('resize', () => { if (editor) editor.layout({}); });
+  // relayout after slide animations complete
+  const slideDelay = 320;
+  const _origMobileOutput = document.body.classList;
+  new MutationObserver(() => {
+    setTimeout(() => { if (editor) editor.layout({}); }, slideDelay);
+  }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+}
 
 // Restore sidebar collapsed state
 try {
