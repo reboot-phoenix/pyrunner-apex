@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PyRunner Apex — Free Online Python 3 Editor & Compiler</title>
-<meta name="description" content="Run Python 3 instantly in your browser — no install needed. Free online Python compiler with Monaco editor, interactive input(), AI assistant (Gemini, ChatGPT, Claude), and auto package install.">
+<meta name="description" content="Run Python 3 instantly in your browser — no install needed. Free online Python compiler with Monaco editor, interactive input(), and auto package install.">
 <meta name="keywords" content="python online, python compiler, run python in browser, python editor, online IDE, python 3, pyodide, free python, python interpreter, AI python editor">
-<meta name="author" content="Ashtid D">
+
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://pyrunner-apex.itstudyhub-tiu.workers.dev/">
 
@@ -14,7 +14,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pyrunner-apex.itstudyhub-tiu.workers.dev/">
 <meta property="og:title" content="PyRunner Apex — Free Online Python Editor">
-<meta property="og:description" content="Run Python 3 in your browser. Monaco editor, interactive input(), AI assistant, auto package install. No account needed.">
+<meta property="og:description" content="Run Python 3 in your browser. Monaco editor, interactive input(), auto package install. No account needed.">
 
 
 <!-- Twitter Card -->
@@ -34,12 +34,11 @@
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "author": { "@type": "Person", "name": "Ashtid D" },
+
   "featureList": [
     "Python 3.11 via WebAssembly",
     "Monaco Code Editor (VS Code engine)",
     "Interactive input() support",
-    "AI assistant with Gemini, ChatGPT, and Claude",
     "Auto package installation (numpy, pandas, etc.)",
     "Multi-file support",
     "Dark and light themes",
@@ -48,6 +47,7 @@
   ]
 }
 </script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwZDBmMTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMTExNDIwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJweSIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDBkNGZmIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2I1N2JlZSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0idXJsKCNiZykiLz4KICA8dGV4dCB4PSI1IiB5PSIyNCIgZm9udC1mYW1pbHk9IkpldEJyYWlucyBNb25vLG1vbm9zcGFjZSIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjgwMCIgZmlsbD0idXJsKCNweSkiPiZndDtfPC90ZXh0Pgo8L3N2Zz4=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -118,10 +118,11 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .hbtn.ok{border-color:var(--green);color:var(--green);background:rgba(0,230,118,.06)}
 .hbtn.ok:hover{background:rgba(0,230,118,.14)}
 #run-btn{
-  border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.06);
-  padding:5px 16px;font-weight:600;font-size:12px;
+  border-color:var(--cyan);color:#fff;background:rgba(0,212,255,.75);
+  padding:6px 20px;font-weight:700;font-size:13px;border-radius:6px;
+  box-shadow:0 0 12px rgba(0,212,255,.25);letter-spacing:.03em;
 }
-#run-btn:hover:not(:disabled){background:rgba(0,212,255,.14);box-shadow:0 0 16px rgba(0,212,255,.2);transform:translateY(-1px)}
+#run-btn:hover:not(:disabled){background:rgba(0,212,255,.9);box-shadow:0 0 20px rgba(0,212,255,.4);transform:translateY(-1px)}
 #run-btn:disabled{border-color:var(--border-2);color:var(--text-3);cursor:not-allowed;background:transparent;transform:none;box-shadow:none}
 #run-btn:active:not(:disabled){transform:translateY(0)}
 
@@ -240,7 +241,7 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
   background:var(--bg-deep);border-bottom:1px solid var(--border);
   display:flex;align-items:center;padding:4px 10px;gap:6px;flex-shrink:0;
 }
-#exec-time{font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto}
+#exec-time{font-family:var(--mono);font-size:10px;color:var(--text-3);flex:1;text-align:right;padding-right:4px}
 #terminal{
   flex:1;padding:12px 14px;background:var(--bg-void);
   font-family:var(--mono);font-size:13px;line-height:1.8;
@@ -271,7 +272,7 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 }
 .sb-left,.sb-right{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:10px;color:var(--text-3)}
 .sb-item{display:flex;align-items:center;gap:4px}
-.credit span{color:var(--cyan)}
+
 
 /* ── BOOT ── */
 #boot{
@@ -284,8 +285,7 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .boot-bar-wrap{width:200px;height:2px;background:var(--border-2);border-radius:2px;overflow:hidden}
 .boot-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));width:0;transition:width .12s linear;box-shadow:0 0 8px var(--cyan)}
 #boot-msg{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.04em}
-#boot-credits{position:absolute;bottom:18px;font-family:var(--mono);font-size:10px;color:var(--text-3)}
-#boot-credits span{color:var(--cyan)}
+
 
 /* ── MODAL ── */
 #modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
@@ -312,10 +312,25 @@ body.light-theme{
   --border:#e0e2ef;--border-2:#ccd0e8;
   --text-1:#1a1d30;--text-2:#5a6080;--text-3:#9096b8;
 }
+body.light-theme #editor-toolbar{background:#f0f1f8;border-bottom:1px solid #d8daea}
+body.light-theme #tabs-bar{background:#e8eaf5;border-bottom:1px solid #d0d3e8}
+body.light-theme .tab{color:#5a6080;border-right:1px solid #d0d3e8}
+body.light-theme .tab:hover{background:#dde0f5;color:#1a1d30}
+body.light-theme .tab.on{background:#f5f6fa;color:#1a1d30;border-top:2px solid var(--cyan)}
+body.light-theme #out-panel{background:#f5f6fa;border-left:1px solid #d8daea}
+body.light-theme #out-toolbar{background:#ffffff;border-bottom:1px solid #d8daea}
 body.light-theme #terminal{background:#f8f9ff;color:#1a1d30}
 body.light-theme .t-err{color:#c62828}
 body.light-theme .t-sys{color:#6a1b9a}
 body.light-theme .t-in{color:#000}
+body.light-theme .t-prompt{color:#1a7a44}
+body.light-theme #input-row{background:#eef0fa;border-top:1px solid #ccd0e8}
+body.light-theme #term-input{color:#1a1d30}
+body.light-theme #err-banner{background:#fff0f0;border-color:#e57373;color:#7f1616}
+body.light-theme .gutter{background:#d8daea}
+body.light-theme .gutter:hover{background:rgba(0,160,200,.25)}
+body.light-theme #run-btn{background:rgba(0,150,200,.85);border-color:rgba(0,130,180,.9);color:#fff}
+body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
 
 /* ══════════════════════════════
    MOBILE
@@ -342,22 +357,30 @@ body.light-theme .t-in{color:#000}
   #mobile-bar{
     display:flex;position:fixed;bottom:0;left:0;right:0;
     background:var(--bg-deep);border-top:1px solid var(--border-2);
-    padding:8px 12px;gap:8px;z-index:50;
+    padding:8px 12px;gap:8px;z-index:50;safe-area-inset-bottom:env(safe-area-inset-bottom);
   }
-  #mobile-bar button{flex:1;padding:10px 0;font-size:13px}
+  #mobile-bar button{flex:1;padding:12px 0;font-size:14px;min-height:48px;border-radius:8px}
+  #mobile-bar #run-btn-mobile{
+    background:rgba(0,212,255,.75);color:#fff;font-weight:700;
+    box-shadow:0 0 12px rgba(0,212,255,.3);flex:1.6;
+  }
   #mobile-back-btn{display:flex!important}
 
-  #topbar{padding:0 10px;gap:8px}
+  #topbar{padding:0 10px;gap:6px;height:48px}
   .brand-name{display:none}
   #status-txt{display:none}
   #statusbar{display:none}
+  /* larger tap targets in topbar */
+  .seg button{padding:8px 10px;min-height:36px}
+  .hbtn{min-height:36px}
 
-  #editor-toolbar{flex-wrap:wrap;gap:4px}
+  #editor-toolbar{flex-wrap:wrap;gap:4px;padding:6px 8px}
+  #editor-toolbar .hbtn{padding:7px 10px;font-size:11px;min-height:36px}
   #out-toolbar{flex-wrap:wrap;gap:4px}
   #exec-time{display:none}
 
   /* make editor fill space above mobile bar */
-  #editor-zone{padding-bottom:52px}
+  #editor-zone{padding-bottom:60px}
 }
 @media(min-width:701px){
   #mobile-bar{display:none!important}
@@ -373,7 +396,7 @@ body.light-theme .t-in{color:#000}
   <div class="boot-sub">// Online Python 3 Interpreter</div>
   <div class="boot-bar-wrap"><div class="boot-bar" id="boot-bar"></div></div>
   <div id="boot-msg">Starting up...</div>
-  <div id="boot-credits">made by <span>Ashtid D</span> · <span>Claude</span> · <span>Lovable</span> · <span>Gemini</span></div>
+
 </div>
 
 <!-- MODAL -->
@@ -456,7 +479,7 @@ body.light-theme .t-in{color:#000}
       <button class="hbtn ok" onclick="saveFile()" title="Save as .py"><i class="fa-solid fa-download"></i> Save .py</button>
       <button class="hbtn" onclick="loadFile()" title="Open .py"><i class="fa-solid fa-folder-open"></i> Open</button>
       <button class="hbtn danger" onclick="clearCode()" title="Clear code"><i class="fa-solid fa-file-circle-xmark"></i> Clear</button>
-      <span id="pkg-stat" style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto"><i class="fa-solid fa-box"></i> stdlib</span>
+      <span id="pkg-stat" style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto;margin-right:6px"><i class="fa-solid fa-box"></i> stdlib</span>
     </div>
     <div id="tabs-bar"></div>
     <div id="editor-container">
@@ -480,8 +503,8 @@ body.light-theme .t-in{color:#000}
       <span style="font-family:var(--mono);font-size:10px;color:var(--text-3);display:flex;align-items:center;gap:6px"><i class="fa-solid fa-terminal"></i> Output</span>
       <button class="hbtn" onclick="copyOutput()" title="Copy output"><i class="fa-regular fa-copy"></i> Copy</button>
       <button class="hbtn danger" onclick="clearOut()" title="Clear output"><i class="fa-solid fa-trash-can"></i> Clear</button>
-      <button id="run-btn" class="hbtn" disabled onclick="runCode()"><i class="fa-solid fa-circle-play"></i> Run</button>
       <span id="exec-time"></span>
+      <button id="run-btn" class="hbtn" disabled onclick="runCode()" title="Run (Ctrl+Enter)"><i class="fa-solid fa-circle-play"></i> Run</button>
     </div>
     <div id="terminal"></div>
     <div id="input-row">
@@ -506,7 +529,7 @@ body.light-theme .t-in{color:#000}
     <span class="sb-item"><i class="fa-solid fa-microchip"></i> WASM</span>
   </div>
   <div class="sb-right">
-    <span class="credit">made by <span>Ashtid D</span> · <span>Claude</span> · <span>Lovable</span> · <span>Gemini</span></span>
+
   </div>
 </div>
 
@@ -1111,7 +1134,7 @@ function useAICode(b64) {
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !runBtn.disabled) { e.preventDefault(); runCode(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveFile(); }
-  if ((e.ctrlKey || e.metaKey) && (e.key === 'i' || e.key === 'I')) { e.preventDefault(); toggleAI(); }
+
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'C' || e.key === 'c')) { e.preventDefault(); copyCode(); }
 });
 
