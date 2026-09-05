@@ -382,6 +382,18 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .gutter:hover{background:rgba(0,212,255,.3)}
 .gutter.gutter-horizontal{width:4px!important}
 
+/* ── EXAMPLES DROPDOWN ── */
+.ex-item{
+  padding:9px 16px;font-size:12px;font-family:var(--mono);color:var(--text-1);
+  cursor:pointer;transition:background .12s;white-space:nowrap;
+}
+.ex-item:hover{background:var(--bg-hover);color:var(--cyan)}
+.ex-item-mobile{
+  padding:14px 20px;font-size:14px;font-family:var(--sans);color:var(--text-1);
+  cursor:pointer;transition:background .12s;border-bottom:1px solid var(--border);
+}
+.ex-item-mobile:active{background:var(--bg-hover)}
+
 /* ── STATUS BAR ── */
 #statusbar{
   background:var(--bg-deep);border-top:1px solid var(--border);
@@ -400,12 +412,12 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 }
 #boot-canvas{position:absolute;inset:0;opacity:.35;pointer-events:none}
 .boot-logo{
-  font-size:48px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  font-size:clamp(28px,8vw,48px);font-weight:800;letter-spacing:.08em;text-transform:uppercase;
   background:linear-gradient(90deg,var(--cyan),var(--purple),var(--cyan));
   background-size:200%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   animation:logo-shine 3s linear infinite;position:relative;z-index:1;
-  text-align:center;width:100%;padding:0 16px;
+  text-align:center;width:100%;padding:0 16px;box-sizing:border-box;
 }
 @keyframes logo-shine{0%{background-position:0%}100%{background-position:200%}}
 .boot-sub{font-family:var(--mono);font-size:12px;color:var(--text-3);position:relative;z-index:1}
@@ -618,8 +630,40 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
     -webkit-overflow-scrolling:touch;
     min-height:0;
   }
-  #input-row{flex-shrink:0;padding:8px 12px}
-  #term-input{font-size:14px;padding:10px 12px}
+  #input-row{
+    flex-shrink:0;padding:10px 14px;gap:10px;
+    background:var(--bg-panel);border-top:2px solid var(--cyan);
+  }
+  #term-input{
+    font-size:16px;padding:10px 14px;
+    background:var(--bg-deep);color:#fff;border:1px solid var(--border-2);
+    border-radius:8px;font-family:var(--mono);
+  }
+
+  /* ── MOBILE CODE TEXTAREA ── */
+  #mobile-code-editor{
+    display:none; /* shown by initMobileEditor() */
+    flex:1;
+    width:100%;
+    box-sizing:border-box;
+    background:#1a1a2e;
+    color:#e0e0e0;
+    font-family:'JetBrains Mono','Fira Mono','Courier New',monospace;
+    font-size:15px; /* ≥16px prevents iOS zoom on focus */
+    line-height:1.8;
+    padding:16px 14px;
+    border:none;
+    outline:none;
+    resize:none;
+    tab-size:4;
+    -webkit-text-size-adjust:100%;
+    caret-color:#00d4ff;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    white-space:pre;
+    overflow-x:auto;
+  }
+  #mobile-code-editor::placeholder{color:#444;font-style:italic}
 
   /* ── 9. MOBILE BOTTOM BAR: grid row 3 ── */
   #mobile-bar{
@@ -653,6 +697,10 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
   }
   #mobile-bar button:active{transform:scale(.95)}
 
+  #mobile-examples-btn{
+    flex:0.6!important;
+    font-size:16px!important;
+  }
   #run-btn-mobile{
     flex:2.2!important;
     background:linear-gradient(135deg,#00c8f0,#00a8d4)!important;
@@ -678,6 +726,13 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
   /* ── 10. MODALS FULL WIDTH ── */
   .sc-box,.share-box{width:calc(100vw - 32px)!important;max-width:none!important}
   #challenge-panel{right:8px;left:8px;width:auto;bottom:76px}
+
+  /* ── 11. BOOT SCREEN MOBILE ── */
+  #boot{padding:0 24px;text-align:center}
+  .boot-logo{font-size:clamp(24px,9vw,42px)!important;letter-spacing:.06em!important}
+  .boot-sub{font-size:11px;text-align:center;padding:0 8px}
+  .boot-bar-wrap{width:min(260px,80vw)}
+  .boot-features{flex-wrap:wrap;justify-content:center;gap:10px 16px}
 }
 
 @media(min-width:701px){
@@ -1082,6 +1137,13 @@ from module import name</code>
       <button class="hbtn ok" onclick="saveFile()" title="Save as .py"><i class="fa-solid fa-download"></i> Save .py</button>
       <button class="hbtn" onclick="loadFile()" title="Open .py"><i class="fa-solid fa-folder-open"></i> Open</button>
       <button class="hbtn danger" onclick="clearCode()" title="Clear code"><i class="fa-solid fa-file-circle-xmark"></i> Clear</button>
+      <div class="examples-wrap" style="position:relative;margin-left:4px">
+        <button class="hbtn" onclick="toggleExamples()" title="Example programs" id="examples-btn"><i class="fa-solid fa-book-open"></i> Examples</button>
+        <div id="examples-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;z-index:50;
+          background:var(--bg-panel);border:1px solid var(--border-2);border-radius:8px;
+          min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,.5);overflow:hidden">
+        </div>
+      </div>
       <span id="pkg-stat" style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto;margin-right:6px"><i class="fa-solid fa-box"></i> stdlib</span>
     </div>
     <div id="tabs-bar"></div>
@@ -1106,9 +1168,11 @@ from module import name</code>
           </div>
         </div>
       </div>
-      <!-- Mobile keyboard trigger: invisible textarea that opens keyboard then hands off to Monaco -->
-      <textarea id="mobile-kbd-trigger" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-        style="position:absolute;opacity:0;width:1px;height:1px;top:0;left:0;pointer-events:none;z-index:-1;border:none;background:transparent;resize:none;font-size:16px;"></textarea>
+      <!-- Mobile code editor: real textarea shown instead of Monaco on mobile -->
+      <textarea id="mobile-code-editor"
+        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        placeholder="# Write your Python here and tap Run"
+        style="display:none"></textarea>
     </div>
   </div>
 
@@ -1131,6 +1195,9 @@ from module import name</code>
   </div>
 </div>
 
+<!-- Dynamic sheets -->
+<div id="example-sheet" style="display:none;position:fixed;inset:0;z-index:300"></div>
+
 <!-- MOBILE BOTTOM BAR -->
 <div id="mobile-bar">
   <!-- Editor view buttons -->
@@ -1138,6 +1205,8 @@ from module import name</code>
   <button id="mobile-clear-btn" onclick="clearCode()"><i class="fa-solid fa-trash-can"></i> Clear</button>
   <!-- Output view back button -->
   <button id="mobile-output-back" onclick="mobileBack()" style="display:none"><i class="fa-solid fa-arrow-left"></i> Editor</button>
+  <!-- Examples -->
+  <button id="mobile-examples-btn" onclick="toggleExamples()"><i class="fa-solid fa-book-open"></i></button>
   <!-- Always visible run button -->
   <button id="run-btn-mobile" disabled onclick="runCode()"><i class="fa-solid fa-circle-play"></i> Run</button>
 </div>
@@ -1198,10 +1267,11 @@ function tAppendHTML(text, cls) {
   terminal.scrollTop = terminal.scrollHeight;
 }
 function clearCode() {
-  if (!editor) return;
   if (!confirm('Clear all code in this file?')) return;
-  editor.setValue('');
   vfs[currentFile] = '';
+  const mobileEd = $('mobile-code-editor');
+  if (mobileEd && mobileEd.offsetParent !== null) { mobileEd.value = ''; }
+  else if (editor) { editor.setValue(''); }
   hideErrBanner();
   showToast('Code cleared');
 }
@@ -1217,14 +1287,16 @@ function copyOutput() {
   navigator.clipboard.writeText(txt).then(() => showToast('Output copied!')).catch(() => showToast('Copy failed'));
 }
 function copyCode() {
-  if (!editor) return;
-  navigator.clipboard.writeText(editor.getValue()).then(() => showToast('Code copied!')).catch(() => showToast('Copy failed'));
+  const mobileEd = $('mobile-code-editor');
+  const code = (mobileEd && mobileEd.offsetParent !== null) ? mobileEd.value : (editor ? editor.getValue() : '');
+  navigator.clipboard.writeText(code).then(() => showToast('Code copied!')).catch(() => showToast('Copy failed'));
 }
 
 // ── SAVE / LOAD ──
 function saveFile() {
-  if (!editor) return;
-  vfs[currentFile] = editor.getValue();
+  const mobileEd = $('mobile-code-editor');
+  if (mobileEd && mobileEd.offsetParent !== null) vfs[currentFile] = mobileEd.value;
+  else if (editor) vfs[currentFile] = editor.getValue();
   const blob = new Blob([vfs[currentFile]], { type: 'text/x-python;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1398,72 +1470,32 @@ function loadMonaco(cb) {
         vfs[currentFile] = editor.getValue();
         updateLineCount();
         if (errDecorations.length) {
-          errDecorations = editor.deltaDecorations(errDecorations, []);
-          monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
+          if (editor && typeof monaco!=='undefined') {
+            if (editor) errDecorations = editor.deltaDecorations(errDecorations, []);
+            if (typeof monaco!=="undefined") monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
+          }
         }
       });
 
-      // ── MOBILE: fix keyboard not appearing on tap ──
-      // Monaco on mobile doesn't reliably trigger the virtual keyboard.
-      // We intercept taps on the editor container, briefly focus a real
-      // <textarea> (which always opens the keyboard), then redirect keystrokes
-      // into Monaco and refocus it once the keyboard is up.
+      // ── MOBILE: use real textarea instead of Monaco ──
       if (window.innerWidth <= 700) {
-        const kbdProxy = $('mobile-kbd-trigger');
-        const editorDom = $('editor-container');
-        let kbdActive = false;
+        // Hide Monaco, show the real textarea
+        const monacoEl = document.querySelector('#editor-container .monaco-editor');
+        if (monacoEl) monacoEl.style.display = 'none';
 
-        editorDom.addEventListener('touchend', function(e) {
-          // Don't intercept if tapping buttons/controls inside editor
-          if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT') return;
-          if (kbdActive) return;
-          kbdActive = true;
+        const mobileEd = $('mobile-code-editor');
+        mobileEd.style.display = 'block';
+        mobileEd.value = vfs[currentFile] || '# Write your Python here\nprint("Hello, World!")';
 
-          // Position textarea at touch point so keyboard opens nearby
-          const touch = e.changedTouches[0];
-          kbdProxy.style.position = 'fixed';
-          kbdProxy.style.top = (touch ? touch.clientY : 100) + 'px';
-          kbdProxy.style.left = (touch ? touch.clientX : 50) + 'px';
-          kbdProxy.style.opacity = '0';
-          kbdProxy.style.width = '1px';
-          kbdProxy.style.height = '1px';
-          kbdProxy.style.pointerEvents = 'auto';
-          kbdProxy.value = '';
-          kbdProxy.focus();
+        // Keep vfs in sync as user types
+        mobileEd.addEventListener('input', () => {
+          vfs[currentFile] = mobileEd.value;
+        });
 
-          // Relay keystrokes from proxy textarea into Monaco
-          kbdProxy.oninput = (ev) => {
-            const val = kbdProxy.value;
-            if (val) {
-              // Use Monaco's executeEdits to insert typed text
-              editor.focus();
-              editor.trigger('keyboard', 'type', { text: val });
-              kbdProxy.value = '';
-              kbdProxy.blur();
-              kbdActive = false;
-            }
-          };
-          kbdProxy.onkeydown = (ev) => {
-            if (ev.key === 'Backspace') {
-              editor.focus();
-              editor.trigger('keyboard', 'deleteLeft', {});
-              ev.preventDefault();
-            } else if (ev.key === 'Enter') {
-              editor.focus();
-              editor.trigger('keyboard', 'type', { text: '\n' });
-              ev.preventDefault();
-              kbdProxy.blur();
-              kbdActive = false;
-            } else if (ev.key === 'Escape') {
-              kbdProxy.blur();
-              kbdActive = false;
-            }
-          };
-          kbdProxy.onblur = () => {
-            kbdActive = false;
-            kbdProxy.style.pointerEvents = 'none';
-          };
-        }, { passive: true });
+        // Override editor.getValue so runCode still works
+        const _origGetValue = editor.getValue.bind(editor);
+        editor.getValue = () => mobileEd.value;
+        editor.setValue = (v) => { mobileEd.value = v; vfs[currentFile] = v; };
       }
 
       cb();
@@ -1750,7 +1782,23 @@ function parseTraceback(tb, activeFile) {
 // ── HIGHLIGHT ERROR IN EDITOR ──
 function highlightError(err) {
   lastError = err;
-  if (!editor) return;
+  // On mobile there's no Monaco — show banner only
+  if (!editor || typeof monaco === 'undefined') {
+    const mobileEd = $('mobile-code-editor');
+    const lineText = mobileEd ? (mobileEd.value.split('
+')[err.line - 1] || '') : '';
+    showErrBanner(err, lineText);
+    // Scroll mobile textarea to error line
+    if (mobileEd) {
+      const lines = mobileEd.value.split('
+');
+      let charPos = 0;
+      for (let i = 0; i < Math.min(err.line - 1, lines.length); i++) charPos += lines[i].length + 1;
+      mobileEd.focus();
+      mobileEd.setSelectionRange(charPos, charPos + (lines[err.line-1] || '').length);
+    }
+    return;
+  }
   if (err.file && err.file !== currentFile && vfs[err.file]) switchFile(err.file);
   const model = editor.getModel();
   if (!model) return;
@@ -1781,7 +1829,7 @@ function highlightError(err) {
   ]);
 
   // Monaco marker (shows in Problems panel + tooltip)
-  monaco.editor.setModelMarkers(model, 'pyerr', [{
+  if (typeof monaco!=="undefined") monaco.editor.setModelMarkers(model, 'pyerr', [{
     startLineNumber: line, startColumn: startCol,
     endLineNumber: line, endColumn: endCol,
     message: err.message, severity: monaco.MarkerSeverity.Error,
@@ -1848,11 +1896,11 @@ function applyErrFix() {
   }]);
   vfs[currentFile] = editor.getValue();
   hideErrBanner();
-  if (errDecorations.length) {
-    errDecorations = editor.deltaDecorations(errDecorations, []);
-    monaco.editor.setModelMarkers(model, 'pyerr', []);
+  if (editor && errDecorations.length) {
+    if (editor) errDecorations = editor.deltaDecorations(errDecorations, []);
+    if (typeof monaco !== 'undefined') if (typeof monaco!=="undefined") monaco.editor.setModelMarkers(model, 'pyerr', []);
   }
-  showToast('Fix applied! ✅ Click Run to try again.', 'ok');
+  showToast('Fix applied! ✅ Click Run to try again.');
   editor.focus();
 }
 
@@ -2019,6 +2067,7 @@ $('shortcut-modal').addEventListener('click', e => { if (e.target === $('shortcu
 
 // ── INIT ──
 window.onload = () => {
+  if (window.innerWidth <= 700) document.body.classList.add('is-mobile');
   renderUI();
   const steps = [
     [8,  'Mounting filesystem...',        200],
@@ -2043,24 +2092,52 @@ window.onload = () => {
       });
     }
 
-    loadMonaco(() => {
-      $('status-txt').textContent = 'Loading Python…';
+    if (window.innerWidth <= 700) {
+      // ── MOBILE: skip Monaco entirely, use plain textarea ──
+      initMobileEditor();
       loadPy(() => {
         $('status-dot').classList.add('ready');
-        $('status-txt').textContent = 'Python 3.11 ready · Ctrl+Enter to run';
         runBtn.disabled = false;
         if ($('run-btn-mobile')) $('run-btn-mobile').disabled = false;
-        loadSharedCode();
-        renderChallenge();
-        // Force Monaco to fill container on mobile via grid
-        if (window.innerWidth <= 700) {
-          setTimeout(() => { if (editor) editor.layout({}); }, 150);
-          setTimeout(() => { if (editor) editor.layout({}); }, 600);
-        }
       });
-    });
+    } else {
+      // ── DESKTOP: load Monaco then Pyodide ──
+      loadMonaco(() => {
+        $('status-txt').textContent = 'Loading Python…';
+        loadPy(() => {
+          $('status-dot').classList.add('ready');
+          $('status-txt').textContent = 'Python 3.11 ready · Ctrl+Enter to run';
+          runBtn.disabled = false;
+          if ($('run-btn-mobile')) $('run-btn-mobile').disabled = false;
+          loadSharedCode();
+          renderChallenge();
+        });
+      });
+    }
   });
 };
+
+// ── MOBILE EDITOR ──
+function initMobileEditor() {
+  // Show the plain textarea, hide Monaco loader
+  const mobileEd = $('mobile-code-editor');
+  const edLoad   = $('ed-load');
+  if (edLoad) edLoad.style.display = 'none';
+  mobileEd.style.display = 'flex';
+  mobileEd.value = vfs[currentFile] || '# Write your Python here
+print("Hello, World!")';
+  mobileEd.addEventListener('input', () => { vfs[currentFile] = mobileEd.value; });
+  // Tab key inserts 4 spaces instead of losing focus
+  mobileEd.addEventListener('keydown', e => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const s = mobileEd.selectionStart, en = mobileEd.selectionEnd;
+      mobileEd.value = mobileEd.value.slice(0, s) + '    ' + mobileEd.value.slice(en);
+      mobileEd.selectionStart = mobileEd.selectionEnd = s + 4;
+      vfs[currentFile] = mobileEd.value;
+    }
+  });
+}
 
 // ── SIDEBAR TOGGLE ──
 let _sidebarSavedWidth = null;
@@ -2118,17 +2195,22 @@ function mobileBack() {
 
 // Sync mobile run button disabled state
 const runBtnMobile = $('run-btn-mobile');
-if (runBtnMobile) {
+if (runBtnMobile && runBtn) {
   new MutationObserver(() => {
-    runBtnMobile.disabled = runBtn.disabled;
+    runBtnMobile.disabled = runBtn ? runBtn.disabled : false;
   }).observe(runBtn, { attributes: true, attributeFilter: ['disabled'] });
 }
 
 // ── RUN CODE ──
 async function runCode() {
-  if (!editor) { showToast('Editor still loading…'); return; }
   if (!pyodide) { showToast('Python engine still loading…'); return; }
-  vfs[currentFile] = editor.getValue();
+  // Sync code from whichever editor is active
+  const mobileEd = $('mobile-code-editor');
+  if (mobileEd && mobileEd.offsetParent !== null) {
+    vfs[currentFile] = mobileEd.value;
+  } else if (editor) {
+    vfs[currentFile] = editor.getValue();
+  }
 
   runBtn.disabled = true;
   runBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running';
@@ -2136,10 +2218,10 @@ async function runCode() {
   tRaw(`<span class="t-prompt">❯ python ${escHTML(currentFile)}</span>`);
   hideErrBanner();
 
-  // Clear old error decorations
-  if (errDecorations && errDecorations.length) {
-    errDecorations = editor.deltaDecorations(errDecorations, []);
-    monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
+  // Clear old error decorations (desktop only)
+  if (editor && errDecorations && errDecorations.length) {
+    if (editor) errDecorations = editor.deltaDecorations(errDecorations, []);
+    if (typeof monaco !== 'undefined') if (typeof monaco!=="undefined") monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
   }
 
   const t0 = performance.now();
@@ -2150,12 +2232,14 @@ async function runCode() {
   }
 
   try {
-    $('pkg-stat').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading packages...';
+    const pkgStat = $('pkg-stat');
+    if (pkgStat) pkgStat.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading packages...';
     await pyodide.loadPackagesFromImports(Object.values(vfs).join('
 '));
-    $('pkg-stat').innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
+    if (pkgStat) pkgStat.innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
   } catch (_) {
-    $('pkg-stat').innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
+    const pkgStat = $('pkg-stat');
+    if (pkgStat) pkgStat.innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
   }
 
   try {
@@ -2171,7 +2255,8 @@ async function runCode() {
   } finally {
     const ms = ((performance.now() - t0) / 1000).toFixed(2);
     tRaw(`<span class="t-sys">Finished in ${ms}s</span>`);
-    $('exec-time').textContent = ms + 's';
+    const execTimeEl = $('exec-time');
+    if (execTimeEl) execTimeEl.textContent = ms + 's';
     runBtn.disabled = false;
     runBtn.innerHTML = '<i class="fa-solid fa-circle-play"></i> Run';
     if (!inputResolver) $('input-row').style.display = 'none';
@@ -2205,6 +2290,237 @@ try {
   if (localStorage.getItem('pyr_sidebar') === '0') toggleSidebar();
 } catch(_){}
 
+// ── EXAMPLES ──
+const EXAMPLES = [
+  {
+    label: '👋 Hello World',
+    code: 'print("Hello, World!")
+'
+  },
+  {
+    label: '🔢 Variables & Input',
+    code: 'name = input("What is your name? ")
+age  = int(input("How old are you? "))
+print(f"Hello {name}! Next year you will be {age + 1}.")
+'
+  },
+  {
+    label: '🔁 For Loop',
+    code: '# Print numbers 1 to 10
+for i in range(1, 11):
+    print(i)
+'
+  },
+  {
+    label: '🔄 While Loop',
+    code: 'count = 1
+while count <= 5:
+    print("Count:", count)
+    count += 1
+print("Done!")
+'
+  },
+  {
+    label: '🧮 Calculator',
+    code: 'a = float(input("Enter first number: "))
+b = float(input("Enter second number: "))
+op = input("Operation (+, -, *, /): ")
+
+if op == "+":
+    print("Result:", a + b)
+elif op == "-":
+    print("Result:", a - b)
+elif op == "*":
+    print("Result:", a * b)
+elif op == "/" and b != 0:
+    print("Result:", a / b)
+else:
+    print("Invalid input")
+'
+  },
+  {
+    label: '📋 List & Loop',
+    code: 'fruits = ["apple", "banana", "cherry", "mango"]
+
+for fruit in fruits:
+    print("🍎", fruit)
+
+print("\nTotal fruits:", len(fruits))
+'
+  },
+  {
+    label: '🎯 Functions',
+    code: 'def greet(name):
+    return f"Hello, {name}!"
+
+def add(a, b):
+    return a + b
+
+print(greet("Alice"))
+print("2 + 3 =", add(2, 3))
+'
+  },
+  {
+    label: '⚡ Fibonacci',
+    code: 'def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        print(a, end=" ")
+        a, b = b, a + b
+    print()
+
+fibonacci(10)
+'
+  },
+  {
+    label: '🔍 List Comprehension',
+    code: '# Squares of even numbers 1-20
+squares = [x**2 for x in range(1, 21) if x % 2 == 0]
+print(squares)
+
+# Filter words longer than 4 chars
+words = ["cat", "elephant", "dog", "python", "ant"]
+long_words = [w for w in words if len(w) > 4]
+print(long_words)
+'
+  },
+  {
+    label: '📚 Dictionary',
+    code: 'student = {
+    "name": "Alice",
+    "age": 20,
+    "grade": "A"
+}
+
+for key, value in student.items():
+    print(f"{key}: {value}")
+
+student["age"] = 21
+print("\nUpdated age:", student["age"])
+'
+  },
+  {
+    label: '🧱 Classes & OOP',
+    code: 'class Animal:
+    def __init__(self, name, sound):
+        self.name = name
+        self.sound = sound
+
+    def speak(self):
+        print(f"{self.name} says {self.sound}!")
+
+dog = Animal("Dog", "Woof")
+cat = Animal("Cat", "Meow")
+
+dog.speak()
+cat.speak()
+'
+  },
+  {
+    label: '🎲 Random Number Game',
+    code: 'import random
+
+secret = random.randint(1, 100)
+print("Guess a number between 1 and 100!")
+
+while True:
+    guess = int(input("Your guess: "))
+    if guess < secret:
+        print("Too low! Try higher.")
+    elif guess > secret:
+        print("Too high! Try lower.")
+    else:
+        print("🎉 Correct! You got it!")
+        break
+'
+  },
+];
+
+let examplesOpen = false;
+
+function buildExamplesDropdown() {
+  const dd = $('examples-dropdown');
+  if (!dd) return;
+  dd.innerHTML = EXAMPLES.map((ex, i) => `
+    <div class="ex-item" onclick="loadExample(${i})">${escHTML(ex.label)}</div>
+  `).join('');
+}
+
+function toggleExamples() {
+  const dd = $('examples-dropdown');
+  if (!dd) {
+    // Mobile: show as modal sheet
+    showExampleSheet();
+    return;
+  }
+  examplesOpen = !examplesOpen;
+  dd.style.display = examplesOpen ? 'block' : 'none';
+  if (examplesOpen) buildExamplesDropdown();
+}
+
+function loadExample(i) {
+  const ex = EXAMPLES[i];
+  if (!ex) return;
+  vfs[currentFile] = ex.code;
+  const mobileEd = $('mobile-code-editor');
+  if (mobileEd && mobileEd.offsetParent !== null) {
+    mobileEd.value = ex.code;
+    mobileEd.focus();
+  } else if (editor) {
+    editor.setValue(ex.code);
+    editor.focus();
+  }
+  // close dropdown
+  const dd = $('examples-dropdown');
+  if (dd) { dd.style.display = 'none'; examplesOpen = false; }
+  closeExampleSheet();
+  showToast('Loaded: ' + ex.label);
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  const dd = $('examples-dropdown');
+  const btn = $('examples-btn');
+  if (dd && btn && !btn.contains(e.target) && !dd.contains(e.target)) {
+    dd.style.display = 'none';
+    examplesOpen = false;
+  }
+});
+
+// Mobile example sheet
+function showExampleSheet() {
+  let sheet = $('example-sheet');
+  if (!sheet) {
+    sheet = document.createElement('div');
+    sheet.id = 'example-sheet';
+    sheet.style.cssText = `
+      position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);
+      display:flex;align-items:flex-end;backdrop-filter:blur(4px);
+    `;
+    const inner = document.createElement('div');
+    inner.style.cssText = `
+      background:var(--bg-panel);border-radius:18px 18px 0 0;width:100%;
+      max-height:75vh;overflow-y:auto;padding:16px 0 max(16px,env(safe-area-inset-bottom));
+    `;
+    inner.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 16px 12px;border-bottom:1px solid var(--border-2)">
+        <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--cyan);letter-spacing:.08em">EXAMPLES</span>
+        <button onclick="closeExampleSheet()" style="background:none;border:none;color:var(--text-2);font-size:18px;cursor:pointer;padding:4px">✕</button>
+      </div>
+      ${EXAMPLES.map((ex, i) => `<div class="ex-item-mobile" onclick="loadExample(${i})">${escHTML(ex.label)}</div>`).join('')}
+    `;
+    sheet.appendChild(inner);
+    sheet.addEventListener('click', e => { if (e.target === sheet) closeExampleSheet(); });
+    document.body.appendChild(sheet);
+  } else {
+    sheet.style.display = 'flex';
+  }
+}
+function closeExampleSheet() {
+  const sheet = $('example-sheet');
+  if (sheet) sheet.style.display = 'none';
+}
+
 // ── MOBILE SETTINGS SHEET ──
 function openMobileSettings() {
   syncMobileFont();
@@ -2228,6 +2544,101 @@ function syncMobileTheme() {
   const d = document.getElementById('mth-dark'), l = document.getElementById('mth-light');
   if (d) d.classList.toggle('on', !isLight);
   if (l) l.classList.toggle('on', isLight);
+}
+
+// ── SHARE MODAL ──
+function openShareModal() {
+  const modal = $('share-modal');
+  if (!modal) return;
+  // encode current code into URL hash
+  try {
+    const code = (editor ? editor.getValue() : ($('mobile-code-editor') || {value:''}).value);
+    const encoded = btoa(unescape(encodeURIComponent(code)));
+    const url = location.origin + location.pathname + '#code=' + encoded;
+    const inp = modal.querySelector('input');
+    if (inp) inp.value = url;
+  } catch(_) {}
+  modal.classList.add('open');
+}
+function closeShareModal() {
+  const modal = $('share-modal');
+  if (modal) modal.classList.remove('open');
+}
+function copyShareUrl() {
+  const inp = $('share-modal') && $('share-modal').querySelector('input');
+  if (!inp) return;
+  navigator.clipboard.writeText(inp.value)
+    .then(() => showToast('Link copied!'))
+    .catch(() => { inp.select(); document.execCommand('copy'); showToast('Link copied!'); });
+}
+
+// ── SHORTCUT MODAL ──
+function openShortcutModal() {
+  const modal = $('shortcut-modal');
+  if (modal) modal.classList.add('open');
+}
+function closeShortcutModal() {
+  const modal = $('shortcut-modal');
+  if (modal) modal.classList.remove('open');
+}
+
+// ── CHALLENGE ──
+const CHALLENGES = [
+  { title:'Print 1 to 10', desc:'Print every number from 1 to 10 on its own line.', hint:'Use a for loop with range().' },
+  { title:'FizzBuzz', desc:'Print 1–30. For multiples of 3 print "Fizz", multiples of 5 print "Buzz", both print "FizzBuzz".', hint:'Use % (modulo) operator.' },
+  { title:'Sum of List', desc:'Given nums = [3,7,2,9,1], print their sum without using sum().', hint:'Use a for loop and a total variable.' },
+  { title:'Reverse a String', desc:'Ask the user for a word and print it reversed.', hint:'Use slicing: s[::-1]' },
+  { title:'Count Vowels', desc:'Count how many vowels are in the word "programming".', hint:'Loop through each character and check if it's in "aeiou".' },
+];
+let challengeIdx = Math.floor(Math.random() * CHALLENGES.length);
+
+function renderChallenge() {
+  const panel = $('challenge-panel');
+  if (!panel) return;
+  const ch = CHALLENGES[challengeIdx];
+  const titleEl = panel.querySelector('.ch-title');
+  const descEl  = panel.querySelector('.ch-desc');
+  const hintEl  = panel.querySelector('.ch-hint');
+  if (titleEl) titleEl.textContent = ch.title;
+  if (descEl)  descEl.textContent  = ch.desc;
+  if (hintEl)  hintEl.textContent  = '💡 ' + ch.hint;
+}
+function toggleChallenge() {
+  const panel = $('challenge-panel');
+  if (panel) panel.classList.toggle('open');
+}
+function closeChallenge() {
+  const panel = $('challenge-panel');
+  if (panel) panel.classList.remove('open');
+}
+function loadChallenge() {
+  const ch = CHALLENGES[challengeIdx];
+  const starter = `# Challenge: ${ch.title}
+# ${ch.desc}
+
+`;
+  vfs[currentFile] = starter;
+  if (editor) editor.setValue(starter);
+  const mEd = $('mobile-code-editor');
+  if (mEd && mEd.offsetParent !== null) mEd.value = starter;
+  closeChallenge();
+  showToast('Challenge loaded!');
+}
+
+// ── LOAD SHARED CODE FROM URL HASH ──
+function loadSharedCode() {
+  try {
+    const hash = location.hash;
+    if (!hash.startsWith('#code=')) return;
+    const encoded = hash.slice(6);
+    const code = decodeURIComponent(escape(atob(encoded)));
+    vfs[currentFile] = code;
+    if (editor) editor.setValue(code);
+    const mEd = $('mobile-code-editor');
+    if (mEd) mEd.value = code;
+    showToast('Shared code loaded!');
+    history.replaceState(null, '', location.pathname);
+  } catch(_) {}
 }
 </script>
 </body>
