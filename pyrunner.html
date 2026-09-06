@@ -132,11 +132,10 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 /* ── SIDEBAR ── */
 #sidebar{
   background:var(--bg-deep);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;flex-shrink:0;
-  transition:width .22s ease,flex .22s ease,min-width .22s ease;
-  overflow:hidden;width:150px;
+  display:flex;flex-direction:column;flex-shrink:0;transition:width .2s;overflow:hidden;
+  width:150px;
 }
-#sidebar.collapsed{width:0;min-width:0;flex:0 0 0;border-right:none}
+#sidebar.collapsed{width:0;border-right:none}
 .sidebar-hd{
   padding:8px 10px;font-size:9px;font-family:var(--mono);font-weight:600;
   letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);
@@ -244,6 +243,32 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .ed-load-txt{font-family:var(--mono);font-size:11px;color:var(--text-3)}
 .err-line-bg{background:rgba(255,82,82,.14)!important}
 .err-line-glyph{background:var(--red);width:3px!important;margin-left:3px}
+.err-line-bg{background:rgba(255,82,82,.10)!important}
+.ex-item{padding:9px 16px;font-size:12px;font-family:var(--mono);color:var(--text-1);cursor:pointer;white-space:nowrap}
+.ex-item:hover{background:var(--bg-hover);color:var(--cyan)}
+.err-card{background:rgba(255,82,82,.05);border:1px solid rgba(255,82,82,.28);border-radius:10px;margin:8px 0;overflow:hidden}
+.err-card-hd{display:flex;align-items:center;gap:8px;padding:9px 14px;background:rgba(255,82,82,.07);border-bottom:1px solid rgba(255,82,82,.13)}
+.err-card-emoji{font-size:15px}
+.err-card-title{font-size:11px;font-weight:700;color:#ff8080;font-family:var(--mono);flex:1}
+.err-card-loc{font-size:10px;color:#ff5252;background:rgba(255,82,82,.15);padding:1px 6px;border-radius:4px;font-family:var(--mono)}
+.err-card-body{padding:10px 14px;display:flex;flex-direction:column;gap:7px}
+.err-card-raw{font-size:11px;font-family:var(--mono);color:#c09090;background:rgba(0,0,0,.25);border-radius:6px;padding:7px 10px;white-space:pre-wrap;word-break:break-word;border-left:3px solid rgba(255,82,82,.4)}
+.err-card-tip{font-size:12px;color:#ffe0a0;display:flex;gap:7px;background:rgba(255,200,80,.05);border-left:2px solid var(--amber);padding:5px 8px;border-radius:0 4px 4px 0}
+.err-card-fix{display:flex;align-items:center;gap:8px;background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.22);border-radius:7px;padding:7px 12px;cursor:pointer;transition:background .13s}
+.err-card-fix:hover{background:rgba(0,230,118,.13)}
+.err-card-fix-text{font-size:11px;color:var(--green);font-family:var(--mono);flex:1}
+.err-card-fix-btn{font-size:10px;color:#0a0f18;background:var(--green);border:none;border-radius:5px;padding:3px 9px;cursor:pointer;font-weight:700}
+.err-card-tb{font-size:10px;font-family:var(--mono);color:var(--text-3);cursor:pointer;padding-top:3px;border-top:1px solid rgba(255,82,82,.1)}
+.err-card-tb-body{display:none;font-size:10px;font-family:var(--mono);color:#806060;background:rgba(0,0,0,.2);border-radius:5px;padding:6px 8px;white-space:pre-wrap;word-break:break-word;margin-top:3px}
+.err-card-tb-body.open{display:block}
+#mobile-example-sheet{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);align-items:flex-end}
+#mobile-example-sheet.open{display:flex}
+.ex-sheet-inner{background:var(--bg-panel);border-radius:18px 18px 0 0;width:100%;max-height:72vh;overflow-y:auto;padding-bottom:16px}
+.ex-sheet-hd{display:flex;justify-content:space-between;align-items:center;padding:14px 18px 12px;border-bottom:1px solid var(--border-2)}
+.ex-sheet-title{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--cyan);letter-spacing:.08em}
+.ex-sheet-close{background:none;border:none;color:var(--text-2);font-size:20px;cursor:pointer}
+.ex-sheet-item{padding:14px 20px;font-size:15px;color:var(--text-1);cursor:pointer;border-bottom:1px solid var(--border)}
+.ex-sheet-item:active{background:var(--bg-hover)}
 #err-banner{
   position:absolute;top:6px;left:50%;transform:translateX(-50%);
   z-index:20;background:#3a1a1a;border:1px solid var(--red);
@@ -306,12 +331,12 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 }
 #boot-canvas{position:absolute;inset:0;opacity:.35;pointer-events:none}
 .boot-logo{
-  font-size:48px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  font-size:clamp(22px,7vw,48px);font-weight:800;letter-spacing:.1em;text-transform:uppercase;
   background:linear-gradient(90deg,var(--cyan),var(--purple),var(--cyan));
   background-size:200%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   animation:logo-shine 3s linear infinite;position:relative;z-index:1;
-  text-align:center;width:100%;padding:0 16px;
+  text-align:center;width:100%;box-sizing:border-box;padding:0 12px;
 }
 @keyframes logo-shine{0%{background-position:0%}100%{background-position:200%}}
 .boot-sub{font-family:var(--mono);font-size:12px;color:var(--text-3);position:relative;z-index:1}
@@ -385,32 +410,18 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
     grid-template-columns:1fr;
   }
 
-  /* ── 2. HIDE DESKTOP-ONLY ELEMENTS ── */
+  /* ── 2. MOBILE SIDEBAR ── */
   #sidebar-toggle{display:none!important}
-  /* sidebar-btn stays visible on mobile for drawer toggle */
-  #sidebar-btn{display:flex!important}
-
-  /* ── MOBILE SIDEBAR: drawer overlay ── */
-  #sidebar{
-    display:flex!important;
-    position:fixed!important;
-    top:0;left:0;bottom:0;
-    width:200px!important;
-    z-index:200;
-    transform:translateX(-100%);
-    transition:transform .25s cubic-bezier(.4,0,.2,1);
-    box-shadow:4px 0 20px rgba(0,0,0,.5);
-    border-right:1px solid var(--border-2)!important;
-    overflow:hidden!important;
-  }
+  #sidebar{display:flex!important;position:fixed!important;top:0;left:0;bottom:0;width:220px!important;z-index:200;transform:translateX(-100%);transition:transform .25s ease;box-shadow:4px 0 24px rgba(0,0,0,.6);border-right:1px solid var(--border-2)!important;overflow:hidden!important;}
   #sidebar.mobile-open{transform:translateX(0)!important}
-  #sidebar.collapsed{transform:translateX(-100%)!important;width:200px!important}
-  /* mobile sidebar backdrop */
-  #mobile-sidebar-backdrop{
-    display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);
-    z-index:199;backdrop-filter:blur(2px);
-  }
+  #mobile-sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:199;}
   #mobile-sidebar-backdrop.open{display:block}
+  #mobile-editor{display:none;flex:1;width:100%;box-sizing:border-box;background:#1a1a2e;color:#e0e0e0;font-family:"JetBrains Mono","Fira Mono",monospace;font-size:16px;line-height:1.8;padding:16px 14px;border:none;outline:none;resize:none;tab-size:4;caret-color:#00d4ff;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  #mobile-editor::placeholder{color:#444;font-style:italic}
+  #boot{text-align:center;padding:0 20px}
+  .boot-sub{text-align:center;font-size:11px}
+  .boot-bar-wrap{width:min(260px,78vw)}
+  .boot-features{flex-wrap:wrap;justify-content:center;gap:8px 16px}
   .gutter{display:none!important}
   #statusbar{display:none!important}
   #editor-toolbar{display:none!important}
@@ -822,7 +833,6 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
   <button class="hbtn" id="mobile-settings-btn" onclick="openMobileSettings()" title="Settings"><i class="fa-solid fa-gear"></i></button>
 </div>
 
-<!-- MOBILE SIDEBAR BACKDROP -->
 <div id="mobile-sidebar-backdrop" onclick="closeMobileSidebar()"></div>
 
 <!-- WORKSPACE -->
@@ -988,10 +998,12 @@ from module import name</code>
       <button class="hbtn ok" onclick="saveFile()" title="Save as .py"><i class="fa-solid fa-download"></i> Save .py</button>
       <button class="hbtn" onclick="loadFile()" title="Open .py"><i class="fa-solid fa-folder-open"></i> Open</button>
       <button class="hbtn danger" onclick="clearCode()" title="Clear code"><i class="fa-solid fa-file-circle-xmark"></i> Clear</button>
+      <div style="position:relative;display:inline-block"><button class="hbtn" onclick="toggleExamples()" id="examples-btn"><i class="fa-solid fa-book-open"></i> Examples</button><div id="examples-dropdown" style="display:none;position:absolute;top:calc(100%+4px);left:0;z-index:99;background:var(--bg-panel);border:1px solid var(--border-2);border-radius:8px;min-width:200px;max-height:340px;overflow-y:auto;box-shadow:0 8px 28px rgba(0,0,0,.55)"></div></div>
       <span id="pkg-stat" style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto;margin-right:6px"><i class="fa-solid fa-box"></i> stdlib</span>
     </div>
     <div id="tabs-bar"></div>
     <div id="editor-container">
+      <textarea id="mobile-editor" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="# Write your Python here"></textarea>
       <div id="ed-load">
         <div class="spinner"></div>
         <div class="ed-load-txt">Loading editor...</div>
@@ -1001,9 +1013,6 @@ from module import name</code>
         <span class="eb-msg" id="eb-msg"></span>
         <button class="eb-close" onclick="hideErrBanner()"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <!-- Mobile keyboard trigger: invisible textarea that opens keyboard then hands off to Monaco -->
-      <textarea id="mobile-kbd-trigger" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-        style="position:absolute;opacity:0;width:1px;height:1px;top:0;left:0;pointer-events:none;z-index:-1;border:none;background:transparent;resize:none;font-size:16px;"></textarea>
     </div>
   </div>
 
@@ -1033,6 +1042,8 @@ from module import name</code>
   <button id="mobile-clear-btn" onclick="clearCode()"><i class="fa-solid fa-trash-can"></i> Clear</button>
   <!-- Output view back button -->
   <button id="mobile-output-back" onclick="mobileBack()" style="display:none"><i class="fa-solid fa-arrow-left"></i> Editor</button>
+  <button onclick="toggleSidebar()" style="flex:0 0 auto;min-width:44px"><i class="fa-solid fa-bars"></i></button>
+  <button onclick="toggleMobileExamples()" style="flex:0 0 auto;min-width:44px"><i class="fa-solid fa-book-open"></i></button>
   <!-- Always visible run button -->
   <button id="run-btn-mobile" disabled onclick="runCode()"><i class="fa-solid fa-circle-play"></i> Run</button>
 </div>
@@ -1093,17 +1104,18 @@ function tAppendHTML(text, cls) {
   terminal.scrollTop = terminal.scrollHeight;
 }
 function clearCode() {
-  if (!editor) return;
   if (!confirm('Clear all code in this file?')) return;
-  editor.setValue('');
   vfs[currentFile] = '';
+  const me = $('mobile-editor');
+  if (me && me.offsetParent) me.value = '';
+  else if (editor) editor.setValue('');
   hideErrBanner();
   showToast('Code cleared');
 }
 
 function clearOut() {
   terminal.innerHTML = '';
-  $('exec-time').textContent = '';
+  const _et=$('exec-time');if(_et)_et.textContent='';
   hideErrBanner();
 }
 function copyOutput() {
@@ -1112,14 +1124,16 @@ function copyOutput() {
   navigator.clipboard.writeText(txt).then(() => showToast('Output copied!')).catch(() => showToast('Copy failed'));
 }
 function copyCode() {
-  if (!editor) return;
-  navigator.clipboard.writeText(editor.getValue()).then(() => showToast('Code copied!')).catch(() => showToast('Copy failed'));
+  const me = $('mobile-editor');
+  const code = (me && me.offsetParent) ? me.value : (editor ? editor.getValue() : '');
+  navigator.clipboard.writeText(code).then(() => showToast('Code copied!')).catch(() => showToast('Copy failed'));
 }
 
 // ── SAVE / LOAD ──
 function saveFile() {
-  if (!editor) return;
-  vfs[currentFile] = editor.getValue();
+  const me = $('mobile-editor');
+  if (me && me.offsetParent) vfs[currentFile] = me.value;
+  else if (editor) vfs[currentFile] = editor.getValue();
   const blob = new Blob([vfs[currentFile]], { type: 'text/x-python;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1297,70 +1311,6 @@ function loadMonaco(cb) {
           monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
         }
       });
-
-      // ── MOBILE: fix keyboard not appearing on tap ──
-      // Monaco on mobile doesn't reliably trigger the virtual keyboard.
-      // We intercept taps on the editor container, briefly focus a real
-      // <textarea> (which always opens the keyboard), then redirect keystrokes
-      // into Monaco and refocus it once the keyboard is up.
-      if (window.innerWidth <= 700) {
-        const kbdProxy = $('mobile-kbd-trigger');
-        const editorDom = $('editor-container');
-        let kbdActive = false;
-
-        editorDom.addEventListener('touchend', function(e) {
-          // Don't intercept if tapping buttons/controls inside editor
-          if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT') return;
-          if (kbdActive) return;
-          kbdActive = true;
-
-          // Position textarea at touch point so keyboard opens nearby
-          const touch = e.changedTouches[0];
-          kbdProxy.style.position = 'fixed';
-          kbdProxy.style.top = (touch ? touch.clientY : 100) + 'px';
-          kbdProxy.style.left = (touch ? touch.clientX : 50) + 'px';
-          kbdProxy.style.opacity = '0';
-          kbdProxy.style.width = '1px';
-          kbdProxy.style.height = '1px';
-          kbdProxy.style.pointerEvents = 'auto';
-          kbdProxy.value = '';
-          kbdProxy.focus();
-
-          // Relay keystrokes from proxy textarea into Monaco
-          kbdProxy.oninput = (ev) => {
-            const val = kbdProxy.value;
-            if (val) {
-              // Use Monaco's executeEdits to insert typed text
-              editor.focus();
-              editor.trigger('keyboard', 'type', { text: val });
-              kbdProxy.value = '';
-              kbdProxy.blur();
-              kbdActive = false;
-            }
-          };
-          kbdProxy.onkeydown = (ev) => {
-            if (ev.key === 'Backspace') {
-              editor.focus();
-              editor.trigger('keyboard', 'deleteLeft', {});
-              ev.preventDefault();
-            } else if (ev.key === 'Enter') {
-              editor.focus();
-              editor.trigger('keyboard', 'type', { text: '\n' });
-              ev.preventDefault();
-              kbdProxy.blur();
-              kbdActive = false;
-            } else if (ev.key === 'Escape') {
-              kbdProxy.blur();
-              kbdActive = false;
-            }
-          };
-          kbdProxy.onblur = () => {
-            kbdActive = false;
-            kbdProxy.style.pointerEvents = 'none';
-          };
-        }, { passive: true });
-      }
-
       cb();
     });
   };
@@ -1476,7 +1426,13 @@ function parseTraceback(tb, activeFile) {
 
 function highlightError(err) {
   lastError = err;
-  if (!editor) return;
+  if (!editor || typeof monaco==='undefined') {
+    const me=$('mobile-editor');
+    const lineText=me?(me.value.split('\n')[err.line-1]||''):'';
+    if(me){const ls=me.value.split('\n');let pos=0;for(let i=0;i<err.line-1&&i<ls.length;i++)pos+=ls[i].length+1;try{me.focus();me.setSelectionRange(pos,pos+lineText.length);}catch(_){}}
+    showErrBanner(err);
+    return;
+  }
   if (err.file && err.file !== currentFile && vfs[err.file]) switchFile(err.file);
   const model = editor.getModel();
   if (!model) return;
@@ -1499,17 +1455,29 @@ function highlightError(err) {
   showErrBanner(err);
 }
 function showErrBanner(err) {
-  $('eb-msg').textContent = `Line ${err.line} — ${err.message}`;
-  $('err-banner').classList.add('show');
+  const _t=(err.message||'').match(/^([A-Za-z]+Error|SyntaxError|IndentationError)/);
+  const _tn=_t?_t[1]:'Error';
+  const _em={'SyntaxError':'🔴','IndentationError':'📐','NameError':'🔍','TypeError':'🔀','IndexError':'📋','ValueError':'⚠','ZeroDivisionError':'➗','AttributeError':'🔧','RecursionError':'🔁','ModuleNotFoundError':'📦'};
+  const _e=_em[_tn]||'❌';
+  const _tip=getFriendlyTip(err.message||'');
+  const _b=$('err-banner');
+  _b.innerHTML='<div style="display:flex;align-items:center;gap:8px;padding:8px 12px 6px;border-bottom:1px solid rgba(255,82,82,.2)">'
+    +'<span>'+_e+'</span><span style="font-size:11px;font-weight:700;color:#ff8080;flex:1;font-family:var(--mono)">'+escHTML(_tn)+'</span>'
+    +(err.line?'<span style="font-size:10px;color:#ff5252;font-family:var(--mono)">Line '+err.line+'</span>':'')+'<button onclick="hideErrBanner()" style="background:none;border:none;color:#ff8080;cursor:pointer;font-size:14px;padding:2px 6px">✕</button></div>'
+    +'<div style="padding:8px 12px 10px;display:flex;flex-direction:column;gap:5px">'
+    +'<div style="font-size:10px;font-family:var(--mono);color:#c09090;white-space:pre-wrap;word-break:break-word">'+escHTML(err.message||'')+'</div>'
+    +(_tip?'<div style="font-size:11px;color:#ffe0a0;border-left:2px solid var(--amber);padding:4px 8px">'+escHTML(_tip)+'</div>':'')+'</div>';
+  _b.style.cssText='position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:20;background:linear-gradient(135deg,#2a0d0d,#1e1010);border:1px solid rgba(255,82,82,.55);border-radius:10px;display:flex;flex-direction:column;max-width:92%;min-width:240px;box-shadow:0 8px 28px rgba(255,82,82,.2),0 2px 8px rgba(0,0,0,.6)';
 }
 function hideErrBanner() { $('err-banner').classList.remove('show'); }
 function askAIAboutError() { /* AI panel removed */ }
 
 // ── RUN ──
 async function runCode() {
-  if (!editor) { showToast('Editor still loading…'); return; }
   if (!pyodide) { showToast('Python engine still loading…'); return; }
-  vfs[currentFile] = editor.getValue();
+  const _me=$('mobile-editor');
+  if(_me&&_me.offsetParent) vfs[currentFile]=_me.value;
+  else if(editor) vfs[currentFile]=editor.getValue();
 
   runBtn.disabled = true;
   runBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running';
@@ -1524,11 +1492,12 @@ async function runCode() {
   }
 
   try {
-    $('pkg-stat').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading packages...';
+    const _ps=$('pkg-stat');
+    if(_ps)_ps.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Loading packages...';
     await pyodide.loadPackagesFromImports(Object.values(vfs).join('\n'));
-    $('pkg-stat').innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
-  } catch (_) {
-    $('pkg-stat').innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
+    if(_ps)_ps.innerHTML='<i class="fa-solid fa-box"></i> stdlib ready';
+  } catch(_){
+    const _ps2=$('pkg-stat');if(_ps2)_ps2.innerHTML='<i class="fa-solid fa-box"></i> stdlib ready';
   }
 
   try {
@@ -1541,16 +1510,14 @@ async function runCode() {
     await pyodide.runPythonAsync(transformed);
   } catch (err) {
     const msg = err.message || String(err);
-    tAppend(msg, 't-err');
-    // Show friendly tip
-    const tip = getFriendlyTip(msg);
-    if (tip) tAppend(tip, 't-sys');
-    highlightError(parseTraceback(msg, currentFile));
+    const _parsed = parseTraceback(msg, currentFile);
+    renderErrCard(_parsed, msg);
+    highlightError(_parsed);
   } finally {
     const ms = ((performance.now() - t0) / 1000).toFixed(2);
     tAppend('');
     tAppend(`Finished in ${ms}s`, 't-sys');
-    $('exec-time').textContent = ms + 's';
+    const _et2=$('exec-time');if(_et2)_et2.textContent=ms+'s';
     runBtn.disabled = false;
     runBtn.innerHTML = '<i class="fa-solid fa-circle-play"></i> Run';
     // Only hide input row if no more input() calls are pending
@@ -1889,71 +1856,49 @@ window.onload = () => {
       });
     }
 
-    loadMonaco(() => {
-      $('status-txt').textContent = 'Loading Python…';
+    if (window.innerWidth<=700) {
+      initMobileEditor();
       loadPy(() => {
         $('status-dot').classList.add('ready');
-        $('status-txt').textContent = 'Python 3.11 ready · Ctrl+Enter to run';
-        runBtn.disabled = false;
-        if ($('run-btn-mobile')) $('run-btn-mobile').disabled = false;
-        loadSharedCode();
-        renderChallenge();
-        // Force Monaco to fill container on mobile via grid
-        if (window.innerWidth <= 700) {
-          setTimeout(() => { if (editor) editor.layout({}); }, 150);
-          setTimeout(() => { if (editor) editor.layout({}); }, 600);
-        }
+        runBtn.disabled=false;
+        const rmb=$('run-btn-mobile');if(rmb)rmb.disabled=false;
       });
-    });
+    } else {
+      loadMonaco(() => {
+        $('status-txt').textContent='Loading Python…';
+        loadPy(() => {
+          $('status-dot').classList.add('ready');
+          $('status-txt').textContent='Python 3.11 ready · Ctrl+Enter to run';
+          runBtn.disabled=false;
+          const rmb=$('run-btn-mobile');if(rmb)rmb.disabled=false;
+          loadSharedCode();
+          renderChallenge();
+        });
+      });
+    }
   });
 };
 
 // ── SIDEBAR TOGGLE ──
-let _sidebarSavedWidth = null;
-
 function toggleSidebar() {
-  if (window.innerWidth <= 700) {
-    // Mobile: toggle drawer
-    const sb = $('sidebar');
-    const backdrop = $('mobile-sidebar-backdrop');
-    const isOpen = sb.classList.toggle('mobile-open');
-    if (backdrop) backdrop.classList.toggle('open', isOpen);
+  if (window.innerWidth<=700) {
+    const sb=$('sidebar'),bd=$('mobile-sidebar-backdrop');
+    const open=sb.classList.toggle('mobile-open');
+    if(bd)bd.classList.toggle('open',open);
     return;
   }
-
-  const sb = $('sidebar');
-  const isCollapsed = sb.classList.toggle('collapsed');
-
-  // Hide/show the gutter next to sidebar
-  const gutter = sb.nextElementSibling;
-  if (gutter && gutter.classList.contains('gutter')) {
-    gutter.style.display = isCollapsed ? 'none' : '';
-  }
-
-  if (isCollapsed) {
-    _sidebarSavedWidth = sb.getBoundingClientRect().width || 150;
-    sb.style.width = '0';
-    sb.style.minWidth = '0';
-    sb.style.flex = '0 0 0';
-    sb.style.overflow = 'hidden';
-  } else {
-    const w = _sidebarSavedWidth || 150;
-    sb.style.width = w + 'px';
-    sb.style.minWidth = '';
-    sb.style.flex = '';
-    sb.style.overflow = '';
-    _sidebarSavedWidth = null;
-  }
-
-  try { localStorage.setItem('pyr_sidebar', isCollapsed ? '0' : '1'); } catch(_){}
-  setTimeout(() => { if (editor) editor.layout(); }, 230);
+  const sb=$('sidebar');
+  const collapsed=sb.classList.toggle('collapsed');
+  const gutter=sb.nextElementSibling;
+  if(gutter&&gutter.classList.contains('gutter'))gutter.style.display=collapsed?'none':'';
+  if(collapsed){sb._savedW=sb.getBoundingClientRect().width||150;sb.style.width='0';sb.style.minWidth='0';sb.style.overflow='hidden';}
+  else{sb.style.width=(sb._savedW||150)+'px';sb.style.minWidth='';sb.style.overflow='';}
+  try{localStorage.setItem('pyr_sidebar',collapsed?'0':'1');}catch(_){}
+  setTimeout(()=>{if(editor)editor.layout();},230);
 }
-
-function closeMobileSidebar() {
-  const sb = $('sidebar');
-  const backdrop = $('mobile-sidebar-backdrop');
-  sb.classList.remove('mobile-open');
-  if (backdrop) backdrop.classList.remove('open');
+function closeMobileSidebar(){
+  $('sidebar').classList.remove('mobile-open');
+  const bd=$('mobile-sidebar-backdrop');if(bd)bd.classList.remove('open');
 }
 
 // ── MOBILE BACK ──
@@ -2021,6 +1966,145 @@ function syncMobileTheme() {
   if (d) d.classList.toggle('on', !isLight);
   if (l) l.classList.toggle('on', isLight);
 }
+
+// ── MOBILE EDITOR ──
+function initMobileEditor() {
+  const me = $('mobile-editor'), el = $('ed-load');
+  if (el) el.style.display = 'none';
+  me.style.display = 'block';
+  me.value = vfs[currentFile] || '# Write your Python here\nprint("Hello, World!")';
+  me.addEventListener('input', () => { vfs[currentFile] = me.value; });
+  me.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    e.preventDefault();
+    const s = me.selectionStart;
+    me.value = me.value.slice(0, s) + '    ' + me.value.slice(me.selectionEnd);
+    me.selectionStart = me.selectionEnd = s + 4;
+    vfs[currentFile] = me.value;
+  });
+}
+
+// ── EXAMPLES ──
+const EXAMPLES = [
+  { label: '\u{1F44B} Hello World',        code: 'print("Hello, World!")\n' },
+  { label: '\u{1F522} Variables & Input',  code: 'name = input("Your name: ")\nage = int(input("Your age: "))\nprint(f"Hi {name}! Next year you will be {age+1}.")\n' },
+  { label: '\u{1F501} For Loop',           code: 'for i in range(1, 11):\n    print(i)\n' },
+  { label: '\u{1F504} While Loop',         code: 'n = 1\nwhile n <= 5:\n    print("Count:", n)\n    n += 1\nprint("Done!")\n' },
+  { label: '\u{1F9EE} Calculator',         code: 'a = float(input("First: "))\nb = float(input("Second: "))\nop = input("Op (+,-,*,/): ")\nif op=="+": print(a+b)\nelif op=="-": print(a-b)\nelif op=="*": print(a*b)\nelif op=="/" and b!=0: print(a/b)\nelse: print("Invalid")\n' },
+  { label: '\u{1F4CB} Lists & Loops',      code: 'fruits = ["apple", "banana", "cherry"]\nfor f in fruits:\n    print(f)\nprint("Total:", len(fruits))\n' },
+  { label: '\u{1F3AF} Functions',          code: 'def greet(name):\n    return f"Hello, {name}!"\n\ndef add(a, b):\n    return a + b\n\nprint(greet("Alice"))\nprint("2 + 3 =", add(2, 3))\n' },
+  { label: '\u26A1 Fibonacci',             code: 'def fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        print(a, end=" ")\n        a, b = b, a + b\n    print()\n\nfib(10)\n' },
+  { label: '\u{1F4DA} Dictionary',         code: 'student = {"name": "Alice", "age": 20, "grade": "A"}\nfor k, v in student.items():\n    print(f"{k}: {v}")\n' },
+  { label: '\u{1F9F1} Classes & OOP',      code: 'class Animal:\n    def __init__(self, name, sound):\n        self.name = name\n        self.sound = sound\n    def speak(self):\n        print(f"{self.name} says {self.sound}!")\n\nAnimal("Dog","Woof").speak()\nAnimal("Cat","Meow").speak()\n' },
+  { label: '\u{1F50D} List Comprehension', code: 'squares = [x**2 for x in range(1,11)]\nprint(squares)\n' },
+  { label: '\u{1F3B2} Guess the Number',   code: 'import random\nsecret = random.randint(1,100)\nprint("Guess 1-100!")\nwhile True:\n    g = int(input("Your guess: "))\n    if g < secret: print("Too low!")\n    elif g > secret: print("Too high!")\n    else: print("Correct!"); break\n' },
+];
+
+let _exOpen = false;
+function toggleExamples() {
+  const dd = $('examples-dropdown'); if (!dd) return;
+  _exOpen = !_exOpen;
+  if (_exOpen) dd.innerHTML = EXAMPLES.map((e,i) =>
+    '<div class="ex-item" onclick="loadExample('+i+')">'+escHTML(e.label)+'</div>').join('');
+  dd.style.display = _exOpen ? 'block' : 'none';
+}
+function toggleMobileExamples() {
+  const s = $('mobile-example-sheet'); if (s) s.classList.add('open');
+}
+function closeMobileExamples() {
+  const s = $('mobile-example-sheet'); if (s) s.classList.remove('open');
+}
+function loadExample(i) {
+  const ex = EXAMPLES[i]; if (!ex) return;
+  vfs[currentFile] = ex.code;
+  const me = $('mobile-editor');
+  if (me && me.offsetParent) { me.value = ex.code; me.focus(); }
+  else if (editor) { editor.setValue(ex.code); editor.focus(); }
+  const dd = $('examples-dropdown');
+  if (dd) { dd.style.display='none'; _exOpen=false; }
+  closeMobileExamples();
+  showToast('Loaded: ' + ex.label);
+}
+document.addEventListener('click', e => {
+  const dd=$('examples-dropdown'), btn=$('examples-btn');
+  if (dd && btn && !btn.parentElement.contains(e.target)) { dd.style.display='none'; _exOpen=false; }
+});
+
+// ── RICH ERROR CARD ──
+const _ERREMO = {SyntaxError:'\u{1F534}',IndentationError:'\u{1F4D0}',NameError:'\u{1F50D}',TypeError:'\u{1F500}',
+  IndexError:'\u{1F4CB}',ValueError:'\u26A0\uFE0F',ZeroDivisionError:'\u{2797}',
+  AttributeError:'\u{1F527}',RecursionError:'\u{1F501}',ModuleNotFoundError:'\u{1F4E6}'};
+
+function renderErrCard(err, rawMsg) {
+  const emoji = _ERREMO[err.type] || '\u274C';
+  const tip = getFriendlyTip(rawMsg);
+  const tbId = 'tb' + Date.now();
+  const me = $('mobile-editor');
+  const lineText = (editor && editor.getModel())
+    ? editor.getModel().getLineContent(Math.min(err.line, editor.getModel().getLineCount()))
+    : (me ? (me.value.split('\n')[err.line-1] || '') : '');
+  let fixHtml = '';
+  for (const fe of FRIENDLY_ERRORS) {
+    const m = rawMsg.match(fe.match);
+    if (m && fe.fix) {
+      const r = fe.fix(err.line, lineText);
+      if (r) {
+        window._pendingFix = { line: err.line, newText: r.newLine };
+        fixHtml = '<div class="err-card-fix" onclick="applyErrFix()">'
+          + '<span class="err-card-fix-text">\u270F\uFE0F ' + escHTML(r.label) + ': ' + escHTML(r.newLine) + '</span>'
+          + '<button class="err-card-fix-btn">Apply \u2713</button></div>';
+      }
+      break;
+    }
+  }
+  const card = '<div class="err-card">'
+    + '<div class="err-card-hd"><span class="err-card-emoji">' + emoji + '</span>'
+    + '<span class="err-card-title">' + escHTML(err.type||'Error') + '</span>'
+    + '<span class="err-card-loc">Line ' + err.line + (err.col?':'+err.col:'') + '</span></div>'
+    + '<div class="err-card-body"><div class="err-card-raw">' + escHTML(rawMsg) + '</div>'
+    + (tip?'<div class="err-card-tip"><span>\u{1F4A1}</span><span>'+escHTML(tip)+'</span></div>':'')
+    + fixHtml
+    + '<div class="err-card-tb" onclick="var b=document.getElementById(\'' + tbId + '\');b.classList.toggle(\'open\')">\u25B6 Show traceback</div>'
+    + '<div class="err-card-tb-body" id="' + tbId + '">' + escHTML(err.traceback||rawMsg) + '</div>'
+    + '</div></div>';
+  const d = document.createElement('div'); d.innerHTML = card;
+  terminal.appendChild(d); terminal.scrollTop = terminal.scrollHeight;
+}
+
+function applyErrFix() {
+  const fix = window._pendingFix; if (!fix) return;
+  const me = $('mobile-editor');
+  if (me && me.offsetParent) {
+    const lines = me.value.split('\n');
+    lines[fix.line - 1] = fix.newText;
+    me.value = lines.join('\n');
+    vfs[currentFile] = me.value;
+  } else if (editor) {
+    const model = editor.getModel();
+    editor.executeEdits('fix', [{
+      range: new monaco.Range(fix.line, 1, fix.line, model.getLineMaxColumn(fix.line)),
+      text: fix.newText
+    }]);
+    vfs[currentFile] = editor.getValue();
+  }
+  hideErrBanner();
+  if (editor && errDecorations.length) errDecorations = editor.deltaDecorations(errDecorations, []);
+  showToast('Fix applied! Click Run to try again.');
+  window._pendingFix = null;
+}
+
+// ── MOBILE EXAMPLE SHEET ──
+(function(){
+  const sheet = document.createElement('div');
+  sheet.id = 'mobile-example-sheet';
+  sheet.innerHTML = '<div class="ex-sheet-inner">'
+    + '<div class="ex-sheet-hd"><span class="ex-sheet-title">EXAMPLES</span>'
+    + '<button class="ex-sheet-close" onclick="closeMobileExamples()">\u2715</button></div>'
+    + EXAMPLES.map((e,i)=>'<div class="ex-sheet-item" onclick="loadExample('+i+')">'+escHTML(e.label)+'</div>').join('')
+    + '</div>';
+  sheet.addEventListener('click', ev => { if(ev.target===sheet) closeMobileExamples(); });
+  document.body.appendChild(sheet);
+})();
 </script>
 </body>
 </html>
