@@ -689,6 +689,38 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
 /* ââ LINE COUNT STATUS ââ */
 #sb-lines{cursor:default}
 
+/* ── MONACO WIDGET OVERRIDES ── */
+.monaco-editor .suggest-widget,
+.monaco-editor .parameter-hints-widget,
+.monaco-editor .monaco-hover,
+.monaco-editor .hover-row {
+  background: #111420 !important;
+  border: 1px solid #232840 !important;
+  border-radius: 6px !important;
+  color: #e4e8f4 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,.6) !important;
+}
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row {
+  color: #e4e8f4 !important;
+}
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row.focused {
+  background: #1e2438 !important;
+  color: #00d4ff !important;
+}
+.monaco-editor .suggest-widget .details,
+.monaco-editor .suggest-widget .details > .monaco-scrollable-element {
+  background: #0d0f18 !important;
+  border-left: 1px solid #232840 !important;
+}
+.monaco-editor .suggest-widget .details .label,
+.monaco-editor .suggest-widget .details .type {
+  color: #7a849e !important;
+}
+.monaco-editor .monaco-hover .hover-contents {
+  background: #111420 !important;
+  color: #e4e8f4 !important;
+}
 </style>
 </head>
 <body>
@@ -1301,7 +1333,11 @@ function loadMonaco(cb) {
         lineNumbers: 'on',
         renderLineHighlight: 'line',
         glyphMargin: true,
-        suggest: { preview: true },
+        suggest: { preview: false, showWords: false, showSnippets: false, showClasses: false, showFunctions: false, showVariables: false, showModules: false, showKeywords: false },
+        quickSuggestions: false,
+        parameterHints: { enabled: false },
+        hover: { enabled: false },
+        wordBasedSuggestions: 'off',
       });
       editor.onDidChangeModelContent(() => {
         vfs[currentFile] = editor.getValue();
