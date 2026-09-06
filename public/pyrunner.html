@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyRunner Apex — Free Online Python 3 Editor & Compiler</title>
-<meta name="description" content="Run Python 3 instantly in your browser — no install needed. Free online Python compiler with Monaco editor, interactive input(), and auto package install.">
+<title>PyRunner Apex â Free Online Python 3 Editor & Compiler</title>
+<meta name="description" content="Run Python 3 instantly in your browser â no install needed. Free online Python compiler with Monaco editor, interactive input(), and auto package install.">
 <meta name="keywords" content="python online, python compiler, run python in browser, python editor, online IDE, python 3, pyodide, free python, python interpreter, AI python editor">
 
 <meta name="robots" content="index, follow">
@@ -13,13 +13,13 @@
 <!-- Open Graph (Facebook, WhatsApp, Discord previews) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pyrunner-apex.itstudyhub-tiu.workers.dev/">
-<meta property="og:title" content="PyRunner Apex — Free Online Python Editor">
+<meta property="og:title" content="PyRunner Apex â Free Online Python Editor">
 <meta property="og:description" content="Run Python 3 in your browser. Monaco editor, interactive input(), auto package install. No account needed.">
 
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PyRunner Apex — Free Online Python Editor">
+<meta name="twitter:title" content="PyRunner Apex â Free Online Python Editor">
 <meta name="twitter:description" content="Run Python 3 in your browser. Monaco editor, interactive input(), AI assistant, auto package install. No account needed.">
 
 
@@ -30,7 +30,7 @@
   "@type": "WebApplication",
   "name": "PyRunner Apex",
   "url": "https://pyrunner-apex.itstudyhub-tiu.workers.dev/",
-  "description": "Free online Python 3 compiler and editor. Runs in your browser via WebAssembly — no install needed. Includes Monaco editor, interactive input(), AI assistant, and automatic package installation.",
+  "description": "Free online Python 3 compiler and editor. Runs in your browser via WebAssembly â no install needed. Includes Monaco editor, interactive input(), AI assistant, and automatic package installation.",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -71,7 +71,7 @@
 html,body{height:100%;overflow:hidden}
 body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);display:flex;flex-direction:column}
 
-/* ── TOPBAR ── */
+/* ââ TOPBAR ââ */
 #topbar{
   height:44px;background:var(--bg-deep);border-bottom:1px solid var(--border);
   display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0;position:relative;
@@ -126,17 +126,16 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 #run-btn:disabled{border-color:var(--border-2);color:var(--text-3);cursor:not-allowed;background:transparent;transform:none;box-shadow:none}
 #run-btn:active:not(:disabled){transform:translateY(0)}
 
-/* ── WORKSPACE ── */
+/* ââ WORKSPACE ââ */
 #workspace{flex:1;display:flex;overflow:hidden;min-height:0}
 
-/* ── SIDEBAR ── */
+/* ââ SIDEBAR ââ */
 #sidebar{
   background:var(--bg-deep);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;flex-shrink:0;
-  transition:width .22s ease,flex .22s ease,min-width .22s ease;
-  overflow:hidden;width:150px;
+  display:flex;flex-direction:column;flex-shrink:0;transition:width .2s;overflow:hidden;
+  width:150px;
 }
-#sidebar.collapsed{width:0;min-width:0;flex:0 0 0;border-right:none}
+#sidebar.collapsed{width:0;border-right:none}
 .sidebar-hd{
   padding:8px 10px;font-size:9px;font-family:var(--mono);font-weight:600;
   letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);
@@ -159,7 +158,7 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .fi .fdel{display:none;background:none;border:none;cursor:pointer;color:var(--text-3);font-size:10px;padding:1px 3px;transition:color .13s}
 .fi .fdel:hover{color:var(--red)}
 .fi:hover .fdel{display:block}
-/* ── QUICK REFERENCE ── */
+/* ââ QUICK REFERENCE ââ */
 #ref-panel{border-top:1px solid var(--border);overflow-y:auto;flex:1}
 .ref-section{}
 .ref-hd{
@@ -198,7 +197,7 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .ref-builtin .rb-name{font-size:10px;font-family:var(--mono);color:var(--purple);font-weight:600;min-width:60px}
 .ref-builtin .rb-desc{font-size:10px;font-family:var(--sans);color:var(--text-2)}
 
-/* ── SIDEBAR TOGGLE (floating) ── */
+/* ââ SIDEBAR TOGGLE (floating) ââ */
 #sidebar-toggle{
   position:absolute;left:0;top:50%;transform:translateY(-50%);
   width:16px;height:40px;background:var(--bg-panel);border:1px solid var(--border-2);
@@ -208,7 +207,7 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 }
 #sidebar-toggle:hover{background:var(--bg-hover);color:var(--cyan)}
 
-/* ── EDITOR ZONE ── */
+/* ââ EDITOR ZONE ââ */
 #editor-zone{display:flex;flex-direction:column;overflow:hidden;background:#1e1e1e;flex:1;min-width:0;position:relative}
 
 /* editor toolbar */
@@ -243,113 +242,45 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 @keyframes spin{to{transform:rotate(360deg)}}
 .ed-load-txt{font-family:var(--mono);font-size:11px;color:var(--text-3)}
 .err-line-bg{background:rgba(255,82,82,.14)!important}
-.err-line-bg{background:rgba(255,82,82,.10)!important}
 .err-line-glyph{background:var(--red);width:3px!important;margin-left:3px}
-/* Exact-column squiggly underline */
-.err-token-squiggle{
-  text-decoration:underline wavy #ff5252;
-  text-decoration-skip-ink:none;
-  background:rgba(255,82,82,.12);
-  border-radius:2px;
-}
-
-/* ── ERROR BANNER (floating top of editor) ── */
+.err-line-bg{background:rgba(255,82,82,.10)!important}
+.ex-item{padding:9px 16px;font-size:12px;font-family:var(--mono);color:var(--text-1);cursor:pointer;white-space:nowrap}
+.ex-item:hover{background:var(--bg-hover);color:var(--cyan)}
+.err-card{background:rgba(255,82,82,.05);border:1px solid rgba(255,82,82,.28);border-radius:10px;margin:8px 0;overflow:hidden}
+.err-card-hd{display:flex;align-items:center;gap:8px;padding:9px 14px;background:rgba(255,82,82,.07);border-bottom:1px solid rgba(255,82,82,.13)}
+.err-card-emoji{font-size:15px}
+.err-card-title{font-size:11px;font-weight:700;color:#ff8080;font-family:var(--mono);flex:1}
+.err-card-loc{font-size:10px;color:#ff5252;background:rgba(255,82,82,.15);padding:1px 6px;border-radius:4px;font-family:var(--mono)}
+.err-card-body{padding:10px 14px;display:flex;flex-direction:column;gap:7px}
+.err-card-raw{font-size:11px;font-family:var(--mono);color:#c09090;background:rgba(0,0,0,.25);border-radius:6px;padding:7px 10px;white-space:pre-wrap;word-break:break-word;border-left:3px solid rgba(255,82,82,.4)}
+.err-card-tip{font-size:12px;color:#ffe0a0;display:flex;gap:7px;background:rgba(255,200,80,.05);border-left:2px solid var(--amber);padding:5px 8px;border-radius:0 4px 4px 0}
+.err-card-fix{display:flex;align-items:center;gap:8px;background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.22);border-radius:7px;padding:7px 12px;cursor:pointer;transition:background .13s}
+.err-card-fix:hover{background:rgba(0,230,118,.13)}
+.err-card-fix-text{font-size:11px;color:var(--green);font-family:var(--mono);flex:1}
+.err-card-fix-btn{font-size:10px;color:#0a0f18;background:var(--green);border:none;border-radius:5px;padding:3px 9px;cursor:pointer;font-weight:700}
+.err-card-tb{font-size:10px;font-family:var(--mono);color:var(--text-3);cursor:pointer;padding-top:3px;border-top:1px solid rgba(255,82,82,.1)}
+.err-card-tb-body{display:none;font-size:10px;font-family:var(--mono);color:#806060;background:rgba(0,0,0,.2);border-radius:5px;padding:6px 8px;white-space:pre-wrap;word-break:break-word;margin-top:3px}
+.err-card-tb-body.open{display:block}
+#mobile-example-sheet{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);align-items:flex-end}
+#mobile-example-sheet.open{display:flex}
+.ex-sheet-inner{background:var(--bg-panel);border-radius:18px 18px 0 0;width:100%;max-height:72vh;overflow-y:auto;padding-bottom:16px}
+.ex-sheet-hd{display:flex;justify-content:space-between;align-items:center;padding:14px 18px 12px;border-bottom:1px solid var(--border-2)}
+.ex-sheet-title{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--cyan);letter-spacing:.08em}
+.ex-sheet-close{background:none;border:none;color:var(--text-2);font-size:20px;cursor:pointer}
+.ex-sheet-item{padding:14px 20px;font-size:15px;color:var(--text-1);cursor:pointer;border-bottom:1px solid var(--border)}
+.ex-sheet-item:active{background:var(--bg-hover)}
 #err-banner{
-  position:absolute;top:8px;left:50%;transform:translateX(-50%) translateY(-4px);
-  z-index:20;background:linear-gradient(135deg,#2a0d0d,#1e1010);
-  border:1px solid rgba(255,82,82,.6);
+  position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  z-index:20;background:#3a1a1a;border:1px solid var(--red);
   color:#ffdada;font-family:var(--mono);font-size:11px;
-  padding:0;border-radius:10px;display:none;flex-direction:column;
-  max-width:92%;min-width:260px;
-  box-shadow:0 8px 32px rgba(255,82,82,.2),0 2px 8px rgba(0,0,0,.6);
-  animation:err-drop .22s cubic-bezier(.4,0,.2,1);
+  padding:7px 12px 7px 10px;border-radius:6px;display:none;align-items:center;gap:8px;
+  max-width:90%;box-shadow:0 4px 24px rgba(0,0,0,.4);
 }
-@keyframes err-drop{from{opacity:0;transform:translateX(-50%) translateY(-12px)}to{opacity:1;transform:translateX(-50%) translateY(-4px)}}
 #err-banner.show{display:flex}
-#err-banner .eb-header{
-  display:flex;align-items:center;gap:8px;padding:8px 12px 6px;
-  border-bottom:1px solid rgba(255,82,82,.2);
-}
-#err-banner .eb-icon{font-size:14px;color:var(--red);flex-shrink:0}
-#err-banner .eb-type{font-size:11px;font-weight:700;color:#ff8080;letter-spacing:.04em;flex:1}
-#err-banner .eb-loc{font-size:10px;color:#ff5252;opacity:.7;white-space:nowrap}
-#err-banner .eb-close{
-  background:none;border:none;color:#ff8080;cursor:pointer;
-  font-size:13px;padding:2px 4px;border-radius:4px;transition:all .15s;flex-shrink:0;
-}
-#err-banner .eb-close:hover{background:rgba(255,82,82,.2);color:#fff}
-#err-banner .eb-body{padding:8px 12px 10px;display:flex;flex-direction:column;gap:6px}
-#err-banner .eb-raw{font-size:10px;color:#c0a0a0;white-space:pre-wrap;word-break:break-word;line-height:1.5}
-#err-banner .eb-friendly{
-  font-size:11px;color:#ffe0a0;line-height:1.5;font-family:var(--sans);
-  background:rgba(255,200,80,.06);border-left:2px solid var(--amber);
-  padding:5px 8px;border-radius:0 4px 4px 0;
-}
-#err-banner .eb-fix{
-  display:flex;align-items:center;gap:6px;
-  background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.25);
-  border-radius:6px;padding:6px 10px;cursor:pointer;transition:all .15s;
-}
-#err-banner .eb-fix:hover{background:rgba(0,230,118,.14);border-color:rgba(0,230,118,.5)}
-#err-banner .eb-fix-label{font-size:10px;color:var(--green);font-family:var(--mono);flex:1}
-#err-banner .eb-fix-btn{
-  font-size:9px;font-family:var(--mono);color:#fff;background:var(--green);
-  border:none;border-radius:4px;padding:2px 7px;cursor:pointer;white-space:nowrap;
-}
+#err-banner .eb-msg{white-space:pre-wrap;word-break:break-word}
+#err-banner .eb-close{background:none;border:none;color:#ffb0b0;cursor:pointer;font-size:12px}
 
-/* ── ERROR CARD in OUTPUT (replaces plain red text) ── */
-.err-card{
-  background:linear-gradient(135deg,rgba(255,82,82,.08),rgba(255,82,82,.04));
-  border:1px solid rgba(255,82,82,.35);border-radius:10px;
-  margin:8px 0;overflow:hidden;
-  box-shadow:0 2px 12px rgba(255,82,82,.1);
-}
-.err-card-header{
-  display:flex;align-items:center;gap:8px;padding:10px 14px 8px;
-  background:rgba(255,82,82,.07);border-bottom:1px solid rgba(255,82,82,.15);
-}
-.err-card-emoji{font-size:16px;line-height:1}
-.err-card-title{font-size:12px;font-weight:700;color:#ff8080;font-family:var(--mono);flex:1}
-.err-card-line{font-size:10px;color:#ff5252;opacity:.8;font-family:var(--mono);
-  background:rgba(255,82,82,.15);padding:2px 6px;border-radius:4px;}
-.err-card-body{padding:10px 14px;display:flex;flex-direction:column;gap:8px}
-.err-card-raw{
-  font-size:11px;font-family:var(--mono);color:#c09090;
-  background:rgba(0,0,0,.3);border-radius:6px;padding:8px 10px;
-  white-space:pre-wrap;word-break:break-word;line-height:1.6;
-  border-left:3px solid rgba(255,82,82,.4);
-}
-.err-card-friendly{
-  font-size:12px;color:#ffe0a0;line-height:1.6;font-family:var(--sans);
-  display:flex;gap:8px;align-items:flex-start;
-}
-.err-card-friendly-icon{font-size:14px;flex-shrink:0;margin-top:1px}
-.err-card-fix{
-  display:flex;align-items:center;gap:8px;
-  background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.2);
-  border-radius:8px;padding:8px 12px;cursor:pointer;transition:all .15s;
-}
-.err-card-fix:hover{background:rgba(0,230,118,.12);border-color:rgba(0,230,118,.4);transform:translateY(-1px)}
-.err-card-fix-text{font-size:11px;color:var(--green);font-family:var(--mono);flex:1;white-space:pre}
-.err-card-fix-apply{
-  font-size:10px;font-family:var(--mono);color:#0a0f18;background:var(--green);
-  border:none;border-radius:5px;padding:3px 10px;cursor:pointer;font-weight:700;white-space:nowrap;
-}
-.err-card-traceback{
-  font-size:10px;font-family:var(--mono);color:var(--text-3);
-  cursor:pointer;display:flex;align-items:center;gap:6px;
-  padding-top:4px;border-top:1px solid rgba(255,82,82,.1);
-}
-.err-card-traceback:hover{color:var(--text-2)}
-.err-traceback-body{
-  font-size:10px;font-family:var(--mono);color:#806060;
-  background:rgba(0,0,0,.25);border-radius:5px;padding:6px 8px;
-  white-space:pre-wrap;word-break:break-word;line-height:1.5;
-  margin-top:4px;display:none;
-}
-.err-traceback-body.open{display:block}
-
-/* ── OUTPUT ── */
+/* ââ OUTPUT ââ */
 #out-panel{
   background:var(--bg-void);border-left:1px solid var(--border);
   display:flex;flex-direction:column;min-width:160px;
@@ -382,19 +313,7 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .gutter:hover{background:rgba(0,212,255,.3)}
 .gutter.gutter-horizontal{width:4px!important}
 
-/* ── EXAMPLES DROPDOWN ── */
-.ex-item{
-  padding:9px 16px;font-size:12px;font-family:var(--mono);color:var(--text-1);
-  cursor:pointer;transition:background .12s;white-space:nowrap;
-}
-.ex-item:hover{background:var(--bg-hover);color:var(--cyan)}
-.ex-item-mobile{
-  padding:14px 20px;font-size:14px;font-family:var(--sans);color:var(--text-1);
-  cursor:pointer;transition:background .12s;border-bottom:1px solid var(--border);
-}
-.ex-item-mobile:active{background:var(--bg-hover)}
-
-/* ── STATUS BAR ── */
+/* ââ STATUS BAR ââ */
 #statusbar{
   background:var(--bg-deep);border-top:1px solid var(--border);
   height:22px;display:flex;align-items:center;padding:0 12px;
@@ -404,7 +323,7 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .sb-item{display:flex;align-items:center;gap:4px}
 
 
-/* ── BOOT ── */
+/* ââ BOOT ââ */
 #boot{
   position:fixed;inset:0;background:var(--bg-void);z-index:200;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
@@ -412,12 +331,12 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 }
 #boot-canvas{position:absolute;inset:0;opacity:.35;pointer-events:none}
 .boot-logo{
-  font-size:clamp(28px,8vw,48px);font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  font-size:clamp(22px,7vw,48px);font-weight:800;letter-spacing:.1em;text-transform:uppercase;
   background:linear-gradient(90deg,var(--cyan),var(--purple),var(--cyan));
   background-size:200%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   animation:logo-shine 3s linear infinite;position:relative;z-index:1;
-  text-align:center;width:100%;padding:0 16px;box-sizing:border-box;
+  text-align:center;width:100%;box-sizing:border-box;padding:0 12px;
 }
 @keyframes logo-shine{0%{background-position:0%}100%{background-position:200%}}
 .boot-sub{font-family:var(--mono);font-size:12px;color:var(--text-3);position:relative;z-index:1}
@@ -429,7 +348,7 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 .boot-feat i{color:var(--cyan);font-size:9px}
 
 
-/* ── MODAL ── */
+/* ââ MODAL ââ */
 #modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
 #modal-bg.open{display:flex}
 .modal{background:var(--bg-panel);border:1px solid var(--border-2);border-radius:10px;padding:20px;width:280px;box-shadow:0 0 40px rgba(0,212,255,.07)}
@@ -474,12 +393,12 @@ body.light-theme .gutter:hover{background:rgba(0,160,200,.25)}
 body.light-theme #run-btn{background:rgba(0,150,200,.85);border-color:rgba(0,130,180,.9);color:#fff}
 body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
 
-/* ══════════════════════════════
+/* ââââââââââââââââââââââââââââââ
    MOBILE
-══════════════════════════════ */
+ââââââââââââââââââââââââââââââ */
 @media(max-width:700px){
 
-  /* ── 1. RESET BODY/HTML FOR MOBILE ── */
+  /* ââ 1. RESET BODY/HTML FOR MOBILE ââ */
   html,body{
     height:100%;
     height:100dvh; /* dynamic viewport height - handles browser chrome */
@@ -491,32 +410,18 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
     grid-template-columns:1fr;
   }
 
-  /* ── 2. HIDE DESKTOP-ONLY ELEMENTS ── */
+  /* ââ 2. MOBILE SIDEBAR ââ */
   #sidebar-toggle{display:none!important}
-  /* sidebar-btn stays visible on mobile for drawer toggle */
-  #sidebar-btn{display:flex!important}
-
-  /* ── MOBILE SIDEBAR: drawer overlay ── */
-  #sidebar{
-    display:flex!important;
-    position:fixed!important;
-    top:0;left:0;bottom:0;
-    width:200px!important;
-    z-index:200;
-    transform:translateX(-100%);
-    transition:transform .25s cubic-bezier(.4,0,.2,1);
-    box-shadow:4px 0 20px rgba(0,0,0,.5);
-    border-right:1px solid var(--border-2)!important;
-    overflow:hidden!important;
-  }
+  #sidebar{display:flex!important;position:fixed!important;top:0;left:0;bottom:0;width:220px!important;z-index:200;transform:translateX(-100%);transition:transform .25s ease;box-shadow:4px 0 24px rgba(0,0,0,.6);border-right:1px solid var(--border-2)!important;overflow:hidden!important;}
   #sidebar.mobile-open{transform:translateX(0)!important}
-  #sidebar.collapsed{transform:translateX(-100%)!important;width:200px!important}
-  /* mobile sidebar backdrop */
-  #mobile-sidebar-backdrop{
-    display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);
-    z-index:199;backdrop-filter:blur(2px);
-  }
+  #mobile-sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:199;}
   #mobile-sidebar-backdrop.open{display:block}
+  #mobile-editor{display:none;flex:1;width:100%;box-sizing:border-box;background:#1a1a2e;color:#e0e0e0;font-family:"JetBrains Mono","Fira Mono",monospace;font-size:16px;line-height:1.8;padding:16px 14px;border:none;outline:none;resize:none;tab-size:4;caret-color:#00d4ff;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  #mobile-editor::placeholder{color:#444;font-style:italic}
+  #boot{text-align:center;padding:0 20px}
+  .boot-sub{text-align:center;font-size:11px}
+  .boot-bar-wrap{width:min(260px,78vw)}
+  .boot-features{flex-wrap:wrap;justify-content:center;gap:8px 16px}
   .gutter{display:none!important}
   #statusbar{display:none!important}
   #editor-toolbar{display:none!important}
@@ -533,7 +438,7 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
   /* hide desktop run button */
   #run-btn{display:none!important}
 
-  /* ── 2b. MOBILE SETTINGS SHEET ── */
+  /* ââ 2b. MOBILE SETTINGS SHEET ââ */
   #mobile-settings-btn{display:flex!important}
   #mobile-settings-inner{
     background:var(--bg-panel);border:1px solid var(--border-2);
@@ -552,7 +457,7 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
   }
   .mset-seg button.on{background:var(--bg-active);color:var(--text-1)}
 
-  /* ── 3. TOPBAR: grid row 1 ── */
+  /* ââ 3. TOPBAR: grid row 1 ââ */
   #topbar{
     grid-row:1;
     height:52px;
@@ -568,7 +473,7 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
   .status-row{gap:5px;flex-shrink:0}
   #status-dot{width:8px;height:8px}
 
-  /* ── 4. WORKSPACE: grid row 2, overflow hidden ── */
+  /* ââ 4. WORKSPACE: grid row 2, overflow hidden ââ */
   #workspace{
     grid-row:2;
     position:relative;
@@ -578,7 +483,7 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
     min-height:0;
   }
 
-  /* ── 5. EDITOR: absolute fill of workspace ── */
+  /* ââ 5. EDITOR: absolute fill of workspace ââ */
   #editor-zone{
     position:absolute;
     top:0;left:0;right:0;bottom:0;
@@ -600,7 +505,7 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
     min-height:0;
   }
 
-  /* ── 6. OUTPUT PANEL: absolute, slides in from right ── */
+  /* ââ 6. OUTPUT PANEL: absolute, slides in from right ââ */
   #out-panel{
     position:absolute;
     top:0;left:0;right:0;bottom:0;
@@ -616,11 +521,11 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
     overflow:hidden;
   }
 
-  /* ── 7. SLIDE ANIMATION ── */
+  /* ââ 7. SLIDE ANIMATION ââ */
   body.mobile-output #editor-zone{transform:translateX(-100%)}
   body.mobile-output #out-panel  {transform:translateX(0)}
 
-  /* ── 8. TERMINAL fills output ── */
+  /* ââ 8. TERMINAL fills output ââ */
   #terminal{
     flex:1;
     font-size:13px;
@@ -630,42 +535,10 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
     -webkit-overflow-scrolling:touch;
     min-height:0;
   }
-  #input-row{
-    flex-shrink:0;padding:10px 14px;gap:10px;
-    background:var(--bg-panel);border-top:2px solid var(--cyan);
-  }
-  #term-input{
-    font-size:16px;padding:10px 14px;
-    background:var(--bg-deep);color:#fff;border:1px solid var(--border-2);
-    border-radius:8px;font-family:var(--mono);
-  }
+  #input-row{flex-shrink:0;padding:8px 12px}
+  #term-input{font-size:14px;padding:10px 12px}
 
-  /* ── MOBILE CODE TEXTAREA ── */
-  #mobile-code-editor{
-    display:none; /* shown by initMobileEditor() */
-    flex:1;
-    width:100%;
-    box-sizing:border-box;
-    background:#1a1a2e;
-    color:#e0e0e0;
-    font-family:'JetBrains Mono','Fira Mono','Courier New',monospace;
-    font-size:15px; /* ≥16px prevents iOS zoom on focus */
-    line-height:1.8;
-    padding:16px 14px;
-    border:none;
-    outline:none;
-    resize:none;
-    tab-size:4;
-    -webkit-text-size-adjust:100%;
-    caret-color:#00d4ff;
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
-    white-space:pre;
-    overflow-x:auto;
-  }
-  #mobile-code-editor::placeholder{color:#444;font-style:italic}
-
-  /* ── 9. MOBILE BOTTOM BAR: grid row 3 ── */
+  /* ââ 9. MOBILE BOTTOM BAR: grid row 3 ââ */
   #mobile-bar{
     grid-row:3;
     display:flex!important;
@@ -697,10 +570,6 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
   }
   #mobile-bar button:active{transform:scale(.95)}
 
-  #mobile-examples-btn{
-    flex:0.6!important;
-    font-size:16px!important;
-  }
   #run-btn-mobile{
     flex:2.2!important;
     background:linear-gradient(135deg,#00c8f0,#00a8d4)!important;
@@ -723,23 +592,16 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
   body.mobile-output #mobile-save-btn{display:none!important}
   body.mobile-output #mobile-clear-btn{display:none!important}
 
-  /* ── 10. MODALS FULL WIDTH ── */
+  /* ââ 10. MODALS FULL WIDTH ââ */
   .sc-box,.share-box{width:calc(100vw - 32px)!important;max-width:none!important}
   #challenge-panel{right:8px;left:8px;width:auto;bottom:76px}
-
-  /* ── 11. BOOT SCREEN MOBILE ── */
-  #boot{padding:0 24px;text-align:center}
-  .boot-logo{font-size:clamp(24px,9vw,42px)!important;letter-spacing:.06em!important}
-  .boot-sub{font-size:11px;text-align:center;padding:0 8px}
-  .boot-bar-wrap{width:min(260px,80vw)}
-  .boot-features{flex-wrap:wrap;justify-content:center;gap:10px 16px}
 }
 
 @media(min-width:701px){
   #mobile-bar{display:none!important}
 }
 
-/* ── TOAST ── */
+/* ââ TOAST ââ */
 #toast{
   position:fixed;bottom:36px;left:50%;transform:translateX(-50%) translateY(20px);
   background:var(--bg-panel);border:1px solid var(--border-2);color:var(--text-1);
@@ -751,7 +613,7 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
 #toast.ok{border-color:var(--green);color:var(--green)}
 #toast.err{border-color:var(--red);color:var(--red)}
 
-/* ── SHORTCUT MODAL ── */
+/* ââ SHORTCUT MODAL ââ */
 #shortcut-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 #shortcut-modal.open{display:flex}
 .sc-box{background:var(--bg-panel);border:1px solid var(--border-2);border-radius:12px;padding:24px;width:340px;box-shadow:0 0 40px rgba(0,212,255,.1)}
@@ -763,7 +625,7 @@ body.light-theme #run-btn:hover:not(:disabled){background:rgba(0,130,180,.95)}
 .sc-desc{font-family:var(--sans);font-size:11px;color:var(--text-2)}
 kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px;padding:1px 5px;font-size:10px;font-family:var(--mono);color:var(--text-1)}
 
-/* ── SHARE MODAL ── */
+/* ââ SHARE MODAL ââ */
 #share-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 #share-modal.open{display:flex}
 .share-box{background:var(--bg-panel);border:1px solid var(--border-2);border-radius:12px;padding:24px;width:380px;box-shadow:0 0 40px rgba(0,212,255,.1)}
@@ -775,7 +637,7 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
 .share-url input:focus{border-color:var(--cyan)}
 .share-actions{display:flex;gap:8px;justify-content:flex-end}
 
-/* ── CHALLENGE PANEL ── */
+/* ââ CHALLENGE PANEL ââ */
 #challenge-panel{
   position:fixed;bottom:30px;right:16px;width:300px;
   background:var(--bg-panel);border:1px solid var(--border-2);
@@ -800,23 +662,23 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
 .ch-try{width:100%;padding:7px;background:rgba(0,212,255,.08);border:1px solid var(--cyan);color:var(--cyan);font-family:var(--mono);font-size:11px;font-weight:600;border-radius:6px;cursor:pointer;transition:all .15s}
 .ch-try:hover{background:rgba(0,212,255,.18)}
 
-/* ── MOBILE-ONLY ELEMENTS: hidden by default on desktop ── */
+/* ââ MOBILE-ONLY ELEMENTS: hidden by default on desktop ââ */
 #mobile-settings-btn{display:none}
 #mobile-settings-sheet{display:none;position:fixed;inset:0;z-index:500;
   background:rgba(0,0,0,.65);backdrop-filter:blur(4px);
   align-items:flex-end;justify-content:center;}
 #mobile-settings-sheet.open{display:flex}
 
-/* ── BRAND GLOW ANIMATION ── */
+/* ââ BRAND GLOW ANIMATION ââ */
 .brand-icon{animation:brand-pulse 3s ease-in-out infinite}
 @keyframes brand-pulse{0%,100%{box-shadow:0 0 12px rgba(0,212,255,.3)}50%{box-shadow:0 0 20px rgba(0,212,255,.6),0 0 40px rgba(181,123,238,.2)}}
 
-/* ── TOPBAR GRADIENT LINE ANIMATION ── */
+/* ââ TOPBAR GRADIENT LINE ANIMATION ââ */
 #topbar::after{animation:grad-slide 4s linear infinite}
 @keyframes grad-slide{0%{background-position:0%}100%{background-position:200%}}
 #topbar::after{background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),var(--cyan),transparent);background-size:200%;opacity:.5}
 
-/* ── CHALLENGE BUTTON ── */
+/* ââ CHALLENGE BUTTON ââ */
 #challenge-btn{position:relative}
 #challenge-btn .notif{
   position:absolute;top:-3px;right:-3px;width:7px;height:7px;
@@ -824,7 +686,7 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
 }
 @keyframes notif-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.4)}}
 
-/* ── LINE COUNT STATUS ── */
+/* ââ LINE COUNT STATUS ââ */
 #sb-lines{cursor:default}
 
 </style>
@@ -971,7 +833,6 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
   <button class="hbtn" id="mobile-settings-btn" onclick="openMobileSettings()" title="Settings"><i class="fa-solid fa-gear"></i></button>
 </div>
 
-<!-- MOBILE SIDEBAR BACKDROP -->
 <div id="mobile-sidebar-backdrop" onclick="closeMobileSidebar()"></div>
 
 <!-- WORKSPACE -->
@@ -1137,42 +998,21 @@ from module import name</code>
       <button class="hbtn ok" onclick="saveFile()" title="Save as .py"><i class="fa-solid fa-download"></i> Save .py</button>
       <button class="hbtn" onclick="loadFile()" title="Open .py"><i class="fa-solid fa-folder-open"></i> Open</button>
       <button class="hbtn danger" onclick="clearCode()" title="Clear code"><i class="fa-solid fa-file-circle-xmark"></i> Clear</button>
-      <div class="examples-wrap" style="position:relative;margin-left:4px">
-        <button class="hbtn" onclick="toggleExamples()" title="Example programs" id="examples-btn"><i class="fa-solid fa-book-open"></i> Examples</button>
-        <div id="examples-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;z-index:50;
-          background:var(--bg-panel);border:1px solid var(--border-2);border-radius:8px;
-          min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,.5);overflow:hidden">
-        </div>
-      </div>
+      <div style="position:relative;display:inline-block"><button class="hbtn" onclick="toggleExamples()" id="examples-btn"><i class="fa-solid fa-book-open"></i> Examples</button><div id="examples-dropdown" style="display:none;position:absolute;top:calc(100%+4px);left:0;z-index:99;background:var(--bg-panel);border:1px solid var(--border-2);border-radius:8px;min-width:200px;max-height:340px;overflow-y:auto;box-shadow:0 8px 28px rgba(0,0,0,.55)"></div></div>
       <span id="pkg-stat" style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto;margin-right:6px"><i class="fa-solid fa-box"></i> stdlib</span>
     </div>
     <div id="tabs-bar"></div>
     <div id="editor-container">
+      <textarea id="mobile-editor" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="# Write your Python here"></textarea>
       <div id="ed-load">
         <div class="spinner"></div>
         <div class="ed-load-txt">Loading editor...</div>
       </div>
       <div id="err-banner">
-        <div class="eb-header">
-          <span class="eb-icon"><i class="fa-solid fa-circle-xmark"></i></span>
-          <span class="eb-type" id="eb-type">Error</span>
-          <span class="eb-loc" id="eb-loc">Line 1</span>
-          <button class="eb-close" onclick="hideErrBanner()"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="eb-body">
-          <div class="eb-raw" id="eb-raw"></div>
-          <div class="eb-friendly" id="eb-friendly" style="display:none"></div>
-          <div class="eb-fix" id="eb-fix" style="display:none" onclick="applyErrFix()">
-            <span class="eb-fix-label" id="eb-fix-label"></span>
-            <button class="eb-fix-btn">Apply Fix ✓</button>
-          </div>
-        </div>
+        <i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i>
+        <span class="eb-msg" id="eb-msg"></span>
+        <button class="eb-close" onclick="hideErrBanner()"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <!-- Mobile code editor: real textarea shown instead of Monaco on mobile -->
-      <textarea id="mobile-code-editor"
-        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-        placeholder="# Write your Python here and tap Run"
-        style="display:none"></textarea>
     </div>
   </div>
 
@@ -1188,15 +1028,12 @@ from module import name</code>
     </div>
     <div id="terminal"></div>
     <div id="input-row">
-      <span class="in-arrow">❯</span>
-      <input type="text" id="term-input" autocomplete="off" spellcheck="false" placeholder="type and press Enter…">
-      <span class="in-hint">Enter ↵</span>
+      <span class="in-arrow">â¯</span>
+      <input type="text" id="term-input" autocomplete="off" spellcheck="false" placeholder="type and press Enterâ¦">
+      <span class="in-hint">Enter âµ</span>
     </div>
   </div>
 </div>
-
-<!-- Dynamic sheets -->
-<div id="example-sheet" style="display:none;position:fixed;inset:0;z-index:300"></div>
 
 <!-- MOBILE BOTTOM BAR -->
 <div id="mobile-bar">
@@ -1205,8 +1042,8 @@ from module import name</code>
   <button id="mobile-clear-btn" onclick="clearCode()"><i class="fa-solid fa-trash-can"></i> Clear</button>
   <!-- Output view back button -->
   <button id="mobile-output-back" onclick="mobileBack()" style="display:none"><i class="fa-solid fa-arrow-left"></i> Editor</button>
-  <!-- Examples -->
-  <button id="mobile-examples-btn" onclick="toggleExamples()"><i class="fa-solid fa-book-open"></i></button>
+  <button onclick="toggleSidebar()" style="flex:0 0 auto;min-width:44px"><i class="fa-solid fa-bars"></i></button>
+  <button onclick="toggleMobileExamples()" style="flex:0 0 auto;min-width:44px"><i class="fa-solid fa-book-open"></i></button>
   <!-- Always visible run button -->
   <button id="run-btn-mobile" disabled onclick="runCode()"><i class="fa-solid fa-circle-play"></i> Run</button>
 </div>
@@ -1225,7 +1062,7 @@ from module import name</code>
 
 <script>
 // STATE
-// ══════════════════════════════
+// ââââââââââââââââââââââââââââââ
 let vfs = { 'main.py': '# Write your Python here and click Run\nprint("Hello, World!")\n' };
 let currentFile = 'main.py';
 let editor = null;
@@ -1241,7 +1078,7 @@ const $ = id => document.getElementById(id);
 const terminal = $('terminal');
 const runBtn = $('run-btn');
 
-// ── TERMINAL ──
+// ââ TERMINAL ââ
 function tAppend(text, cls) {
   const el = document.createElement('span');
   if (cls) el.className = cls;
@@ -1269,16 +1106,16 @@ function tAppendHTML(text, cls) {
 function clearCode() {
   if (!confirm('Clear all code in this file?')) return;
   vfs[currentFile] = '';
-  const mobileEd = $('mobile-code-editor');
-  if (mobileEd && mobileEd.offsetParent !== null) { mobileEd.value = ''; }
-  else if (editor) { editor.setValue(''); }
+  const me = $('mobile-editor');
+  if (me && me.offsetParent) me.value = '';
+  else if (editor) editor.setValue('');
   hideErrBanner();
   showToast('Code cleared');
 }
 
 function clearOut() {
   terminal.innerHTML = '';
-  $('exec-time').textContent = '';
+  const _et=$('exec-time');if(_et)_et.textContent='';
   hideErrBanner();
 }
 function copyOutput() {
@@ -1287,15 +1124,15 @@ function copyOutput() {
   navigator.clipboard.writeText(txt).then(() => showToast('Output copied!')).catch(() => showToast('Copy failed'));
 }
 function copyCode() {
-  const mobileEd = $('mobile-code-editor');
-  const code = (mobileEd && mobileEd.offsetParent !== null) ? mobileEd.value : (editor ? editor.getValue() : '');
+  const me = $('mobile-editor');
+  const code = (me && me.offsetParent) ? me.value : (editor ? editor.getValue() : '');
   navigator.clipboard.writeText(code).then(() => showToast('Code copied!')).catch(() => showToast('Copy failed'));
 }
 
-// ── SAVE / LOAD ──
+// ââ SAVE / LOAD ââ
 function saveFile() {
-  const mobileEd = $('mobile-code-editor');
-  if (mobileEd && mobileEd.offsetParent !== null) vfs[currentFile] = mobileEd.value;
+  const me = $('mobile-editor');
+  if (me && me.offsetParent) vfs[currentFile] = me.value;
   else if (editor) vfs[currentFile] = editor.getValue();
   const blob = new Blob([vfs[currentFile]], { type: 'text/x-python;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -1341,7 +1178,7 @@ function escHTML(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-// ── VFS / FILES ──
+// ââ VFS / FILES ââ
 function renderUI() {
   const fl = $('file-list'), tabs = $('tabs-bar');
   fl.innerHTML = ''; tabs.innerHTML = '';
@@ -1394,14 +1231,14 @@ function confirmNew() {
 $('modal-inp').addEventListener('keydown', e => { if (e.key === 'Enter') confirmNew(); if (e.key === 'Escape') closeModal(); });
 $('modal-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 
-// ── QUICK REFERENCE ──
+// ââ QUICK REFERENCE ââ
 function toggleRef(hd) {
   hd.classList.toggle('open');
   const body = hd.nextElementSibling;
   body.classList.toggle('open');
 }
 
-// ── THEME / FONT ──
+// ââ THEME / FONT ââ
 let monacoTheme = 'vs-dark';
 function setTheme(t) {
   isDark = t === 'dark';
@@ -1421,7 +1258,7 @@ function setFont(s) {
   try { localStorage.setItem('pyr_font', s); } catch(_) {}
 }
 
-// ── BOOT ──
+// ââ BOOT ââ
 function boot(steps, done) {
   const bar = $('boot-bar'), msg = $('boot-msg');
   let i = 0;
@@ -1435,7 +1272,7 @@ function boot(steps, done) {
   go();
 }
 
-// ── MONACO ──
+// ââ MONACO ââ
 function loadMonaco(cb) {
   const s = document.createElement('script');
   s.src = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.js';
@@ -1470,34 +1307,10 @@ function loadMonaco(cb) {
         vfs[currentFile] = editor.getValue();
         updateLineCount();
         if (errDecorations.length) {
-          if (editor && typeof monaco!=='undefined') {
-            if (editor) errDecorations = editor.deltaDecorations(errDecorations, []);
-            if (typeof monaco!=="undefined") monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
-          }
+          errDecorations = editor.deltaDecorations(errDecorations, []);
+          monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
         }
       });
-
-      // ── MOBILE: use real textarea instead of Monaco ──
-      if (window.innerWidth <= 700) {
-        // Hide Monaco, show the real textarea
-        const monacoEl = document.querySelector('#editor-container .monaco-editor');
-        if (monacoEl) monacoEl.style.display = 'none';
-
-        const mobileEd = $('mobile-code-editor');
-        mobileEd.style.display = 'block';
-        mobileEd.value = vfs[currentFile] || '# Write your Python here\nprint("Hello, World!")';
-
-        // Keep vfs in sync as user types
-        mobileEd.addEventListener('input', () => {
-          vfs[currentFile] = mobileEd.value;
-        });
-
-        // Override editor.getValue so runCode still works
-        const _origGetValue = editor.getValue.bind(editor);
-        editor.getValue = () => mobileEd.value;
-        editor.setValue = (v) => { mobileEd.value = v; vfs[currentFile] = v; };
-      }
-
       cb();
     });
   };
@@ -1505,7 +1318,7 @@ function loadMonaco(cb) {
   document.body.appendChild(s);
 }
 
-// ── PYODIDE ──
+// ââ PYODIDE ââ
 async function loadPy(cb) {
   const s = document.createElement('script');
   s.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js';
@@ -1516,7 +1329,7 @@ async function loadPy(cb) {
       pyodide.setStderr({ batched: m => tAppend(m, 't-err') });
 
       // Expose input bridge on globalThis so Python's `from js import` can find it.
-      // This returns a Promise — Python awaits it via the async input() we install below.
+      // This returns a Promise â Python awaits it via the async input() we install below.
       globalThis._js_input_fn = (prompt) => {
         if (prompt) tAppend(prompt);
         $('input-row').style.display = 'flex';
@@ -1527,7 +1340,7 @@ async function loadPy(cb) {
 
       // Install async input() AND an AST transformer that rewrites every
       // `input(...)` call in user code to `await input(...)` automatically.
-      // This is the only reliable way to handle input() in Pyodide — the async
+      // This is the only reliable way to handle input() in Pyodide â the async
       // function must be awaited at the call site, and users can't write `await input()`.
       await pyodide.runPythonAsync(`
 import builtins, ast
@@ -1583,143 +1396,311 @@ js.globalThis._py_transform = _transform_user_code
   document.body.appendChild(s);
 }
 
-// ══════════════════════════════
-// ERROR SYSTEM — FANTASTIC MODE
-// ══════════════════════════════
-
+// ââââââââââââââââââââââââââââââ
+// ERROR HIGHLIGHTING
+// ââââââââââââââââââââââââââââââ
+// LINE_OFFSET: the AST transformer wraps user code in `async def __main__():` at line 1,
+// so user's line 1 becomes line 2 in the transformed code. Subtract 1.
 const WRAPPER_LINE_OFFSET = 1;
-let currentFix = null; // holds { line, oldText, newText } for Apply Fix
 
-// ── ERROR TYPE → EMOJI MAP ──
-const ERR_EMOJI = {
-  'SyntaxError':      { emoji:'🔴', label:'Syntax Error'      },
-  'IndentationError': { emoji:'📐', label:'Indentation Error'  },
-  'NameError':        { emoji:'🔍', label:'Name Error'         },
-  'TypeError':        { emoji:'🔀', label:'Type Error'         },
-  'IndexError':       { emoji:'📋', label:'Index Error'        },
-  'KeyError':         { emoji:'🗝️',  label:'Key Error'          },
-  'ValueError':       { emoji:'⚠️',  label:'Value Error'        },
-  'ZeroDivisionError':{ emoji:'➗', label:'Division Error'     },
-  'AttributeError':   { emoji:'🔧', label:'Attribute Error'    },
-  'RecursionError':   { emoji:'🔁', label:'Recursion Error'    },
-  'FileNotFoundError':{ emoji:'📁', label:'File Not Found'     },
-  'ModuleNotFoundError':{ emoji:'📦', label:'Module Not Found' },
-  'RuntimeError':     { emoji:'💥', label:'Runtime Error'      },
-  'OverflowError':    { emoji:'📈', label:'Overflow Error'     },
-  'MemoryError':      { emoji:'💾', label:'Memory Error'       },
-};
+function parseTraceback(tb, activeFile) {
+  const re = /File "([^"]+)", line (\d+)/g;
+  let m, last = null;
+  while ((m = re.exec(tb)) !== null) {
+    const file = m[1].replace(/^\/+/, '');
+    if (file.includes('pyodide') || file.startsWith('_')) continue;
+    // <exec> or <user_code> both mean the active file
+    last = { file: (file === '<exec>' || file === '<string>') ? activeFile : file, line: parseInt(m[2], 10) };
+  }
+  if (!last) {
+    const execMatch = /File "(?:<exec>|<string>)", line (\d+)/.exec(tb);
+    if (execMatch) last = { file: activeFile, line: parseInt(execMatch[1], 10) };
+  }
+  // Correct for the async wrapper adding one line at the top
+  if (last) last.line = Math.max(1, last.line - WRAPPER_LINE_OFFSET);
 
-// ── FRIENDLY ERROR DATABASE ──
-const FRIENDLY_ERRORS = [
-  {
-    match: /SyntaxError.*EOL while scanning string literal/,
-    tip: () => `You opened a quote (" or ') but never closed it.`,
-    fix: (line, code) => {
-      const trimmed = code.trim();
-      const q = trimmed.includes('"') ? '"' : "'";
-      return { label: `Close the string with ${q}`, newLine: code.trimEnd() + q };
+  const lines = tb.trim().split('\n');
+  const errLine = lines[lines.length - 1] || 'Error';
+  return { file: last?.file || activeFile, line: last?.line || 1, message: errLine, traceback: tb };
+}
+
+function highlightError(err) {
+  lastError = err;
+  if (!editor || typeof monaco==='undefined') {
+    const me=$('mobile-editor');
+    const lineText=me?(me.value.split('\n')[err.line-1]||''):'';
+    if(me){const ls=me.value.split('\n');let pos=0;for(let i=0;i<err.line-1&&i<ls.length;i++)pos+=ls[i].length+1;try{me.focus();me.setSelectionRange(pos,pos+lineText.length);}catch(_){}}
+    showErrBanner(err);
+    return;
+  }
+  if (err.file && err.file !== currentFile && vfs[err.file]) switchFile(err.file);
+  const model = editor.getModel();
+  if (!model) return;
+  const maxLine = model.getLineCount();
+  const line = Math.min(Math.max(1, err.line), maxLine);
+  errDecorations = editor.deltaDecorations(errDecorations, [{
+    range: new monaco.Range(line, 1, line, 1),
+    options: {
+      isWholeLine: true,
+      className: 'err-line-bg',
+      glyphMarginClassName: 'err-line-glyph',
+      hoverMessage: { value: '**Error:** ' + err.message },
+    },
+  }]);
+  monaco.editor.setModelMarkers(model, 'pyerr', [{
+    startLineNumber: line, startColumn: 1, endLineNumber: line, endColumn: model.getLineMaxColumn(line),
+    message: err.message, severity: monaco.MarkerSeverity.Error,
+  }]);
+  editor.revealLineInCenter(line);
+  showErrBanner(err);
+}
+function showErrBanner(err) {
+  const _t=(err.message||'').match(/^([A-Za-z]+Error|SyntaxError|IndentationError)/);
+  const _tn=_t?_t[1]:'Error';
+  const _em={'SyntaxError':'ð´','IndentationError':'ð','NameError':'ð','TypeError':'ð','IndexError':'ð','ValueError':'â ','ZeroDivisionError':'â','AttributeError':'ð§','RecursionError':'ð','ModuleNotFoundError':'ð¦'};
+  const _e=_em[_tn]||'â';
+  const _tip=getFriendlyTip(err.message||'');
+  const _b=$('err-banner');
+  _b.innerHTML='<div style="display:flex;align-items:center;gap:8px;padding:8px 12px 6px;border-bottom:1px solid rgba(255,82,82,.2)">'
+    +'<span>'+_e+'</span><span style="font-size:11px;font-weight:700;color:#ff8080;flex:1;font-family:var(--mono)">'+escHTML(_tn)+'</span>'
+    +(err.line?'<span style="font-size:10px;color:#ff5252;font-family:var(--mono)">Line '+err.line+'</span>':'')+'<button onclick="hideErrBanner()" style="background:none;border:none;color:#ff8080;cursor:pointer;font-size:14px;padding:2px 6px">â</button></div>'
+    +'<div style="padding:8px 12px 10px;display:flex;flex-direction:column;gap:5px">'
+    +'<div style="font-size:10px;font-family:var(--mono);color:#c09090;white-space:pre-wrap;word-break:break-word">'+escHTML(err.message||'')+'</div>'
+    +(_tip?'<div style="font-size:11px;color:#ffe0a0;border-left:2px solid var(--amber);padding:4px 8px">'+escHTML(_tip)+'</div>':'')+'</div>';
+  _b.style.cssText='position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:20;background:linear-gradient(135deg,#2a0d0d,#1e1010);border:1px solid rgba(255,82,82,.55);border-radius:10px;display:flex;flex-direction:column;max-width:92%;min-width:240px;box-shadow:0 8px 28px rgba(255,82,82,.2),0 2px 8px rgba(0,0,0,.6)';
+}
+function hideErrBanner() { $('err-banner').classList.remove('show'); }
+function askAIAboutError() { /* AI panel removed */ }
+
+// ââ RUN ââ
+async function runCode() {
+  if (!pyodide) { showToast('Python engine still loadingâ¦'); return; }
+  const _me=$('mobile-editor');
+  if(_me&&_me.offsetParent) vfs[currentFile]=_me.value;
+  else if(editor) vfs[currentFile]=editor.getValue();
+
+  runBtn.disabled = true;
+  runBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running';
+  clearOut();
+  tRaw(`<span class="t-prompt">â¯ python ${escHTML(currentFile)}</span>`);
+
+  const t0 = performance.now();
+
+  // Write all files into Pyodide FS so multi-file imports work
+  for (const [fn, code] of Object.entries(vfs)) {
+    try { pyodide.FS.writeFile('/' + fn, code); } catch (_) {}
+  }
+
+  try {
+    const _ps=$('pkg-stat');
+    if(_ps)_ps.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Loading packages...';
+    await pyodide.loadPackagesFromImports(Object.values(vfs).join('\n'));
+    if(_ps)_ps.innerHTML='<i class="fa-solid fa-box"></i> stdlib ready';
+  } catch(_){
+    const _ps2=$('pkg-stat');if(_ps2)_ps2.innerHTML='<i class="fa-solid fa-box"></i> stdlib ready';
+  }
+
+  try {
+    const userCode = vfs[currentFile] || vfs['main.py'];
+    // Use the Python AST transformer installed at boot:
+    // it rewrites every input(...) -> await input(...) and wraps the
+    // whole script in `async def __main__(): ... / await __main__()`
+    // so every input() call is properly awaited regardless of where it appears.
+    const transformed = globalThis._py_transform(userCode);
+    await pyodide.runPythonAsync(transformed);
+  } catch (err) {
+    const msg = err.message || String(err);
+    const _parsed = parseTraceback(msg, currentFile);
+    renderErrCard(_parsed, msg);
+    highlightError(_parsed);
+  } finally {
+    const ms = ((performance.now() - t0) / 1000).toFixed(2);
+    tAppend('');
+    tAppend(`Finished in ${ms}s`, 't-sys');
+    const _et2=$('exec-time');if(_et2)_et2.textContent=ms+'s';
+    runBtn.disabled = false;
+    runBtn.innerHTML = '<i class="fa-solid fa-circle-play"></i> Run';
+    // Only hide input row if no more input() calls are pending
+    if (!inputResolver) $('input-row').style.display = 'none';
+  }
+}
+
+// ââ INPUT ââ
+function submitInput() {
+  if (!inputResolver) return;
+  const val = $('term-input').value;
+  tAppend(val, 't-in');
+  $('term-input').value = '';
+  const res = inputResolver;
+  inputResolver = null;
+  $('input-row').style.display = 'none';
+  res(val); // resume Python AFTER state is clean
+}
+$('term-input').addEventListener('keydown', e => { if (e.key === 'Enter') submitInput(); });
+
+// ââââââââââââââââââââââââââââââ
+// AI ASSISTANT
+// ââââââââââââââââââââââââââââââ
+function updateNoKeyBanner() {}
+function toggleAI() {}
+function clearAIChat() {}
+function askAIAboutError() {}
+function sendAI() {}
+function aiQuick() {}
+function addAIMsg() {}
+function renderMarkdown(text) { return text; }
+// AI panel removed â stub saved key references safely
+try {
+  const savedModel = localStorage.getItem('pyr_ai_model');
+  const savedKey   = localStorage.getItem('pyr_ai_key');
+  const savedTheme = localStorage.getItem('pyr_theme');
+  const savedFont  = localStorage.getItem('pyr_font');
+  if (savedTheme && savedTheme !== 'dark') setTheme(savedTheme);
+  if (savedFont  && savedFont  !== 'md')   setFont(savedFont);
+} catch(_) {}
+
+// (AI panel removed â settings stubs above handle theme/font restore)
+
+function useAICode(b64) {
+  const code = decodeURIComponent(escape(atob(b64)));
+  if (!editor) return;
+  editor.setValue(code);
+  vfs[currentFile] = code;
+  showToast('Inserted into editor');
+}
+// ââââââââââââââââââââââââââââââ
+// SHARE VIA URL
+// ââââââââââââââââââââââââââââââ
+function openShareModal() {
+  const code = vfs[currentFile] || '';
+  const compressed = btoa(unescape(encodeURIComponent(code)));
+  const url = location.origin + location.pathname + '?code=' + compressed;
+  $('share-url-input').value = url;
+  $('share-modal').classList.add('open');
+}
+function closeShareModal() {
+  $('share-modal').classList.remove('open');
+}
+function copyShareUrl() {
+  const val = $('share-url-input').value;
+  navigator.clipboard.writeText(val).then(() => showToast('Link copied! ð', 'ok'));
+}
+// Load shared code from URL on page load
+function loadSharedCode() {
+  try {
+    const params = new URLSearchParams(location.search);
+    const code = params.get('code');
+    if (code) {
+      const decoded = decodeURIComponent(escape(atob(code)));
+      vfs[currentFile] = decoded;
+      if (editor) editor.setValue(decoded);
+      showToast('Shared code loaded! â', 'ok');
     }
-  },
-  {
-    match: /SyntaxError.*unexpected EOF while parsing|SyntaxError.*was never closed/,
-    tip: () => `A bracket, parenthesis, or brace was opened but never closed. Check for missing ), ], or }.`,
-    fix: null
-  },
-  {
-    match: /SyntaxError.*expected ':'/,
-    tip: () => `Missing colon (:) at the end of an if, for, while, def, or class statement.`,
-    fix: (line, code) => ({ label: `Add missing colon`, newLine: code.trimEnd() + ':' })
-  },
-  {
-    match: /SyntaxError.*invalid syntax/,
-    tip: () => `Python can't read this line. Check for missing colons (:), unclosed brackets, or typos.`,
-    fix: null
-  },
-  {
-    match: /IndentationError.*expected an indented block/,
-    tip: () => `The line after if/for/while/def/class must be indented. Add 4 spaces before it.`,
-    fix: (line, code) => ({ label: `Add 4 spaces indent`, newLine: '    ' + code.trimStart() })
-  },
-  {
-    match: /IndentationError.*unexpected indent/,
-    tip: () => `This line is indented but shouldn't be. Remove the extra spaces at the start.`,
-    fix: (line, code) => ({ label: `Remove indent`, newLine: code.trimStart() })
-  },
-  {
-    match: /IndentationError/,
-    tip: () => `Indentation is inconsistent. Use 4 spaces per level — don't mix tabs and spaces.`,
-    fix: null
-  },
-  {
-    match: /NameError.*name '(.+?)' is not defined/,
-    tip: (m) => `"${m[1]}" doesn't exist yet. Did you spell it correctly, or forget to define/import it above this line?`,
-    fix: null
-  },
-  {
-    match: /TypeError.*unsupported operand type.*str.*int|TypeError.*can only concatenate str.*int/,
-    tip: () => `You're mixing a string and a number. Use str() to convert the number, or int() to convert the string.`,
-    fix: null
-  },
-  {
-    match: /TypeError.*'NoneType'/,
-    tip: () => `Something returned None when you expected a value. Make sure your function has a return statement.`,
-    fix: null
-  },
-  {
-    match: /TypeError.*takes (\d+) positional argument.*(\d+) given/,
-    tip: (m) => `This function expects ${parseInt(m[1])-1} argument(s) but you passed ${parseInt(m[2])-1}. Check how you're calling it.`,
-    fix: null
-  },
-  {
-    match: /TypeError.*missing (\d+) required positional argument/,
-    tip: (m) => `You forgot to pass ${m[1]} required argument(s) to this function.`,
-    fix: null
-  },
-  {
-    match: /IndexError.*list index out of range/,
-    tip: () => `You're accessing a position in a list that doesn't exist. Remember: lists start at index 0, and the last item is at index length-1.`,
-    fix: null
-  },
-  {
-    match: /KeyError.*'(.+?)'/,
-    tip: (m) => `The key "${m[1]}" doesn't exist in the dictionary. Use .get("${m[1]}") for safe access, or check the key name.`,
-    fix: null
-  },
-  {
-    match: /ZeroDivisionError/,
-    tip: () => `You're dividing by zero! Add a check before dividing: if denominator != 0:`,
-    fix: null
-  },
-  {
-    match: /AttributeError.*'(.+?)' object has no attribute '(.+?)'/,
-    tip: (m) => `"${m[1]}" doesn't have a .${m[2]}() method. Check the variable type or spelling.`,
-    fix: null
-  },
-  {
-    match: /ValueError.*invalid literal.*int\(\).*'(.+?)'/,
-    tip: (m) => `Can't convert "${m[1]}" to an integer. Make sure the input is a plain whole number with no letters or spaces.`,
-    fix: null
-  },
-  {
-    match: /RecursionError/,
-    tip: () => `Your function is calling itself forever! Make sure you have a base case that stops the recursion.`,
-    fix: null
-  },
-  {
-    match: /ModuleNotFoundError.*'(.+?)'/,
-    tip: (m) => `The module "${m[1]}" isn't built-in. PyRunner will try to auto-install it — just click Run again.`,
-    fix: null
-  },
-  {
-    match: /FileNotFoundError/,
-    tip: () => `File not found. Check that the filename and path are exactly correct (case-sensitive).`,
-    fix: null
-  },
-  {
-    match: /OverflowError/,
-    tip: () => `The number you computed is too large for Python to handle. Try breaking it into smaller steps.`,
-    fix: null
-  },
+  } catch(_) {}
+}
+
+// ââââââââââââââââââââââââââââââ
+// SHORTCUT MODAL
+// ââââââââââââââââââââââââââââââ
+function openShortcutModal() {
+  $('shortcut-modal').classList.add('open');
+}
+function closeShortcutModal() {
+  $('shortcut-modal').classList.remove('open');
+}
+
+// ââââââââââââââââââââââââââââââ
+// DAILY CHALLENGE
+// ââââââââââââââââââââââââââââââ
+const CHALLENGES = [
+  { q:"Print the numbers 1 to 10 using a for loop.", tags:["loops","print"], hint:"for i in range(1, 11):" },
+  { q:"Write a function that returns the square of a number.", tags:["functions","math"], hint:"def square(n):" },
+  { q:"Check if a number entered by the user is odd or even.", tags:["input","if/else"], hint:"num % 2 == 0" },
+  { q:"Print the multiplication table of 5 (5x1 to 5x10).", tags:["loops","math"], hint:"for i in range(1, 11):" },
+  { q:"Write a program that counts down from 10 to 1 and prints 'Blast off!'", tags:["loops","while"], hint:"while count > 0:" },
+  { q:"Take two numbers as input and print their sum, difference, product, and quotient.", tags:["input","math"], hint:"int(input())" },
+  { q:"Print all even numbers between 1 and 50.", tags:["loops","conditions"], hint:"if n % 2 == 0:" },
+  { q:"Write a function that returns the larger of two numbers.", tags:["functions","if/else"], hint:"def max_of_two(a, b):" },
+  { q:"Reverse a string entered by the user.", tags:["strings","slicing"], hint:"s[::-1]" },
+  { q:"Count how many vowels are in a string.", tags:["strings","loops"], hint:"if char in 'aeiou':" },
+  { q:"Check if a word is a palindrome (same forwards and backwards).", tags:["strings","logic"], hint:"word == word[::-1]" },
+  { q:"Print the first 10 Fibonacci numbers.", tags:["loops","math"], hint:"a, b = 0, 1" },
+  { q:"Write a function that checks if a number is prime.", tags:["functions","math"], hint:"for i in range(2, n):" },
+  { q:"Create a list of squares of numbers from 1 to 10 using list comprehension.", tags:["lists","comprehension"], hint:"[x**2 for x in range(1,11)]" },
+  { q:"Find the largest number in a list without using max().", tags:["lists","loops"], hint:"largest = lst[0]" },
+  { q:"Write a program that asks for a name and greets the user.", tags:["input","strings"], hint:"input('Your name: ')" },
+  { q:"Convert Celsius to Fahrenheit. Formula: F = C x 9/5 + 32", tags:["math","input"], hint:"float(input())" },
+  { q:"Print a triangle of stars with 5 rows using nested loops.", tags:["loops","patterns"], hint:"for i in range(1, 6):" },
+  { q:"Sum all numbers in a list using a loop (no sum() allowed).", tags:["lists","loops"], hint:"total += item" },
+  { q:"Write a function that returns True if a list is empty.", tags:["functions","lists"], hint:"return len(lst) == 0" },
+  { q:"Create a dictionary of 3 students and their grades, then print each one.", tags:["dict","loops"], hint:"for k, v in d.items():" },
+  { q:"Remove duplicates from a list without using set().", tags:["lists","logic"], hint:"if item not in seen:" },
+  { q:"Write a calculator that takes two numbers and an operator (+,-,*,/) from input.", tags:["input","if/else"], hint:"if op == '+':" },
+  { q:"Sort a list of numbers in ascending order without using sort().", tags:["lists","algorithms"], hint:"bubble sort or selection sort" },
+  { q:"Print the ASCII value of each character in a string.", tags:["strings","built-ins"], hint:"ord(char)" },
+  { q:"Write a function that flattens a list of lists into one list.", tags:["lists","loops"], hint:"for item in sublist:" },
+  { q:"Count the frequency of each word in a sentence.", tags:["dict","strings"], hint:"dict.get(word, 0) + 1" },
+  { q:"Write a recursive function to compute factorial of n.", tags:["recursion","math"], hint:"return n * factorial(n-1)" },
+  { q:"Find the second largest number in a list.", tags:["lists","logic"], hint:"sorted(set(lst))[-2]" },
+  { q:"Write a program that prints the FizzBuzz sequence up to 30.", tags:["loops","conditions"], hint:"if n%3==0 and n%5==0:" },
+];
+
+function getDayIndex() {
+  const start = new Date('2025-01-01');
+  const now = new Date();
+  const diff = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  return diff % CHALLENGES.length;
+}
+
+function toggleChallenge() {
+  const panel = $('challenge-panel');
+  const isOpen = panel.classList.toggle('open');
+  if (isOpen) renderChallenge();
+}
+
+function closeChallenge() {
+  $('challenge-panel').classList.remove('open');
+}
+
+function renderChallenge() {
+  const idx = getDayIndex();
+  const ch = CHALLENGES[idx];
+  const dayNum = idx + 1;
+  $('ch-day-label').textContent = `Challenge #${dayNum} - ${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
+  $('ch-question').textContent = ch.q;
+  const tagsEl = $('ch-tags');
+  tagsEl.innerHTML = ch.tags.map(t => `<span class="ch-tag">#${t}</span>`).join('');
+}
+
+function loadChallenge() {
+  const idx = getDayIndex();
+  const ch = CHALLENGES[idx];
+  const starter = `# Daily Challenge\n# ${ch.q}\n# Hint: ${ch.hint}\n\n# Write your solution below:\n`;
+  vfs[currentFile] = starter;
+  if (editor) editor.setValue(starter);
+  closeChallenge();
+  showToast('Challenge loaded! Good luck ð¥', 'ok');
+}
+
+// ââââââââââââââââââââââââââââââ
+// FRIENDLY ERROR MESSAGES
+// ââââââââââââââââââââââââââââââ
+const FRIENDLY_ERRORS = [
+  { match: /NameError.*name '(.+?)' is not defined/, tip: (m) => `ð¡ "${m[1]}" doesn't exist yet. Did you spell it right or forget to define it above?` },
+  { match: /IndentationError/, tip: () => `ð¡ Indentation issue. Use 4 spaces consistently â don't mix tabs and spaces.` },
+  { match: /SyntaxError.*EOL while scanning string/, tip: () => `ð¡ You opened a string with " or ' but never closed it.` },
+  { match: /SyntaxError.*invalid syntax/, tip: () => `ð¡ Python can't read this line. Check for missing colons (:), brackets, or typos.` },
+  { match: /TypeError.*unsupported operand type.*str.*int/, tip: () => `ð¡ You're mixing a string and a number. Wrap the number in str() or convert the string with int().` },
+  { match: /TypeError.*'NoneType'/, tip: () => `ð¡ Something returned None when you expected a value. Check your function has a return statement.` },
+  { match: /TypeError.*takes (\d+) positional argument.*(\d+) given/, tip: (m) => `ð¡ Function expects ${m[1]} argument(s) but got ${m[2]}. Check how you're calling it.` },
+  { match: /IndexError.*list index out of range/, tip: () => `ð¡ You're trying to access a list position that doesn't exist. Remember lists start at index 0.` },
+  { match: /KeyError.*'(.+?)'/, tip: (m) => `ð¡ The key "${m[1]}" doesn't exist in the dictionary. Use .get() for safe access or check the key name.` },
+  { match: /ZeroDivisionError/, tip: () => `ð¡ You're dividing by zero. Add a check: if divisor != 0: before dividing.` },
+  { match: /AttributeError.*'(.+?)' object has no attribute '(.+?)'/, tip: (m) => `ð¡ "${m[1]}" doesn't have a ".${m[2]}" method. Check the type or spelling.` },
+  { match: /ValueError.*invalid literal.*int\(\).*'(.+?)'/, tip: (m) => `ð¡ Can't convert "${m[1]}" to an integer. Make sure the input is a plain number.` },
+  { match: /RecursionError/, tip: () => `ð¡ Infinite recursion â your function keeps calling itself. Make sure you have a base case that stops it.` },
+  { match: /FileNotFoundError/, tip: () => `ð¡ File not found. Check the filename and path are correct.` },
+  { match: /ModuleNotFoundError.*'(.+?)'/, tip: (m) => `ð¡ Module "${m[1]}" isn't installed. PyRunner will try to install it automatically â just run again.` },
 ];
 
 function getFriendlyTip(errorMsg) {
@@ -1728,222 +1709,6 @@ function getFriendlyTip(errorMsg) {
     if (m) return tip(m);
   }
   return null;
-}
-
-function getFriendlyEntry(errorMsg) {
-  for (const entry of FRIENDLY_ERRORS) {
-    const m = errorMsg.match(entry.match);
-    if (m) return { tip: entry.tip(m), fix: entry.fix };
-  }
-  return null;
-}
-
-function getErrType(msg) {
-  const m = msg.match(/^([A-Za-z]+Error|SyntaxError|IndentationError|NameError|TypeError|ValueError)/);
-  return m ? m[1] : 'Error';
-}
-
-// ── PARSE TRACEBACK ──
-function parseTraceback(tb, activeFile) {
-  // Try to extract exact column from SyntaxError
-  let col = null;
-  const colMatch = tb.match(/^\s*\^\s*$/m);
-  if (colMatch) {
-    const lines = tb.split('\n');
-    const caretIdx = lines.findIndex(l => /^\s*\^+\s*$/.test(l));
-    if (caretIdx >= 0) col = lines[caretIdx].indexOf('^') + 1;
-  }
-
-  const re = /File "([^"]+)", line (\d+)/g;
-  let match, last = null;
-  while ((match = re.exec(tb)) !== null) {
-    const file = match[1].replace(/^\/+/, '');
-    if (file.includes('pyodide') || file.startsWith('_')) continue;
-    last = { file: (file === '<exec>' || file === '<string>') ? activeFile : file, line: parseInt(match[2], 10) };
-  }
-  if (!last) {
-    const execMatch = /File "(?:<exec>|<string>)", line (\d+)/.exec(tb);
-    if (execMatch) last = { file: activeFile, line: parseInt(execMatch[1], 10) };
-  }
-  if (last) last.line = Math.max(1, last.line - WRAPPER_LINE_OFFSET);
-
-  const tbLines = tb.trim().split('\n');
-  const errLine = tbLines[tbLines.length - 1] || 'Error';
-  return {
-    file: last?.file || activeFile,
-    line: last?.line || 1,
-    col,
-    message: errLine,
-    traceback: tb,
-    type: getErrType(errLine),
-  };
-}
-
-// ── HIGHLIGHT ERROR IN EDITOR ──
-function highlightError(err) {
-  lastError = err;
-  // On mobile there's no Monaco — show banner only
-  if (!editor || typeof monaco === 'undefined') {
-    const mobileEd = $('mobile-code-editor');
-    const lineText = mobileEd ? (mobileEd.value.split('
-')[err.line - 1] || '') : '';
-    showErrBanner(err, lineText);
-    // Scroll mobile textarea to error line
-    if (mobileEd) {
-      const lines = mobileEd.value.split('
-');
-      let charPos = 0;
-      for (let i = 0; i < Math.min(err.line - 1, lines.length); i++) charPos += lines[i].length + 1;
-      mobileEd.focus();
-      mobileEd.setSelectionRange(charPos, charPos + (lines[err.line-1] || '').length);
-    }
-    return;
-  }
-  if (err.file && err.file !== currentFile && vfs[err.file]) switchFile(err.file);
-  const model = editor.getModel();
-  if (!model) return;
-  const maxLine = model.getLineCount();
-  const line = Math.min(Math.max(1, err.line), maxLine);
-  const lineText = model.getLineContent(line);
-  const endCol = err.col ? err.col + 1 : model.getLineMaxColumn(line);
-  const startCol = err.col ? err.col : 1;
-
-  // Red background + gutter icon + squiggly underline on exact column range
-  errDecorations = editor.deltaDecorations(errDecorations, [
-    {
-      range: new monaco.Range(line, 1, line, 1),
-      options: {
-        isWholeLine: true,
-        className: 'err-line-bg',
-        glyphMarginClassName: 'err-line-glyph',
-      },
-    },
-    {
-      range: new monaco.Range(line, startCol, line, endCol),
-      options: {
-        inlineClassName: 'err-token-squiggle',
-        hoverMessage: { value: `**🔴 ${err.type}**\n\n${err.message}` },
-        overviewRuler: { color: '#ff5252', position: monaco.editor.OverviewRulerLane.Right },
-      },
-    }
-  ]);
-
-  // Monaco marker (shows in Problems panel + tooltip)
-  if (typeof monaco!=="undefined") monaco.editor.setModelMarkers(model, 'pyerr', [{
-    startLineNumber: line, startColumn: startCol,
-    endLineNumber: line, endColumn: endCol,
-    message: err.message, severity: monaco.MarkerSeverity.Error,
-  }]);
-
-  editor.revealLineInCenter(line);
-  showErrBanner(err, lineText);
-}
-
-// ── SHOW RICH ERR BANNER ──
-function showErrBanner(err, lineText) {
-  const typeInfo = ERR_EMOJI[err.type] || { emoji:'❌', label: err.type };
-  const friendly = getFriendlyEntry(err.message);
-
-  $('eb-type').textContent = typeInfo.emoji + '  ' + typeInfo.label;
-  $('eb-loc').textContent = 'Line ' + err.line + (err.col ? ':' + err.col : '');
-
-  // Show just the last line of traceback as the raw message
-  const rawMsg = err.message.replace(/^[A-Za-z]+Error:\s*/,'').trim();
-  $('eb-raw').textContent = err.message;
-
-  if (friendly) {
-    $('eb-friendly').textContent = '💡 ' + friendly.tip;
-    $('eb-friendly').style.display = '';
-
-    // Fix suggestion
-    if (friendly.fix && lineText !== undefined) {
-      const fixResult = friendly.fix(err.line, lineText);
-      if (fixResult) {
-        currentFix = { line: err.line, newText: fixResult.newLine };
-        $('eb-fix-label').textContent = '✏️  ' + fixResult.label + ': ' + fixResult.newLine;
-        $('eb-fix').style.display = 'flex';
-      } else {
-        $('eb-fix').style.display = 'none';
-        currentFix = null;
-      }
-    } else {
-      $('eb-fix').style.display = 'none';
-      currentFix = null;
-    }
-  } else {
-    $('eb-friendly').style.display = 'none';
-    $('eb-fix').style.display = 'none';
-    currentFix = null;
-  }
-
-  $('err-banner').classList.add('show');
-}
-
-function hideErrBanner() {
-  $('err-banner').classList.remove('show');
-  currentFix = null;
-}
-
-// ── APPLY FIX ──
-function applyErrFix() {
-  if (!currentFix || !editor) return;
-  const model = editor.getModel();
-  const line = currentFix.line;
-  const maxCol = model.getLineMaxColumn(line);
-  editor.executeEdits('fix', [{
-    range: new monaco.Range(line, 1, line, maxCol),
-    text: currentFix.newText,
-  }]);
-  vfs[currentFile] = editor.getValue();
-  hideErrBanner();
-  if (editor && errDecorations.length) {
-    if (editor) errDecorations = editor.deltaDecorations(errDecorations, []);
-    if (typeof monaco !== 'undefined') if (typeof monaco!=="undefined") monaco.editor.setModelMarkers(model, 'pyerr', []);
-  }
-  showToast('Fix applied! ✅ Click Run to try again.');
-  editor.focus();
-}
-
-// ── RENDER RICH ERROR CARD IN OUTPUT ──
-function renderErrCard(err, rawMsg) {
-  const typeInfo = ERR_EMOJI[err.type] || { emoji:'❌', label: err.type };
-  const friendly = getFriendlyEntry(rawMsg);
-  const lineText = editor ? editor.getModel().getLineContent(Math.min(err.line, editor.getModel().getLineCount())) : '';
-
-  let fixHtml = '';
-  if (friendly && friendly.fix && lineText) {
-    const fixResult = friendly.fix(err.line, lineText);
-    if (fixResult) {
-      fixHtml = `<div class="err-card-fix" onclick="applyErrFix()">
-        <span class="err-card-fix-text">✏️  ${escHTML(fixResult.label)}: ${escHTML(fixResult.newLine)}</span>
-        <button class="err-card-fix-apply">Apply Fix ✓</button>
-      </div>`;
-    }
-  }
-
-  const traceId = 'tb-' + Date.now();
-  const card = `<div class="err-card">
-    <div class="err-card-header">
-      <span class="err-card-emoji">${typeInfo.emoji}</span>
-      <span class="err-card-title">${escHTML(typeInfo.label)}</span>
-      <span class="err-card-line">Line ${err.line}${err.col ? ':' + err.col : ''}</span>
-    </div>
-    <div class="err-card-body">
-      <div class="err-card-raw">${escHTML(rawMsg)}</div>
-      ${friendly ? `<div class="err-card-friendly"><span class="err-card-friendly-icon">💡</span><span>${escHTML(friendly.tip)}</span></div>` : ''}
-      ${fixHtml}
-      <div class="err-card-traceback" onclick="document.getElementById('${traceId}').classList.toggle('open');this.querySelector('i').style.transform=document.getElementById('${traceId}').classList.contains('open')?'rotate(90deg)':''">
-        <i class="fa-solid fa-chevron-right" style="font-size:9px;transition:transform .2s"></i>
-        <span>Show full traceback</span>
-      </div>
-      <div class="err-traceback-body" id="${traceId}">${escHTML(err.traceback)}</div>
-    </div>
-  </div>`;
-
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = card;
-  terminal.appendChild(wrapper);
-  terminal.scrollTop = terminal.scrollHeight;
 }
 
 // Patch tAppend to inject friendly tips after errors
@@ -1958,9 +1723,9 @@ const tAppendPatched = function(text, cls) {
 // Override all call sites that use tAppend after this point
 window._friendlyTAppend = tAppendPatched;
 
-// ══════════════════════════════
+// ââââââââââââââââââââââââââââââ
 // INPUT HISTORY
-// ══════════════════════════════
+// ââââââââââââââââââââââââââââââ
 let inputHistory = [];
 let inputHistoryIdx = -1;
 
@@ -1994,9 +1759,9 @@ $('term-input').addEventListener('keydown', e => {
   }
 });
 
-// ══════════════════════════════
+// ââââââââââââââââââââââââââââââ
 // BOOT CANVAS PARTICLES
-// ══════════════════════════════
+// ââââââââââââââââââââââââââââââ
 function initBootCanvas() {
   const canvas = $('boot-canvas');
   if (!canvas) return;
@@ -2044,7 +1809,7 @@ function initBootCanvas() {
   window._stopBootCanvas = () => cancelAnimationFrame(animId);
 }
 
-// ── LINE COUNT IN STATUS BAR ──
+// ââ LINE COUNT IN STATUS BAR ââ
 function updateLineCount() {
   const code = vfs[currentFile] || '';
   const lines = code.split('\n').length;
@@ -2052,7 +1817,7 @@ function updateLineCount() {
   if (el) el.textContent = lines;
 }
 
-// ── KEYBOARD SHORTCUTS ──
+// ââ KEYBOARD SHORTCUTS ââ
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !runBtn.disabled) { e.preventDefault(); runCode(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveFile(); }
@@ -2065,9 +1830,8 @@ document.addEventListener('keydown', e => {
 $('share-modal').addEventListener('click', e => { if (e.target === $('share-modal')) closeShareModal(); });
 $('shortcut-modal').addEventListener('click', e => { if (e.target === $('shortcut-modal')) closeShortcutModal(); });
 
-// ── INIT ──
+// ââ INIT ââ
 window.onload = () => {
-  if (window.innerWidth <= 700) document.body.classList.add('is-mobile');
   renderUI();
   const steps = [
     [8,  'Mounting filesystem...',        200],
@@ -2084,7 +1848,7 @@ window.onload = () => {
     bs.style.opacity = '0';
     setTimeout(() => { bs.style.display = 'none'; if(window._stopBootCanvas) window._stopBootCanvas(); }, 480);
 
-    // Split only on desktop — mobile uses CSS stacking
+    // Split only on desktop â mobile uses CSS stacking
     if (window.innerWidth > 700) {
       Split(['#sidebar', '#editor-zone', '#out-panel'], {
         sizes: [14, 48, 38], minSize: [110, 260, 180], gutterSize: 4,
@@ -2092,23 +1856,21 @@ window.onload = () => {
       });
     }
 
-    if (window.innerWidth <= 700) {
-      // ── MOBILE: skip Monaco entirely, use plain textarea ──
+    if (window.innerWidth<=700) {
       initMobileEditor();
       loadPy(() => {
         $('status-dot').classList.add('ready');
-        runBtn.disabled = false;
-        if ($('run-btn-mobile')) $('run-btn-mobile').disabled = false;
+        runBtn.disabled=false;
+        const rmb=$('run-btn-mobile');if(rmb)rmb.disabled=false;
       });
     } else {
-      // ── DESKTOP: load Monaco then Pyodide ──
       loadMonaco(() => {
-        $('status-txt').textContent = 'Loading Python…';
+        $('status-txt').textContent='Loading Pythonâ¦';
         loadPy(() => {
           $('status-dot').classList.add('ready');
-          $('status-txt').textContent = 'Python 3.11 ready · Ctrl+Enter to run';
-          runBtn.disabled = false;
-          if ($('run-btn-mobile')) $('run-btn-mobile').disabled = false;
+          $('status-txt').textContent='Python 3.11 ready - Ctrl+Enter to run';
+          runBtn.disabled=false;
+          const rmb=$('run-btn-mobile');if(rmb)rmb.disabled=false;
           loadSharedCode();
           renderChallenge();
         });
@@ -2117,77 +1879,29 @@ window.onload = () => {
   });
 };
 
-// ── MOBILE EDITOR ──
-function initMobileEditor() {
-  // Show the plain textarea, hide Monaco loader
-  const mobileEd = $('mobile-code-editor');
-  const edLoad   = $('ed-load');
-  if (edLoad) edLoad.style.display = 'none';
-  mobileEd.style.display = 'flex';
-  mobileEd.value = vfs[currentFile] || '# Write your Python here
-print("Hello, World!")';
-  mobileEd.addEventListener('input', () => { vfs[currentFile] = mobileEd.value; });
-  // Tab key inserts 4 spaces instead of losing focus
-  mobileEd.addEventListener('keydown', e => {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const s = mobileEd.selectionStart, en = mobileEd.selectionEnd;
-      mobileEd.value = mobileEd.value.slice(0, s) + '    ' + mobileEd.value.slice(en);
-      mobileEd.selectionStart = mobileEd.selectionEnd = s + 4;
-      vfs[currentFile] = mobileEd.value;
-    }
-  });
-}
-
-// ── SIDEBAR TOGGLE ──
-let _sidebarSavedWidth = null;
-
+// ââ SIDEBAR TOGGLE ââ
 function toggleSidebar() {
-  if (window.innerWidth <= 700) {
-    // Mobile: toggle drawer
-    const sb = $('sidebar');
-    const backdrop = $('mobile-sidebar-backdrop');
-    const isOpen = sb.classList.toggle('mobile-open');
-    if (backdrop) backdrop.classList.toggle('open', isOpen);
+  if (window.innerWidth<=700) {
+    const sb=$('sidebar'),bd=$('mobile-sidebar-backdrop');
+    const open=sb.classList.toggle('mobile-open');
+    if(bd)bd.classList.toggle('open',open);
     return;
   }
-
-  const sb = $('sidebar');
-  const isCollapsed = sb.classList.toggle('collapsed');
-
-  // Hide/show the gutter next to sidebar
-  const gutter = sb.nextElementSibling;
-  if (gutter && gutter.classList.contains('gutter')) {
-    gutter.style.display = isCollapsed ? 'none' : '';
-  }
-
-  if (isCollapsed) {
-    _sidebarSavedWidth = sb.getBoundingClientRect().width || 150;
-    sb.style.width = '0';
-    sb.style.minWidth = '0';
-    sb.style.flex = '0 0 0';
-    sb.style.overflow = 'hidden';
-  } else {
-    const w = _sidebarSavedWidth || 150;
-    sb.style.width = w + 'px';
-    sb.style.minWidth = '';
-    sb.style.flex = '';
-    sb.style.overflow = '';
-    _sidebarSavedWidth = null;
-  }
-
-  try { localStorage.setItem('pyr_sidebar', isCollapsed ? '0' : '1'); } catch(_){}
-  setTimeout(() => { if (editor) editor.layout(); }, 230);
+  const sb=$('sidebar');
+  const collapsed=sb.classList.toggle('collapsed');
+  const gutter=sb.nextElementSibling;
+  if(gutter&&gutter.classList.contains('gutter'))gutter.style.display=collapsed?'none':'';
+  if(collapsed){sb._savedW=sb.getBoundingClientRect().width||150;sb.style.width='0';sb.style.minWidth='0';sb.style.overflow='hidden';}
+  else{sb.style.width=(sb._savedW||150)+'px';sb.style.minWidth='';sb.style.overflow='';}
+  try{localStorage.setItem('pyr_sidebar',collapsed?'0':'1');}catch(_){}
+  setTimeout(()=>{if(editor)editor.layout();},230);
+}
+function closeMobileSidebar(){
+  $('sidebar').classList.remove('mobile-open');
+  const bd=$('mobile-sidebar-backdrop');if(bd)bd.classList.remove('open');
 }
 
-function closeMobileSidebar() {
-  const sb = $('sidebar');
-  const backdrop = $('mobile-sidebar-backdrop');
-  sb.classList.remove('mobile-open');
-  if (backdrop) backdrop.classList.remove('open');
-}
-
-// ── MOBILE BACK ──
+// ââ MOBILE BACK ââ
 function mobileBack() {
   document.body.classList.remove('mobile-output');
   setTimeout(() => { if (editor) editor.layout({}); }, 300);
@@ -2195,81 +1909,19 @@ function mobileBack() {
 
 // Sync mobile run button disabled state
 const runBtnMobile = $('run-btn-mobile');
-if (runBtnMobile && runBtn) {
+if (runBtnMobile) {
   new MutationObserver(() => {
-    runBtnMobile.disabled = runBtn ? runBtn.disabled : false;
+    runBtnMobile.disabled = runBtn.disabled;
   }).observe(runBtn, { attributes: true, attributeFilter: ['disabled'] });
 }
 
-// ── RUN CODE ──
-async function runCode() {
-  if (!pyodide) { showToast('Python engine still loading…'); return; }
-  // Sync code from whichever editor is active
-  const mobileEd = $('mobile-code-editor');
-  if (mobileEd && mobileEd.offsetParent !== null) {
-    vfs[currentFile] = mobileEd.value;
-  } else if (editor) {
-    vfs[currentFile] = editor.getValue();
-  }
-
-  runBtn.disabled = true;
-  runBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running';
-  clearOut();
-  tRaw(`<span class="t-prompt">❯ python ${escHTML(currentFile)}</span>`);
-  hideErrBanner();
-
-  // Clear old error decorations (desktop only)
-  if (editor && errDecorations && errDecorations.length) {
-    if (editor) errDecorations = editor.deltaDecorations(errDecorations, []);
-    if (typeof monaco !== 'undefined') if (typeof monaco!=="undefined") monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
-  }
-
-  const t0 = performance.now();
-
-  // Write all files into Pyodide FS
-  for (const [fn, code] of Object.entries(vfs)) {
-    try { pyodide.FS.writeFile('/' + fn, code); } catch (_) {}
-  }
-
-  try {
-    const pkgStat = $('pkg-stat');
-    if (pkgStat) pkgStat.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading packages...';
-    await pyodide.loadPackagesFromImports(Object.values(vfs).join('
-'));
-    if (pkgStat) pkgStat.innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
-  } catch (_) {
-    const pkgStat = $('pkg-stat');
-    if (pkgStat) pkgStat.innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
-  }
-
-  try {
-    const userCode = vfs[currentFile] || vfs['main.py'];
-    const transformed = globalThis._py_transform(userCode);
-    await pyodide.runPythonAsync(transformed);
-  } catch (err) {
-    const msg = err.message || String(err);
-    const parsed = parseTraceback(msg, currentFile);
-    // Show rich error card in output instead of plain red text
-    renderErrCard(parsed, msg);
-    highlightError(parsed);
-  } finally {
-    const ms = ((performance.now() - t0) / 1000).toFixed(2);
-    tRaw(`<span class="t-sys">Finished in ${ms}s</span>`);
-    const execTimeEl = $('exec-time');
-    if (execTimeEl) execTimeEl.textContent = ms + 's';
-    runBtn.disabled = false;
-    runBtn.innerHTML = '<i class="fa-solid fa-circle-play"></i> Run';
-    if (!inputResolver) $('input-row').style.display = 'none';
-  }
-}
-
 // Mobile: show output panel (slide animation) when Run clicked
-const _runCodeBase = runCode;
+const _origRunCode = window.runCode;
 window.runCode = async function() {
   if (window.innerWidth <= 700) {
     document.body.classList.add('mobile-output');
   }
-  await _runCodeBase();
+  await _origRunCode();
 };
 if (runBtnMobile) runBtnMobile.onclick = () => window.runCode();
 
@@ -2290,238 +1942,7 @@ try {
   if (localStorage.getItem('pyr_sidebar') === '0') toggleSidebar();
 } catch(_){}
 
-// ── EXAMPLES ──
-const EXAMPLES = [
-  {
-    label: '👋 Hello World',
-    code: 'print("Hello, World!")
-'
-  },
-  {
-    label: '🔢 Variables & Input',
-    code: 'name = input("What is your name? ")
-age  = int(input("How old are you? "))
-print(f"Hello {name}! Next year you will be {age + 1}.")
-'
-  },
-  {
-    label: '🔁 For Loop',
-    code: '# Print numbers 1 to 10
-for i in range(1, 11):
-    print(i)
-'
-  },
-  {
-    label: '🔄 While Loop',
-    code: 'count = 1
-while count <= 5:
-    print("Count:", count)
-    count += 1
-print("Done!")
-'
-  },
-  {
-    label: '🧮 Calculator',
-    code: 'a = float(input("Enter first number: "))
-b = float(input("Enter second number: "))
-op = input("Operation (+, -, *, /): ")
-
-if op == "+":
-    print("Result:", a + b)
-elif op == "-":
-    print("Result:", a - b)
-elif op == "*":
-    print("Result:", a * b)
-elif op == "/" and b != 0:
-    print("Result:", a / b)
-else:
-    print("Invalid input")
-'
-  },
-  {
-    label: '📋 List & Loop',
-    code: 'fruits = ["apple", "banana", "cherry", "mango"]
-
-for fruit in fruits:
-    print("🍎", fruit)
-
-print("\nTotal fruits:", len(fruits))
-'
-  },
-  {
-    label: '🎯 Functions',
-    code: 'def greet(name):
-    return f"Hello, {name}!"
-
-def add(a, b):
-    return a + b
-
-print(greet("Alice"))
-print("2 + 3 =", add(2, 3))
-'
-  },
-  {
-    label: '⚡ Fibonacci',
-    code: 'def fibonacci(n):
-    a, b = 0, 1
-    for _ in range(n):
-        print(a, end=" ")
-        a, b = b, a + b
-    print()
-
-fibonacci(10)
-'
-  },
-  {
-    label: '🔍 List Comprehension',
-    code: '# Squares of even numbers 1-20
-squares = [x**2 for x in range(1, 21) if x % 2 == 0]
-print(squares)
-
-# Filter words longer than 4 chars
-words = ["cat", "elephant", "dog", "python", "ant"]
-long_words = [w for w in words if len(w) > 4]
-print(long_words)
-'
-  },
-  {
-    label: '📚 Dictionary',
-    code: 'student = {
-    "name": "Alice",
-    "age": 20,
-    "grade": "A"
-}
-
-for key, value in student.items():
-    print(f"{key}: {value}")
-
-student["age"] = 21
-print("\nUpdated age:", student["age"])
-'
-  },
-  {
-    label: '🧱 Classes & OOP',
-    code: 'class Animal:
-    def __init__(self, name, sound):
-        self.name = name
-        self.sound = sound
-
-    def speak(self):
-        print(f"{self.name} says {self.sound}!")
-
-dog = Animal("Dog", "Woof")
-cat = Animal("Cat", "Meow")
-
-dog.speak()
-cat.speak()
-'
-  },
-  {
-    label: '🎲 Random Number Game',
-    code: 'import random
-
-secret = random.randint(1, 100)
-print("Guess a number between 1 and 100!")
-
-while True:
-    guess = int(input("Your guess: "))
-    if guess < secret:
-        print("Too low! Try higher.")
-    elif guess > secret:
-        print("Too high! Try lower.")
-    else:
-        print("🎉 Correct! You got it!")
-        break
-'
-  },
-];
-
-let examplesOpen = false;
-
-function buildExamplesDropdown() {
-  const dd = $('examples-dropdown');
-  if (!dd) return;
-  dd.innerHTML = EXAMPLES.map((ex, i) => `
-    <div class="ex-item" onclick="loadExample(${i})">${escHTML(ex.label)}</div>
-  `).join('');
-}
-
-function toggleExamples() {
-  const dd = $('examples-dropdown');
-  if (!dd) {
-    // Mobile: show as modal sheet
-    showExampleSheet();
-    return;
-  }
-  examplesOpen = !examplesOpen;
-  dd.style.display = examplesOpen ? 'block' : 'none';
-  if (examplesOpen) buildExamplesDropdown();
-}
-
-function loadExample(i) {
-  const ex = EXAMPLES[i];
-  if (!ex) return;
-  vfs[currentFile] = ex.code;
-  const mobileEd = $('mobile-code-editor');
-  if (mobileEd && mobileEd.offsetParent !== null) {
-    mobileEd.value = ex.code;
-    mobileEd.focus();
-  } else if (editor) {
-    editor.setValue(ex.code);
-    editor.focus();
-  }
-  // close dropdown
-  const dd = $('examples-dropdown');
-  if (dd) { dd.style.display = 'none'; examplesOpen = false; }
-  closeExampleSheet();
-  showToast('Loaded: ' + ex.label);
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', e => {
-  const dd = $('examples-dropdown');
-  const btn = $('examples-btn');
-  if (dd && btn && !btn.contains(e.target) && !dd.contains(e.target)) {
-    dd.style.display = 'none';
-    examplesOpen = false;
-  }
-});
-
-// Mobile example sheet
-function showExampleSheet() {
-  let sheet = $('example-sheet');
-  if (!sheet) {
-    sheet = document.createElement('div');
-    sheet.id = 'example-sheet';
-    sheet.style.cssText = `
-      position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);
-      display:flex;align-items:flex-end;backdrop-filter:blur(4px);
-    `;
-    const inner = document.createElement('div');
-    inner.style.cssText = `
-      background:var(--bg-panel);border-radius:18px 18px 0 0;width:100%;
-      max-height:75vh;overflow-y:auto;padding:16px 0 max(16px,env(safe-area-inset-bottom));
-    `;
-    inner.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 16px 12px;border-bottom:1px solid var(--border-2)">
-        <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--cyan);letter-spacing:.08em">EXAMPLES</span>
-        <button onclick="closeExampleSheet()" style="background:none;border:none;color:var(--text-2);font-size:18px;cursor:pointer;padding:4px">✕</button>
-      </div>
-      ${EXAMPLES.map((ex, i) => `<div class="ex-item-mobile" onclick="loadExample(${i})">${escHTML(ex.label)}</div>`).join('')}
-    `;
-    sheet.appendChild(inner);
-    sheet.addEventListener('click', e => { if (e.target === sheet) closeExampleSheet(); });
-    document.body.appendChild(sheet);
-  } else {
-    sheet.style.display = 'flex';
-  }
-}
-function closeExampleSheet() {
-  const sheet = $('example-sheet');
-  if (sheet) sheet.style.display = 'none';
-}
-
-// ── MOBILE SETTINGS SHEET ──
+// ââ MOBILE SETTINGS SHEET ââ
 function openMobileSettings() {
   syncMobileFont();
   syncMobileTheme();
@@ -2546,100 +1967,144 @@ function syncMobileTheme() {
   if (l) l.classList.toggle('on', isLight);
 }
 
-// ── SHARE MODAL ──
-function openShareModal() {
-  const modal = $('share-modal');
-  if (!modal) return;
-  // encode current code into URL hash
-  try {
-    const code = (editor ? editor.getValue() : ($('mobile-code-editor') || {value:''}).value);
-    const encoded = btoa(unescape(encodeURIComponent(code)));
-    const url = location.origin + location.pathname + '#code=' + encoded;
-    const inp = modal.querySelector('input');
-    if (inp) inp.value = url;
-  } catch(_) {}
-  modal.classList.add('open');
-}
-function closeShareModal() {
-  const modal = $('share-modal');
-  if (modal) modal.classList.remove('open');
-}
-function copyShareUrl() {
-  const inp = $('share-modal') && $('share-modal').querySelector('input');
-  if (!inp) return;
-  navigator.clipboard.writeText(inp.value)
-    .then(() => showToast('Link copied!'))
-    .catch(() => { inp.select(); document.execCommand('copy'); showToast('Link copied!'); });
+// ââ MOBILE EDITOR ââ
+function initMobileEditor() {
+  const me = $('mobile-editor'), el = $('ed-load');
+  if (el) el.style.display = 'none';
+  me.style.display = 'block';
+  me.value = vfs[currentFile] || '# Write your Python here\nprint("Hello, World!")';
+  me.addEventListener('input', () => { vfs[currentFile] = me.value; });
+  me.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    e.preventDefault();
+    const s = me.selectionStart;
+    me.value = me.value.slice(0, s) + '    ' + me.value.slice(me.selectionEnd);
+    me.selectionStart = me.selectionEnd = s + 4;
+    vfs[currentFile] = me.value;
+  });
 }
 
-// ── SHORTCUT MODAL ──
-function openShortcutModal() {
-  const modal = $('shortcut-modal');
-  if (modal) modal.classList.add('open');
-}
-function closeShortcutModal() {
-  const modal = $('shortcut-modal');
-  if (modal) modal.classList.remove('open');
-}
-
-// ── CHALLENGE ──
-const CHALLENGES = [
-  { title:'Print 1 to 10', desc:'Print every number from 1 to 10 on its own line.', hint:'Use a for loop with range().' },
-  { title:'FizzBuzz', desc:'Print 1–30. For multiples of 3 print "Fizz", multiples of 5 print "Buzz", both print "FizzBuzz".', hint:'Use % (modulo) operator.' },
-  { title:'Sum of List', desc:'Given nums = [3,7,2,9,1], print their sum without using sum().', hint:'Use a for loop and a total variable.' },
-  { title:'Reverse a String', desc:'Ask the user for a word and print it reversed.', hint:'Use slicing: s[::-1]' },
-  { title:'Count Vowels', desc:'Count how many vowels are in the word "programming".', hint:'Loop through each character and check if it's in "aeiou".' },
+// ââ EXAMPLES ââ
+const EXAMPLES = [
+  { label: '\u{1F44B} Hello World',        code: 'print("Hello, World!")\n' },
+  { label: '\u{1F522} Variables & Input',  code: 'name = input("Your name: ")\nage = int(input("Your age: "))\nprint(f"Hi {name}! Next year you will be {age+1}.")\n' },
+  { label: '\u{1F501} For Loop',           code: 'for i in range(1, 11):\n    print(i)\n' },
+  { label: '\u{1F504} While Loop',         code: 'n = 1\nwhile n <= 5:\n    print("Count:", n)\n    n += 1\nprint("Done!")\n' },
+  { label: '\u{1F9EE} Calculator',         code: 'a = float(input("First: "))\nb = float(input("Second: "))\nop = input("Op (+,-,*,/): ")\nif op=="+": print(a+b)\nelif op=="-": print(a-b)\nelif op=="*": print(a*b)\nelif op=="/" and b!=0: print(a/b)\nelse: print("Invalid")\n' },
+  { label: '\u{1F4CB} Lists & Loops',      code: 'fruits = ["apple", "banana", "cherry"]\nfor f in fruits:\n    print(f)\nprint("Total:", len(fruits))\n' },
+  { label: '\u{1F3AF} Functions',          code: 'def greet(name):\n    return f"Hello, {name}!"\n\ndef add(a, b):\n    return a + b\n\nprint(greet("Alice"))\nprint("2 + 3 =", add(2, 3))\n' },
+  { label: '\u26A1 Fibonacci',             code: 'def fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        print(a, end=" ")\n        a, b = b, a + b\n    print()\n\nfib(10)\n' },
+  { label: '\u{1F4DA} Dictionary',         code: 'student = {"name": "Alice", "age": 20, "grade": "A"}\nfor k, v in student.items():\n    print(f"{k}: {v}")\n' },
+  { label: '\u{1F9F1} Classes & OOP',      code: 'class Animal:\n    def __init__(self, name, sound):\n        self.name = name\n        self.sound = sound\n    def speak(self):\n        print(f"{self.name} says {self.sound}!")\n\nAnimal("Dog","Woof").speak()\nAnimal("Cat","Meow").speak()\n' },
+  { label: '\u{1F50D} List Comprehension', code: 'squares = [x**2 for x in range(1,11)]\nprint(squares)\n' },
+  { label: '\u{1F3B2} Guess the Number',   code: 'import random\nsecret = random.randint(1,100)\nprint("Guess 1-100!")\nwhile True:\n    g = int(input("Your guess: "))\n    if g < secret: print("Too low!")\n    elif g > secret: print("Too high!")\n    else: print("Correct!"); break\n' },
 ];
-let challengeIdx = Math.floor(Math.random() * CHALLENGES.length);
 
-function renderChallenge() {
-  const panel = $('challenge-panel');
-  if (!panel) return;
-  const ch = CHALLENGES[challengeIdx];
-  const titleEl = panel.querySelector('.ch-title');
-  const descEl  = panel.querySelector('.ch-desc');
-  const hintEl  = panel.querySelector('.ch-hint');
-  if (titleEl) titleEl.textContent = ch.title;
-  if (descEl)  descEl.textContent  = ch.desc;
-  if (hintEl)  hintEl.textContent  = '💡 ' + ch.hint;
+let _exOpen = false;
+function toggleExamples() {
+  const dd = $('examples-dropdown'); if (!dd) return;
+  _exOpen = !_exOpen;
+  if (_exOpen) dd.innerHTML = EXAMPLES.map((e,i) =>
+    '<div class="ex-item" onclick="loadExample('+i+')">'+escHTML(e.label)+'</div>').join('');
+  dd.style.display = _exOpen ? 'block' : 'none';
 }
-function toggleChallenge() {
-  const panel = $('challenge-panel');
-  if (panel) panel.classList.toggle('open');
+function toggleMobileExamples() {
+  const s = $('mobile-example-sheet'); if (s) s.classList.add('open');
 }
-function closeChallenge() {
-  const panel = $('challenge-panel');
-  if (panel) panel.classList.remove('open');
+function closeMobileExamples() {
+  const s = $('mobile-example-sheet'); if (s) s.classList.remove('open');
 }
-function loadChallenge() {
-  const ch = CHALLENGES[challengeIdx];
-  const starter = `# Challenge: ${ch.title}
-# ${ch.desc}
+function loadExample(i) {
+  const ex = EXAMPLES[i]; if (!ex) return;
+  vfs[currentFile] = ex.code;
+  const me = $('mobile-editor');
+  if (me && me.offsetParent) { me.value = ex.code; me.focus(); }
+  else if (editor) { editor.setValue(ex.code); editor.focus(); }
+  const dd = $('examples-dropdown');
+  if (dd) { dd.style.display='none'; _exOpen=false; }
+  closeMobileExamples();
+  showToast('Loaded: ' + ex.label);
+}
+document.addEventListener('click', e => {
+  const dd=$('examples-dropdown'), btn=$('examples-btn');
+  if (dd && btn && !btn.parentElement.contains(e.target)) { dd.style.display='none'; _exOpen=false; }
+});
 
-`;
-  vfs[currentFile] = starter;
-  if (editor) editor.setValue(starter);
-  const mEd = $('mobile-code-editor');
-  if (mEd && mEd.offsetParent !== null) mEd.value = starter;
-  closeChallenge();
-  showToast('Challenge loaded!');
+// ââ RICH ERROR CARD ââ
+const _ERREMO = {SyntaxError:'\u{1F534}',IndentationError:'\u{1F4D0}',NameError:'\u{1F50D}',TypeError:'\u{1F500}',
+  IndexError:'\u{1F4CB}',ValueError:'\u26A0\uFE0F',ZeroDivisionError:'\u{2797}',
+  AttributeError:'\u{1F527}',RecursionError:'\u{1F501}',ModuleNotFoundError:'\u{1F4E6}'};
+
+function renderErrCard(err, rawMsg) {
+  const emoji = _ERREMO[err.type] || '\u274C';
+  const tip = getFriendlyTip(rawMsg);
+  const tbId = 'tb' + Date.now();
+  const me = $('mobile-editor');
+  const lineText = (editor && editor.getModel())
+    ? editor.getModel().getLineContent(Math.min(err.line, editor.getModel().getLineCount()))
+    : (me ? (me.value.split('\n')[err.line-1] || '') : '');
+  let fixHtml = '';
+  for (const fe of FRIENDLY_ERRORS) {
+    const m = rawMsg.match(fe.match);
+    if (m && fe.fix) {
+      const r = fe.fix(err.line, lineText);
+      if (r) {
+        window._pendingFix = { line: err.line, newText: r.newLine };
+        fixHtml = '<div class="err-card-fix" onclick="applyErrFix()">'
+          + '<span class="err-card-fix-text">\u270F\uFE0F ' + escHTML(r.label) + ': ' + escHTML(r.newLine) + '</span>'
+          + '<button class="err-card-fix-btn">Apply \u2713</button></div>';
+      }
+      break;
+    }
+  }
+  const card = '<div class="err-card">'
+    + '<div class="err-card-hd"><span class="err-card-emoji">' + emoji + '</span>'
+    + '<span class="err-card-title">' + escHTML(err.type||'Error') + '</span>'
+    + '<span class="err-card-loc">Line ' + err.line + (err.col?':'+err.col:'') + '</span></div>'
+    + '<div class="err-card-body"><div class="err-card-raw">' + escHTML(rawMsg) + '</div>'
+    + (tip?'<div class="err-card-tip"><span>\u{1F4A1}</span><span>'+escHTML(tip)+'</span></div>':'')
+    + fixHtml
+    + '<div class="err-card-tb" onclick="var b=document.getElementById(\'' + tbId + '\');b.classList.toggle(\'open\')">\u25B6 Show traceback</div>'
+    + '<div class="err-card-tb-body" id="' + tbId + '">' + escHTML(err.traceback||rawMsg) + '</div>'
+    + '</div></div>';
+  const d = document.createElement('div'); d.innerHTML = card;
+  terminal.appendChild(d); terminal.scrollTop = terminal.scrollHeight;
 }
 
-// ── LOAD SHARED CODE FROM URL HASH ──
-function loadSharedCode() {
-  try {
-    const hash = location.hash;
-    if (!hash.startsWith('#code=')) return;
-    const encoded = hash.slice(6);
-    const code = decodeURIComponent(escape(atob(encoded)));
-    vfs[currentFile] = code;
-    if (editor) editor.setValue(code);
-    const mEd = $('mobile-code-editor');
-    if (mEd) mEd.value = code;
-    showToast('Shared code loaded!');
-    history.replaceState(null, '', location.pathname);
-  } catch(_) {}
+function applyErrFix() {
+  const fix = window._pendingFix; if (!fix) return;
+  const me = $('mobile-editor');
+  if (me && me.offsetParent) {
+    const lines = me.value.split('\n');
+    lines[fix.line - 1] = fix.newText;
+    me.value = lines.join('\n');
+    vfs[currentFile] = me.value;
+  } else if (editor) {
+    const model = editor.getModel();
+    editor.executeEdits('fix', [{
+      range: new monaco.Range(fix.line, 1, fix.line, model.getLineMaxColumn(fix.line)),
+      text: fix.newText
+    }]);
+    vfs[currentFile] = editor.getValue();
+  }
+  hideErrBanner();
+  if (editor && errDecorations.length) errDecorations = editor.deltaDecorations(errDecorations, []);
+  showToast('Fix applied! Click Run to try again.');
+  window._pendingFix = null;
 }
+
+// ââ MOBILE EXAMPLE SHEET ââ
+(function(){
+  const sheet = document.createElement('div');
+  sheet.id = 'mobile-example-sheet';
+  sheet.innerHTML = '<div class="ex-sheet-inner">'
+    + '<div class="ex-sheet-hd"><span class="ex-sheet-title">EXAMPLES</span>'
+    + '<button class="ex-sheet-close" onclick="closeMobileExamples()">\u2715</button></div>'
+    + EXAMPLES.map((e,i)=>'<div class="ex-sheet-item" onclick="loadExample('+i+')">'+escHTML(e.label)+'</div>').join('')
+    + '</div>';
+  sheet.addEventListener('click', ev => { if(ev.target===sheet) closeMobileExamples(); });
+  document.body.appendChild(sheet);
+})();
 </script>
 </body>
 </html>
