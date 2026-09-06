@@ -1,84 +1,138 @@
 <div align="center">
 
-# 🐍 PyRunner Apex
+# PyRunner Apex
 
-**Free online Python 3 editor — runs entirely in your browser**
+**A fully client-side Python 3 IDE that runs in your browser.**  
+No server. No install. No account.
 
 [![Deploy](https://img.shields.io/badge/Deploy-Cloudflare_Pages-orange?logo=cloudflare)](https://pages.cloudflare.com)
-[![Python](https://img.shields.io/badge/Python-3.11_via_Pyodide-blue?logo=python)](https://pyodide.org)
+[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://pyodide.org)
+[![WebAssembly](https://img.shields.io/badge/Powered_by-WebAssembly-654ff0?logo=webassembly)](https://webassembly.org)
+[![Zero Backend](https://img.shields.io/badge/Backend-None-brightgreen)](#)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-[**→ Live Demo**](https://pyrunner-apex.pages.dev) · [**Deploy Guide**](DEPLOY_GUIDE.md)
+[**→ Open the Editor**](https://pyrunner-apex.pages.dev) · [**Deploy Guide**](DEPLOY_GUIDE.md)
 
 </div>
 
 ---
 
-## ✨ What it does
+## Why
 
-Run Python 3 **instantly** in your browser — no install, no account, no server.
+Most browser-based Python editors either fake `input()`, silently break on packages, or send your code to a server.
 
-| Feature | Details |
-|---|---|
-| 🐍 Python 3.11 | via Pyodide (WebAssembly) — full CPython in the browser |
-| ✏️ Monaco Editor | VS Code's editor engine — syntax highlighting, autocomplete |
-| ⌨️ `input()` | Actually works — interactive terminal input |
-| 📦 Auto packages | `import numpy`, `import pandas`, etc. just work |
-| 🤖 AI assistant | Ask Gemini, ChatGPT, or Claude about your code |
-| 🗂️ Multi-file | Create and switch between multiple `.py` files |
-| 💾 Save / Open | Download `.py`, open files from your device |
-| 🎨 Themes | Dark & light mode, adjustable font size |
-| 🔴 Error highlighting | Errors highlighted inline in the editor |
+PyRunner Apex runs real CPython 3.11 via WebAssembly — directly in the tab. `input()` works. `numpy` and `pandas` install automatically. Nothing leaves your machine.
 
-## 🤖 Built with AI assistance from
+---
 
-| | AI | Role |
-|---|---|---|
-| <img src="https://www.google.com/favicon.ico" width="14"> | **Google Gemini** | Feature ideation, Python/JS logic |
-| <img src="https://openai.com/favicon.ico" width="14"> | **OpenAI ChatGPT** | Debugging, UI structure |
-| <img src="https://anthropic.com/favicon.ico" width="14"> | **Anthropic Claude** | `input()` fix, AST transformer, architecture |
+## Features
 
-## 🚀 Deploy your own
+### Editor
+- Monaco editor (the engine behind VS Code) with Python syntax highlighting, autocomplete, and bracket pair colorization
+- Multi-file support — create, rename, switch between, and delete `.py` files via a tab bar
+- Word wrap, line numbers, and smooth cursor animation
+- Font size control (A− / A / A+)
+- Resizable editor/output split pane
+- Mobile-responsive layout with a dedicated mobile editor view
 
-See the full step-by-step → **[DEPLOY_GUIDE.md](DEPLOY_GUIDE.md)**
+### Running Code
+- Python 3.11 via WebAssembly — executes entirely in the browser, no backend
+- Interactive `input()` — prompts behave exactly as they do in a real terminal
+- Automatic package installation — `import numpy`, `import pandas`, etc. work out of the box via Pyodide
+- Execution timer shown after each run
+- `Ctrl+Enter` to run
 
-Quick version:
+### Output & Errors
+- Terminal-style output with colored text
+- Rich error cards showing line number, traceback, and a plain-English explanation
+- Inline error banner with one-click fix suggestions
+- Copy output and Clear buttons
+
+### File Management
+- Save `.py` to disk
+- Open/load `.py` from disk
+- Copy code to clipboard
+- Clear editor
+
+### UI
+- Dark and light theme toggle
+- Collapsible sidebar with a Python syntax quick reference
+- Toast notifications and a keyboard shortcuts modal
+- Splash screen on load
+
+### Extras
+- 12 built-in code examples via an examples dropdown
+- Daily coding challenge that rotates each day
+- Share button — encodes your code into a URL so others can open it instantly
+
+---
+
+## Getting Started
+
+No install needed. Just open the editor and start writing Python:
+
+**[pyrunner-apex.pages.dev →](https://pyrunner-apex.pages.dev)**
+
+To run it locally or deploy your own instance, see below.
+
+---
+
+## Deploy Your Own
+
+Full instructions → **[DEPLOY_GUIDE.md](DEPLOY_GUIDE.md)**
+
 ```bash
 bun install
 bun run build
-# deploy .output/public to Cloudflare Pages
+# Deploy .output/public to Cloudflare Pages
 ```
 
-## 📁 Structure
+Pushing to `main` triggers automatic deployment via the included GitHub Actions workflow.
+
+---
+
+## Project Structure
 
 ```
 pyrunner-apex/
-├── .github/workflows/deploy.yml   ← auto-deploy on git push
+├── .github/
+│   └── workflows/
+│       └── deploy.yml       # auto-deploy on push
 ├── public/
-│   ├── pyrunner.html              ← the entire Python IDE (self-contained)
-│   ├── sitemap.xml                ← for Google indexing
+│   ├── pyrunner.html        # the entire IDE (self-contained)
+│   ├── sitemap.xml
 │   └── robots.txt
 ├── src/
 │   ├── routes/
-│   │   ├── __root.tsx             ← HTML shell + SEO meta tags
-│   │   └── index.tsx              ← embeds pyrunner.html
+│   │   ├── __root.tsx       # HTML shell + SEO meta
+│   │   └── index.tsx        # embeds pyrunner.html
 │   └── styles.css
-├── DEPLOY_GUIDE.md                ← full setup instructions
+├── DEPLOY_GUIDE.md
 └── package.json
 ```
 
-## 🔑 AI Keys
+---
 
-The AI panel uses your own API key — it goes directly to the AI provider, never stored on any server.
+## Tech Stack
 
-- **Gemini (free tier):** https://aistudio.google.com/apikey
-- **OpenAI:** https://platform.openai.com/api-keys
-- **Claude:** https://console.anthropic.com/settings/keys
+| Layer | Technology |
+|---|---|
+| Python runtime | [Pyodide](https://pyodide.org) — CPython 3.11 compiled to WebAssembly |
+| Editor | [Monaco Editor](https://microsoft.github.io/monaco-editor/) |
+| Framework | [TanStack Start](https://tanstack.com/start) + React |
+| Hosting | Cloudflare Pages |
+| CI/CD | GitHub Actions |
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome. If you find a bug or have a feature idea, open an issue first so we can discuss it before you build.
 
 ---
 
 <div align="center">
 
-*by Ashtid D · built with Gemini · ChatGPT · Claude · MIT License*
+*by Ashtid D · MIT License*
 
 </div>
