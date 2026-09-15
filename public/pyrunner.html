@@ -1035,7 +1035,7 @@ from module import name</code>
     </div>
     <div id="tabs-bar"></div>
     <div id="editor-container">
-      <textarea id="mobile-editor" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="# Write your Python here"></textarea>
+      <textarea id="mobile-editor" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"></textarea>
       <div id="ed-load">
         <div class="spinner"></div>
         <div class="ed-load-txt">Loading editor...</div>
@@ -1112,27 +1112,35 @@ const runBtn = $('run-btn');
 
 // ââ TERMINAL ââ
 function tAppend(text, cls) {
-  const el = document.createElement('span');
-  if (cls) el.className = cls;
-  el.textContent = text;
-  terminal.appendChild(el);
-  terminal.appendChild(document.createElement('br'));
+  // Pyodide batched mode sends multi-line strings; split and render each line
+  const lines = text.replace(/\n$/, '').split('\n');
+  for (const line of lines) {
+    const el = document.createElement('span');
+    if (cls) el.className = cls;
+    el.textContent = line;
+    terminal.appendChild(el);
+    terminal.appendChild(document.createElement('br'));
+  }
   terminal.scrollTop = terminal.scrollHeight;
 }
 function tRaw(html) {
   // Only used internally with trusted static HTML strings
-  const d = document.createElement('div');
+  const d = document.createElement('span');
   d.innerHTML = html;
   terminal.appendChild(d);
+  terminal.appendChild(document.createElement('br'));
   terminal.scrollTop = terminal.scrollHeight;
 }
 // Safe version for dynamic content - escapes before inserting
 function tAppendHTML(text, cls) {
-  const el = document.createElement('span');
-  if (cls) el.className = cls;
-  el.textContent = text; // textContent auto-escapes, no XSS
-  terminal.appendChild(el);
-  terminal.appendChild(document.createElement('br'));
+  const lines = String(text).replace(/\n$/, '').split('\n');
+  for (const line of lines) {
+    const el = document.createElement('span');
+    if (cls) el.className = cls;
+    el.textContent = line;
+    terminal.appendChild(el);
+    terminal.appendChild(document.createElement('br'));
+  }
   terminal.scrollTop = terminal.scrollHeight;
 }
 function clearCode() {
@@ -1457,7 +1465,9 @@ function parseTraceback(tb, activeFile) {
 
   const lines = tb.trim().split('\n');
   const errLine = lines[lines.length - 1] || 'Error';
-  return { file: last?.file || activeFile, line: last?.line || 1, message: errLine, traceback: tb };
+  const typeMatch = errLine.match(/^([A-Za-z]+Error|SyntaxError|IndentationError)/);
+  const errType = typeMatch ? typeMatch[1] : 'Error';
+  return { file: last?.file || activeFile, line: last?.line || 1, message: errLine, traceback: tb, type: errType };
 }
 
 function highlightError(err) {
@@ -2008,7 +2018,7 @@ function initMobileEditor() {
   const me = $('mobile-editor'), el = $('ed-load');
   if (el) el.style.display = 'none';
   me.style.display = 'block';
-  me.value = vfs[currentFile] || '# Write your Python here\nprint("Hello, World!")';
+  me.value = vfs[currentFile] || 'print("Hello, World!")';
   me.addEventListener('input', () => { vfs[currentFile] = me.value; });
   me.addEventListener('keydown', e => {
     if (e.key !== 'Tab') return;
