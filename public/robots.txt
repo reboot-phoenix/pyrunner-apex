@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://pyrunner-apex.itstudyhub-tiu.workers.dev/sitemap.xml
+Sitemap: https://pyrunner-apex.pages.dev/sitemap.xml
