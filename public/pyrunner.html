@@ -33,7 +33,7 @@
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "featureList": [
-    "Python 3.11 via WebAssembly",
+    "Python 3.12 via WebAssembly",
     "Monaco Code Editor (VS Code engine)",
     "Interactive input() support",
     "Auto package installation (numpy, pandas, etc.)",
@@ -1078,7 +1078,7 @@ from module import name</code>
 <!-- STATUS BAR (desktop only) -->
 <div id="statusbar">
   <div class="sb-left">
-    <span class="sb-item"><i class="fa-brands fa-python"></i> Python 3.11</span>
+    <span class="sb-item"><i class="fa-brands fa-python"></i> Python 3.12</span>
     <span class="sb-item"><i class="fa-solid fa-microchip"></i> WASM</span>
     <span class="sb-item" id="sb-lines"><i class="fa-solid fa-list-ol"></i> <span id="sb-line-count">1</span> lines</span>
   </div>
@@ -1088,13 +1088,24 @@ from module import name</code>
 <script>
 // STATE
 // ═════════════════════════════════════════════════════════════
-let vfs = { 'main.py': '' };
+const STARTER_CODE = `# Welcome to PyRunner Apex!\n# Edit this code, then press Run or Ctrl+Enter.\n\nprint("Hello, World!")\n`;
+let vfs = { 'main.py': STARTER_CODE };
 try {
   const savedVfs = localStorage.getItem('pyr_vfs');
-  if (savedVfs) vfs = JSON.parse(savedVfs);
+  if (savedVfs) {
+    const restoredVfs = JSON.parse(savedVfs);
+    if (restoredVfs && typeof restoredVfs === 'object' && !Array.isArray(restoredVfs)) {
+      const validFiles = Object.fromEntries(
+        Object.entries(restoredVfs).filter(([name, code]) =>
+          typeof name === 'string' && typeof code === 'string',
+        ),
+      );
+      if (Object.keys(validFiles).length) vfs = validFiles;
+    }
+  }
 } catch(e) {}
-if (!vfs['main.py'] && Object.keys(vfs).length === 0) {
-  vfs['main.py'] = 'print("Hello, World!")\n';
+if (Object.keys(vfs).length === 0) {
+  vfs['main.py'] = STARTER_CODE;
 }
 
 let currentFile = Object.keys(vfs)[0] || 'main.py';
@@ -1901,7 +1912,7 @@ window.onload = () => {
     [18, 'Loading Monaco Editor...',      80],
     [36, 'Parsing Python grammar...',     500],
     [52, 'Fetching Pyodide WASM...',      200],
-    [70, 'Bootstrapping CPython 3.11...', 400],
+    [70, 'Bootstrapping CPython 3.12...', 400],
     [85, 'Wiring I/O handlers...',        250],
     [100,'Ready.',                        180],
   ];
@@ -1931,7 +1942,7 @@ window.onload = () => {
       loadMonaco(() => {
         $('status-txt').textContent='Loading Python…';
         loadPy(() => {
-          $('status-dot').classList.add('ready');$('status-txt').textContent='Python 3.11 ready - Ctrl+Enter to run';
+          $('status-dot').classList.add('ready');$('status-txt').textContent='Python 3.12 ready - Ctrl+Enter to run';
           runBtn.disabled=false;
           const rmb=$('run-btn-mobile');if(rmb)rmb.disabled=false;
           loadSharedCode();
