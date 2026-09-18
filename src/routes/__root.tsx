@@ -15,12 +15,12 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 function NotFoundComponent() {
   return (
     <div style={{
-      display:"flex",minHeight:"100vh",alignItems:"center",justifyContent:"center",
-      background:"#0a0b0f",color:"#e4e8f4",fontFamily:"'JetBrains Mono',monospace",flexDirection:"column",gap:16
+      display: "flex", minHeight: "100vh", alignItems: "center", justifyContent: "center",
+      background: "#0a0b0f", color: "#e4e8f4", fontFamily: "'JetBrains Mono',monospace", flexDirection: "column", gap: 16
     }}>
-      <div style={{fontSize:72,fontWeight:800,background:"linear-gradient(135deg,#00d4ff,#b57bee)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>404</div>
-      <div style={{fontSize:16,color:"#7a849e"}}>Page not found</div>
-      <a href="/" style={{marginTop:8,padding:"8px 20px",border:"1px solid #00d4ff",color:"#00d4ff",borderRadius:6,textDecoration:"none",fontSize:13}}>← Go home</a>
+      <div style={{ fontSize: 72, fontWeight: 800, background: "linear-gradient(135deg,#00d4ff,#b57bee)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>404</div>
+      <div style={{ fontSize: 16, color: "#7a849e" }}>Page not found</div>
+      <a href="/" style={{ marginTop: 8, padding: "8px 20px", border: "1px solid #00d4ff", color: "#00d4ff", borderRadius: 6, textDecoration: "none", fontSize: 13 }}>← Go home</a>
     </div>
   );
 }
@@ -34,17 +34,17 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
   return (
     <div style={{
-      display:"flex",minHeight:"100vh",alignItems:"center",justifyContent:"center",
-      background:"#0a0b0f",color:"#e4e8f4",fontFamily:"'JetBrains Mono',monospace",flexDirection:"column",gap:16,padding:"0 24px",textAlign:"center"
+      display: "flex", minHeight: "100vh", alignItems: "center", justifyContent: "center",
+      background: "#0a0b0f", color: "#e4e8f4", fontFamily: "'JetBrains Mono',monospace", flexDirection: "column", gap: 16, padding: "0 24px", textAlign: "center"
     }}>
-      <div style={{fontSize:20,fontWeight:600}}>Something went wrong</div>
-      <div style={{fontSize:13,color:"#7a849e",maxWidth:380}}>{error?.message || "An unexpected error occurred."}</div>
-      <div style={{display:"flex",gap:10,marginTop:8}}>
+      <div style={{ fontSize: 20, fontWeight: 600 }}>Something went wrong</div>
+      <div style={{ fontSize: 13, color: "#7a849e", maxWidth: 380 }}>{error?.message || "An unexpected error occurred."}</div>
+      <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
         <button onClick={() => { router.invalidate(); reset(); }}
-          style={{padding:"8px 18px",background:"rgba(0,212,255,.1)",border:"1px solid #00d4ff",color:"#00d4ff",borderRadius:6,cursor:"pointer",fontFamily:"inherit",fontSize:12}}>
+          style={{ padding: "8px 18px", background: "rgba(0,212,255,.1)", border: "1px solid #00d4ff", color: "#00d4ff", borderRadius: 6, cursor: "pointer", fontFamily: "inherit", fontSize: 12 }}>
           Try again
         </button>
-        <a href="/" style={{padding:"8px 18px",border:"1px solid #2a2f4a",color:"#7a849e",borderRadius:6,textDecoration:"none",fontSize:12}}>Go home</a>
+        <a href="/" style={{ padding: "8px 18px", border: "1px solid #2a2f4a", color: "#7a849e", borderRadius: 6, textDecoration: "none", fontSize: 12 }}>Go home</a>
       </div>
     </div>
   );
