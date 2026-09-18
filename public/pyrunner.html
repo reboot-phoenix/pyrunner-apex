@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyRunner Apex â Free Online Python 3 Editor & Compiler</title>
-<meta name="description" content="Run Python 3 instantly in your browser â no install needed. Free online Python compiler with Monaco editor, interactive input(), and auto package install.">
+<title>PyRunner Apex — Free Online Python 3 Editor & Compiler</title>
+<meta name="description" content="Run Python 3 instantly in your browser — no install needed. Free online Python compiler with Monaco editor, interactive input(), and auto package install.">
 <meta name="keywords" content="python online, python compiler, run python in browser, python editor, online IDE, python 3, pyodide, free python, python interpreter, python ide">
 
 <meta name="robots" content="index, follow">
@@ -13,13 +13,13 @@
 <!-- Open Graph (Facebook, WhatsApp, Discord previews) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pyrunner-apex.itstudyhub-tiu.workers.dev/">
-<meta property="og:title" content="PyRunner Apex â Free Online Python Editor">
+<meta property="og:title" content="PyRunner Apex — Free Online Python Editor">
 <meta property="og:description" content="Run Python 3 in your browser. Monaco editor, interactive input(), auto package install. No account needed.">
 
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PyRunner Apex â Free Online Python Editor">
+<meta name="twitter:title" content="PyRunner Apex — Free Online Python Editor">
 <meta name="twitter:description" content="Run Python 3 in your browser. Monaco editor, interactive input(), auto package install. No account needed.">
 
 
@@ -30,7 +30,7 @@
   "@type": "WebApplication",
   "name": "PyRunner Apex",
   "url": "https://pyrunner-apex.itstudyhub-tiu.workers.dev/",
-  "description": "Free online Python 3 compiler and editor. Runs in your browser via WebAssembly â no install needed. Includes Monaco editor, interactive input(), and automatic package installation.",
+  "description": "Free online Python 3 compiler and editor. Runs in your browser via WebAssembly — no install needed. Includes Monaco editor, interactive input(), and automatic package installation.",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -1035,7 +1035,7 @@ from module import name</code>
     </div>
     <div id="tabs-bar"></div>
     <div id="editor-container">
-      <textarea id="mobile-editor" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"></textarea>
+      <textarea id="mobile-editor" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" style="display:none"></textarea>
       <div id="ed-load">
         <div class="spinner"></div>
         <div class="ed-load-txt">Loading editor...</div>
@@ -1060,7 +1060,7 @@ from module import name</code>
     </div>
     <div id="terminal"></div>
     <div id="input-row">
-      <span class="in-arrow">â¯</span>
+      <span class="in-arrow">❯</span>
       <input type="text" id="term-input" autocomplete="off" spellcheck="false" placeholder="type and press Enterâ¦">
       <span class="in-hint">Enter âµ</span>
     </div>
@@ -1373,7 +1373,7 @@ async function loadPy(cb) {
       pyodide.setStderr({ batched: m => tAppend(m, 't-err') });
 
       // Expose input bridge on globalThis so Python's `from js import` can find it.
-      // This returns a Promise â Python awaits it via the async input() we install below.
+      // This returns a Promise — Python awaits it via the async input() we install below.
       globalThis._js_input_fn = (prompt) => {
         if (prompt) tAppend(prompt);
         $('input-row').style.display = 'flex';
@@ -1384,7 +1384,7 @@ async function loadPy(cb) {
 
       // Install async input() AND an AST transformer that rewrites every
       // `input(...)` call in user code to `await input(...)` automatically.
-      // This is the only reliable way to handle input() in Pyodide â the async
+      // This is the only reliable way to handle input() in Pyodide — the async
       // function must be awaited at the call site, and users can't write `await input()`.
       await pyodide.runPythonAsync(`
 import builtins, ast
@@ -1528,7 +1528,7 @@ async function runCode() {
   runBtn.disabled = true;
   runBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running';
   clearOut();
-  tRaw(`<span class="t-prompt">â¯ python ${escHTML(currentFile)}</span>`);
+  tRaw(`<span class="t-prompt">❯ python ${escHTML(currentFile)}</span>`);
 
   const t0 = performance.now();
 
@@ -1595,7 +1595,7 @@ function sendAI() {}
 function aiQuick() {}
 function addAIMsg() {}
 function renderMarkdown(text) { return text; }
-// AI panel removed â stub saved key references safely
+// AI panel removed — stub saved key references safely
 try {
   const savedModel = localStorage.getItem('pyr_ai_model');
   const savedKey   = localStorage.getItem('pyr_ai_key');
@@ -1605,7 +1605,7 @@ try {
   if (savedFont  && savedFont  !== 'md')   setFont(savedFont);
 } catch(_) {}
 
-// (AI panel removed â settings stubs above handle theme/font restore)
+// (AI panel removed — settings stubs above handle theme/font restore)
 
 function useAICode(b64) {
   const code = decodeURIComponent(escape(atob(b64)));
@@ -1733,7 +1733,7 @@ function loadChallenge() {
 // ââââââââââââââââââââââââââââââ
 const FRIENDLY_ERRORS = [
   { match: /NameError.*name '(.+?)' is not defined/, tip: (m) => `ð¡ "${m[1]}" doesn't exist yet. Did you spell it right or forget to define it above?` },
-  { match: /IndentationError/, tip: () => `ð¡ Indentation issue. Use 4 spaces consistently â don't mix tabs and spaces.` },
+  { match: /IndentationError/, tip: () => `ð¡ Indentation issue. Use 4 spaces consistently — don't mix tabs and spaces.` },
   { match: /SyntaxError.*EOL while scanning string/, tip: () => `ð¡ You opened a string with " or ' but never closed it.` },
   { match: /SyntaxError.*invalid syntax/, tip: () => `ð¡ Python can't read this line. Check for missing colons (:), brackets, or typos.` },
   { match: /TypeError.*unsupported operand type.*str.*int/, tip: () => `ð¡ You're mixing a string and a number. Wrap the number in str() or convert the string with int().` },
@@ -1744,9 +1744,9 @@ const FRIENDLY_ERRORS = [
   { match: /ZeroDivisionError/, tip: () => `ð¡ You're dividing by zero. Add a check: if divisor != 0: before dividing.` },
   { match: /AttributeError.*'(.+?)' object has no attribute '(.+?)'/, tip: (m) => `ð¡ "${m[1]}" doesn't have a ".${m[2]}" method. Check the type or spelling.` },
   { match: /ValueError.*invalid literal.*int\(\).*'(.+?)'/, tip: (m) => `ð¡ Can't convert "${m[1]}" to an integer. Make sure the input is a plain number.` },
-  { match: /RecursionError/, tip: () => `ð¡ Infinite recursion â your function keeps calling itself. Make sure you have a base case that stops it.` },
+  { match: /RecursionError/, tip: () => `ð¡ Infinite recursion — your function keeps calling itself. Make sure you have a base case that stops it.` },
   { match: /FileNotFoundError/, tip: () => `ð¡ File not found. Check the filename and path are correct.` },
-  { match: /ModuleNotFoundError.*'(.+?)'/, tip: (m) => `ð¡ Module "${m[1]}" isn't installed. PyRunner will try to install it automatically â just run again.` },
+  { match: /ModuleNotFoundError.*'(.+?)'/, tip: (m) => `ð¡ Module "${m[1]}" isn't installed. PyRunner will try to install it automatically — just run again.` },
 ];
 
 function getFriendlyTip(errorMsg) {
@@ -1894,7 +1894,7 @@ window.onload = () => {
     bs.style.opacity = '0';
     setTimeout(() => { bs.style.display = 'none'; if(window._stopBootCanvas) window._stopBootCanvas(); }, 480);
 
-    // Split only on desktop â mobile uses CSS stacking
+    // Split only on desktop — mobile uses CSS stacking
     if (window.innerWidth > 700) {
       Split(['#sidebar', '#editor-zone', '#out-panel'], {
         sizes: [14, 48, 38], minSize: [110, 260, 180], gutterSize: 4,
