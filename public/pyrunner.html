@@ -309,7 +309,8 @@ body{background:var(--bg-void);color:var(--text-1);font-family:var(--sans);displ
 }
 .in-arrow{font-family:var(--mono);font-size:14px;color:var(--green);flex-shrink:0}
 #term-input{flex:1;background:transparent;border:none;color:#fff;font-family:var(--mono);font-size:13px;outline:none;caret-color:var(--cyan)}
-.in-hint{font-family:var(--mono);font-size:10px;color:var(--text-3);white-space:nowrap}
+.in-hint{font-family:var(--mono);font-size:10px;color:var(--text-3);white-space:nowrap;background:transparent;border:0;cursor:pointer;padding:3px 0}
+.in-hint:hover,.in-hint:focus-visible{color:var(--cyan)}
 
 /* gutter */
 .gutter{background:var(--border);cursor:col-resize;transition:background .15s}
@@ -1059,7 +1060,7 @@ from module import name</code>
     <div id="input-row">
       <span class="in-arrow">❯</span>
       <input type="text" id="term-input" autocomplete="off" spellcheck="false" placeholder="type and press Enter…">
-      <span class="in-hint">Enter ↵</span>
+      <button type="button" id="submit-input" class="in-hint" aria-label="Submit terminal input">Enter ↵</button>
     </div>
   </div>
 </div>
@@ -1798,7 +1799,10 @@ window.submitInput = function() {
 };
 
 $('term-input').addEventListener('keydown', e => {
-  if (e.key === 'ArrowUp') {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    window.submitInput();
+  } else if (e.key === 'ArrowUp') {
     e.preventDefault();
     if (inputHistoryIdx > 0) {
       inputHistoryIdx--;
@@ -1815,6 +1819,8 @@ $('term-input').addEventListener('keydown', e => {
     }
   }
 });
+
+$('submit-input').addEventListener('click', () => window.submitInput());
 
 // ═════════════════════════════════════════════════════════════
 // BOOT CANVAS PARTICLES
