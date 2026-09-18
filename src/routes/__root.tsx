@@ -56,7 +56,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "PyRunner Apex — Free Online Python 3 Editor & Compiler" },
-      { name: "description", content: "Run Python 3 instantly in your browser — no install needed. Free online Python compiler with Monaco editor, interactive input(), AI assistant (Gemini, ChatGPT, Claude), and auto package install." },
+      { name: "description", content: "Run Python 3 instantly in your browser — no install needed. Free online Python compiler with a Monaco editor, interactive input(), and automatic package installation." },
       { name: "keywords", content: "python online, python compiler, run python browser, python editor online, online IDE, python 3, free python, python interpreter, AI python" },
       { name: "author", content: "Ashtid D" },
       { name: "robots", content: "index, follow" },
