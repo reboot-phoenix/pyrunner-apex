@@ -1445,9 +1445,13 @@ class ExecutionTimeout:
 _timeout_tracker = ExecutionTimeout()
 
 async def _async_input(prompt=""):
-    _timeout_tracker.reset()
+    # A person may need longer than the execution limit to answer a prompt.
+    # Disable tracing before awaiting JavaScript input so the next trace event
+    # cannot time out before this coroutine gets a chance to resume.
+    sys.settrace(None)
     result = await _js_input_fn(str(prompt) if prompt else "")
     _timeout_tracker.reset()
+    sys.settrace(_timeout_tracker.trace)
     return str(result)
 builtins.input = _async_input
 
