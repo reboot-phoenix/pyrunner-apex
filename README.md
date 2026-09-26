@@ -1,12 +1,10 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/-%3E__-0d0f18?style=for-the-badge&labelColor=0d0f18&color=00d4ff&logoColor=00d4ff" alt="" />
-
 # PyRunner Apex
 
-**The Python IDE that lives in your browser — and never forgets your work.**
+**A full Python 3 IDE that runs in your browser — and never loses your work.**
 
-*No account. No install. No server. No lost code. Ever.*
+*No install. No account. No lost code. Ever.*
 
 <br/>
 
@@ -24,158 +22,116 @@
 
 ---
 
-<div align="center">
+## Why I built this
 
-### Open the editor. Write Python. Close the tab.
-### Come back a week later. It's all still there.
+If you've ever used an online Python compiler, you already know the pain.
 
-</div>
+You're in a computer lab. You've been working on something for 20 minutes. Your friend makes a joke and closes your tab — or worse, turns off the computer entirely. Everything is gone. You start over. It's happened to all of us.
 
----
+Or you're on mobile, deep into solving a problem, and you accidentally press the back button. One tap. All your work, gone. No warning. No recovery.
 
-## Why not Programmiz, Replit, or OnlineGDB?
+I got tired of it. Every online compiler I tried had the same flaw — the moment you leave, your code leaves with you. So I built PyRunner Apex to fix exactly that.
 
-Because every single one of them has the same problem — **your code lives on their server, not yours.**
+**Close the tab. Shut down the computer. Press back on mobile by mistake. Come back whenever.**
+Your code is exactly where you left it.
 
-Close the tab on Programmiz → gone. Free tier on Replit expires → gone. OnlineGDB session times out → gone. And all of them run your code on a remote machine, which means latency, rate limits, and someone else's computer between you and your Python.
+It saves to your browser's local storage on every single keystroke — no account, no cloud sync, no "please log in to save your work." It just saves. Always. Even if someone turns off your PC in a computer lab, just turn it back on and open the browser. It's all there.
 
-PyRunner Apex is different at the architecture level.
-
-| | **PyRunner Apex** | Programmiz | Replit | OnlineGDB |
-|---|:---:|:---:|:---:|:---:|
-| Code survives closing the tab | ✅ **Always** | ❌ Gone | ⚠️ Need account | ❌ Gone |
-| Code survives shutting down your machine | ✅ **Always** | ❌ | ❌ | ❌ |
-| No account needed | ✅ | ✅ | ❌ | ✅ |
-| `input()` actually works | ✅ **Real terminal** | ❌ Faked | ✅ | ✅ |
-| VS Code–grade editor | ✅ **Monaco** | ❌ Basic | ⚠️ Partial | ❌ Basic |
-| Multiple `.py` files, one project | ✅ | ❌ | ✅ | ❌ |
-| Share code without uploading it anywhere | ✅ **URL-encoded** | ❌ | ❌ | ❌ |
-| numpy, pandas auto-install | ✅ | ❌ | ⚠️ Slow | ❌ |
-| Runs 100% in your browser | ✅ **WebAssembly** | ❌ Server | ❌ Server | ❌ Server |
-| Works offline after first load | ✅ | ❌ | ❌ | ❌ |
+That's the one thing I needed from an online compiler that none of them gave me. So I built it myself.
 
 ---
 
-## How it works
+## What else it does
 
-```
-Your browser
-    └── Pyodide (CPython 3.12 compiled to WebAssembly)
-            └── runs real Python, locally, in the tab
-                    └── output streams to Monaco editor terminal
-                            └── everything auto-saves to localStorage
-```
+Once the "your work never disappears" problem was solved, I kept going. Here's everything that's packed in:
 
-Your code **never leaves your machine.** No requests to a Python server. No rate limits. No accounts. The entire IDE — editor, runtime, terminal, file system — runs inside a single browser tab.
+### ✅ Real Python — not a fake
 
----
-
-## Features
-
-### 💾 Your work never disappears
-
-PyRunner Apex auto-saves to `localStorage` on every keystroke. Not when you hit save. Not when you log in. Every. Single. Keystroke.
-
-```
-Monday:    write some code, close the laptop
-Tuesday:   open the browser, keep going
-Next week: still there
-Power cut: still there
-```
-
-This is the one thing every other online compiler gets wrong. PyRunner Apex treats your code like VS Code does — as something that belongs to **you**, not to a server.
-
----
-
-### 🧠 Real CPython 3.12 — not a fake
-
-Most "online compilers" send your code to a server and return the output. PyRunner Apex runs **real CPython 3.12** compiled to WebAssembly — the exact same interpreter you'd install on your machine.
+Most online compilers send your code to a server and return the output. PyRunner Apex runs **real CPython 3.12 via WebAssembly** — directly in your browser tab. Nothing goes to a server. Nothing.
 
 ```python
-import numpy as np          # ✅ installs automatically
-import pandas as pd         # ✅ installs automatically
-import matplotlib.pyplot    # ✅ installs automatically
+import numpy as np       # ✅ works — installs automatically, no pip needed
+import pandas as pd      # ✅ works — same
+import heapq             # ✅ works — stdlib, no setup at all
 
-name = input("Your name: ") # ✅ actually pauses and waits for you
-print(f"Hello, {name}!")    # ✅ real stdout, unbuffered
+name = input("Name: ")   # ✅ actually pauses and waits for you to type
+print(f"Hello {name}")   # ✅ real output, exactly like your terminal
 ```
 
-- **`input()` blocks properly** — execution pauses, the terminal waits, you type, it continues. Exactly like a real terminal.
-- **Packages auto-install** — just write `import numpy`. No pip, no requirements.txt, no setup.
-- **Infinite loop protection** — a 3-second `sys.settrace` kill switch catches runaway loops before they freeze your tab.
-- **Nothing touches a server** — zero network requests for your code.
+You don't need to pip install anything. You don't need to configure anything. Just `import` whatever you need and it works.
 
----
+### ✅ `input()` that actually works
 
-### ✏️ The VS Code editor, in your browser
+This one surprises people. Most online compilers either fake `input()` (you type everything before the code runs) or just break entirely. In PyRunner Apex, `input()` behaves exactly like it does in a real terminal — execution pauses, you type, you press Enter, the code continues. On every prompt. Every time.
 
-PyRunner Apex uses **Monaco Editor** — the exact engine that powers VS Code.
+### ✅ Multiple files in one project
 
-- Full Python syntax highlighting and bracket pair colorization
-- Smooth cursor animation, line highlight, and glyph margin
-- **Error line highlighting** — the failing line turns red the instant your code crashes
-- Find & Replace, comment toggle, auto-indent
-- Font size control (A− / A / A+)
-- Dark and light themes — both remembered across sessions
-- Resizable split pane between editor and output
-
-On mobile, it switches automatically to **CodeMirror** with Monokai theme — a lightweight editor that's actually usable on a touchscreen.
-
----
-
-### 📂 Multiple files. A real project.
-
-Hit `+` in the sidebar. Name your file. Import it from `main.py`. All files live together, all saved automatically.
+Click `+` in the sidebar to create a new `.py` file. Name it. Import it from your main file. All files are saved automatically and stay there across sessions.
 
 ```
 your-project/
-├── main.py        ← active tab, runs when you hit Ctrl+Enter
-├── utils.py       ← importable: from utils import helper
-└── models.py      ← importable: from models import User
+├── main.py       ← runs when you hit Ctrl+Enter
+├── utils.py      ← importable
+└── models.py     ← importable
 ```
 
-This is how Python projects actually work. Not one text box with 300 lines of code stuffed into it.
+### ✅ Share your code in one click
+
+Hit **Share**, copy the URL, send it to anyone. The entire project — all your files — is compressed into the URL itself. No upload. No account. No "link expires in 7 days." The link works forever.
+
+Whoever opens it gets your exact code, ready to run immediately.
+
+### ✅ The VS Code editor
+
+PyRunner Apex uses **Monaco Editor** — the same engine that powers VS Code — with full Python syntax highlighting, bracket pair colorization, error line marking, Find & Replace, comment toggle, and smooth cursor animation.
+
+On mobile it switches to **CodeMirror** — lightweight and actually usable on a phone screen.
+
+### ✅ Errors that tell you what went wrong
+
+Every error renders as a card with the error type, the exact line number, a plain-English explanation of what happened, and a suggestion for how to fix it. No raw Python tracebacks dumped at you.
+
+### ✅ 12 built-in examples
+
+Hello World, for loops, while loops, functions, OOP, list comprehensions, a calculator, a number guessing game — all load with one click. No copy-pasting from a tutorial tab.
+
+### ✅ Daily coding challenges
+
+A new challenge every day — 30 problems covering loops, recursion, dictionaries, sorting, and more. Hit "Try it" and a starter template with the question and a hint loads straight into your editor.
+
+### ✅ Dark and light theme
+
+Both remembered across sessions. Font size control too.
 
 ---
 
-### 🔗 Share your code — no upload, no account, no expiry
+## Who it's for
 
-Click **Share**. Copy the URL. Send it.
-
-That URL *is* your code. The entire multi-file project is LZ-compressed and encoded directly into the link — no server, no database, no "link expired after 30 days." The link works forever because there's nothing to expire.
-
-Anyone who opens it gets your exact project, ready to run in one click.
-
----
-
-### 🖥️ Errors that actually help
-
-Forget raw tracebacks. Every error renders as a rich card:
-
-```
-🔴 TypeError                                          Line 7
-──────────────────────────────────────────────────────────────
-unsupported operand type(s) for +: 'int' and 'str'
-
-💡 You're mixing a string and a number.
-   Wrap the number in str() or convert the string with int().
-
-▶ Show full traceback
-```
-
-15+ error types — `NameError`, `IndexError`, `RecursionError`, `TimeoutError`, and more — each get a plain-English explanation written for humans, not compilers. The failing line is highlighted in the editor simultaneously.
+- **Students** who use computer labs and can't install Python, or who share machines
+- **Beginners** who just want to write Python without setting anything up
+- **Anyone on mobile** who's lost code to the back button one too many times
+- **Teachers** who want to send students a link that opens a ready-to-run Python environment
+- **Anyone who just wants to try something quickly** without opening an IDE
 
 ---
 
-### 📚 Examples & daily challenges, built in
+## vs. the alternatives
 
-**12 ready-to-run examples** — Hello World, OOP, Fibonacci, list comprehensions, a number guessing game — one click loads them straight into your editor. No copy-pasting from a tutorial tab.
-
-**A daily coding challenge** rotates every day across 30 problems (loops, recursion, dictionaries, algorithms). Hit "Try it" and a starter template appears in your editor with the question and a hint already written.
+| | **PyRunner Apex** | Programmiz | Replit | OnlineGDB |
+|---|:---:|:---:|:---:|:---:|
+| Code survives closing the tab | ✅ Always | ❌ Gone | ⚠️ Need account | ❌ Gone |
+| Code survives shutting down the PC | ✅ Always | ❌ | ❌ | ❌ |
+| No account needed | ✅ | ✅ | ❌ | ✅ |
+| `input()` actually works | ✅ Real | ❌ Faked | ✅ | ✅ |
+| VS Code–grade editor | ✅ Monaco | ❌ Basic | ⚠️ Partial | ❌ Basic |
+| Multiple `.py` files | ✅ | ❌ | ✅ | ❌ |
+| Share without uploading anywhere | ✅ URL-encoded | ❌ | ❌ | ❌ |
+| Auto-installs packages | ✅ | ❌ | ⚠️ Slow | ❌ |
+| Runs 100% in the browser | ✅ | ❌ Server | ❌ Server | ❌ Server |
 
 ---
 
-### ⚡ Keyboard shortcuts
+## Keyboard shortcuts
 
 | Shortcut | Action |
 |---|---|
@@ -185,19 +141,6 @@ unsupported operand type(s) for +: 'int' and 'str'
 | `Ctrl + H` | Find & Replace |
 | `Ctrl + /` | Toggle comment |
 | `?` | Open shortcuts panel |
-| `Esc` | Close any modal |
-
----
-
-### 🚀 Zero friction. Open and code.
-
-```
-Step 1: Open https://pyrunner-apex.pages.dev
-Step 2: Write Python
-Step 3: Ctrl+Enter
-```
-
-No sign-up flow. No "choose a plan." No 30-second spin-up. No free tier that expires. Just Python, ready in under 3 seconds.
 
 ---
 
@@ -205,28 +148,27 @@ No sign-up flow. No "choose a plan." No 30-second spin-up. No free tier that exp
 
 | Layer | Technology |
 |---|---|
-| Python runtime | [Pyodide v0.27.2](https://pyodide.org) — CPython 3.12 compiled to WebAssembly |
+| Python runtime | [Pyodide v0.27.2](https://pyodide.org) — CPython 3.12 → WebAssembly |
 | Desktop editor | [Monaco Editor v0.43.0](https://microsoft.github.io/monaco-editor/) |
 | Mobile editor | [CodeMirror 5](https://codemirror.net/) |
 | URL compression | [LZ-String](https://pieroxy.net/blog/pages/lz-string/index.html) |
-| Split pane | [Split.js](https://split.js.org/) |
 | Framework | [TanStack Start](https://tanstack.com/start) + React |
-| Hosting | [Cloudflare Pages](https://pages.cloudflare.com) — free, global CDN |
-| CI/CD | GitHub Actions — auto-deploy on every push |
+| Hosting | [Cloudflare Pages](https://pages.cloudflare.com) |
+| CI/CD | GitHub Actions |
 
 ---
 
-## Deploy Your Own Instance
+## Deploy Your Own
 
 Full walkthrough → **[DEPLOY_GUIDE.md](DEPLOY_GUIDE.md)**
 
 ```bash
 bun install
 bun run build
-# point Cloudflare Pages at .output/public
+# Deploy .output/public to Cloudflare Pages
 ```
 
-Push to `main` → live in ~2 minutes. The GitHub Actions workflow is already included.
+Push to `main` → auto-deploys in ~2 minutes.
 
 ---
 
@@ -236,27 +178,25 @@ Push to `main` → live in ~2 minutes. The GitHub Actions workflow is already in
 pyrunner-apex/
 ├── .github/
 │   └── workflows/
-│       └── quality.yml       # CI on every push to main
+│       └── quality.yml       # CI on every push
 ├── public/
-│   ├── pyrunner.html         # ← the entire IDE, one self-contained file
+│   ├── pyrunner.html         # the entire IDE — one self-contained file
 │   ├── sitemap.xml
 │   └── robots.txt
 ├── src/
 │   ├── routes/
-│   │   ├── __root.tsx        # HTML shell + all SEO meta tags
-│   │   └── index.tsx         # embeds pyrunner.html as the app
+│   │   ├── __root.tsx        # HTML shell + SEO meta
+│   │   └── index.tsx         # embeds pyrunner.html
 │   └── styles.css
 ├── DEPLOY_GUIDE.md
 └── package.json
 ```
 
-The IDE itself lives entirely in `public/pyrunner.html` — one self-contained file with zero build dependencies. You can open it directly in a browser and it works.
-
 ---
 
 ## Contributing
 
-Found a bug or have a feature idea? Open an issue first so we can talk about it before you build. PRs are welcome.
+Found a bug or have a feature idea? Open an issue first so we can talk about it. PRs are welcome.
 
 ---
 
@@ -268,9 +208,9 @@ Found a bug or have a feature idea? Open an issue first so we can talk about it 
 
 <br/>
 
-*Built by [Ashtid D](https://github.com/reboot-phoenix) · MIT License*
+*Built by Ashtid D · MIT License*
 
-*If this saved you from Programmiz — drop a ⭐. It actually helps.*
+*If this saved your work when someone turned off your PC — you know what to do. ⭐*
 
 <br/>
 
