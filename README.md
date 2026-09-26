@@ -1,79 +1,187 @@
 <div align="center">
 
-# PyRunner Apex
+<br/>
 
-**A fully client-side Python 3 IDE that runs in your browser.**  
-No server. No install. No account.
+```
+██████╗ ██╗   ██╗██████╗ ██╗   ██╗███╗   ██╗███╗   ██╗███████╗██████╗
+██╔══██╗╚██╗ ██╔╝██╔══██╗██║   ██║████╗  ██║████╗  ██║██╔════╝██╔══██╗
+██████╔╝ ╚████╔╝ ██████╔╝██║   ██║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝
+██╔═══╝   ╚██╔╝  ██╔══██╗██║   ██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗
+██║        ██║   ██║  ██║╚██████╔╝██║ ╚████║██║ ╚████║███████╗██║  ██║
+╚═╝        ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝
+                                                              A P E X
+```
 
-[![Deploy](https://img.shields.io/badge/Deploy-Cloudflare_Pages-orange?logo=cloudflare)](https://pages.cloudflare.com)
-[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://pyodide.org)
-[![WebAssembly](https://img.shields.io/badge/Powered_by-WebAssembly-654ff0?logo=webassembly)](https://webassembly.org)
-[![Zero Backend](https://img.shields.io/badge/Backend-None-brightgreen)](#)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+### **The Python IDE that lives in your browser — and remembers you.**
+*No account. No install. No lost work. Ever.*
 
-[**→ Open the Editor**](https://pyrunner-apex.pages.dev) · [**Deploy Guide**](DEPLOY_GUIDE.md)
+<br/>
+
+[![Live Demo](https://img.shields.io/badge/▶%20Try%20It%20Now-pyrunner--apex.pages.dev-00d4ff?style=for-the-badge&logo=python&logoColor=white)](https://pyrunner-apex.pages.dev)
+
+<br/>
+
+[![Python 3.12](https://img.shields.io/badge/Python-3.12_via_WASM-3776AB?style=flat-square&logo=python&logoColor=white)](https://pyodide.org)
+[![Zero Backend](https://img.shields.io/badge/Backend-None-00e676?style=flat-square)](https://pyrunner-apex.pages.dev)
+[![Monaco Editor](https://img.shields.io/badge/Editor-Monaco_(VS_Code)-007ACC?style=flat-square&logo=visualstudiocode)](https://microsoft.github.io/monaco-editor/)
+[![WebAssembly](https://img.shields.io/badge/Powered_by-WebAssembly-654ff0?style=flat-square&logo=webassembly)](https://webassembly.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Deploy on Cloudflare](https://img.shields.io/badge/Deploy-Cloudflare_Pages-F38020?style=flat-square&logo=cloudflare)](DEPLOY_GUIDE.md)
 
 </div>
 
 ---
 
-## Why
+## Why PyRunner Apex beats every other online compiler
 
-Most browser-based Python editors either fake `input()`, silently break on packages, or send your code to a server.
+| | PyRunner Apex | Programmiz | Replit | OnlineGDB |
+|---|:---:|:---:|:---:|:---:|
+| Your code survives a shutdown | ✅ Always | ❌ Gone | ⚠️ Account needed | ❌ Gone |
+| No account required | ✅ | ✅ | ❌ | ✅ |
+| Real `input()` that actually works | ✅ | ❌ Faked | ✅ | ✅ |
+| VS Code–grade editor | ✅ Monaco | ❌ Basic | ⚠️ Partial | ❌ Basic |
+| Multiple `.py` files in one project | ✅ | ❌ | ✅ | ❌ |
+| Share code without uploading to a server | ✅ URL-encoded | ❌ | ❌ | ❌ |
+| Auto-installs numpy, pandas, etc. | ✅ | ❌ | ⚠️ Slow | ❌ |
+| Runs 100% in your browser | ✅ | ❌ Server | ❌ Server | ❌ Server |
+| Works offline after first load | ✅ | ❌ | ❌ | ❌ |
 
-PyRunner Apex runs real CPython 3.11 via WebAssembly — directly in the tab. `input()` works. `numpy` and `pandas` install automatically. Nothing leaves your machine.
+---
+
+## The feature that changes everything
+
+> **Close your laptop. Unplug it. Come back tomorrow.**
+> Open PyRunner Apex. Your code is exactly where you left it.
+> No account. No cloud sync. No "session expired." Just your work.
+
+PyRunner Apex saves everything to your browser's local storage on every single keystroke. It's the only online Python tool that treats your code like VS Code does — as something that *belongs to you*, not to a server.
 
 ---
 
 ## Features
 
-### Editor
-- Monaco editor (the engine behind VS Code) with Python syntax highlighting, autocomplete, and bracket pair colorization
-- Multi-file support — create, rename, switch between, and delete `.py` files via a tab bar
-- Word wrap, line numbers, and smooth cursor animation
-- Font size control (A− / A / A+)
-- Resizable editor/output split pane
-- Mobile-responsive layout with a dedicated mobile editor view
+### 🧠 Real Python. Not a trick.
 
-### Running Code
-- Python 3.11 via WebAssembly — executes entirely in the browser, no backend
-- Interactive `input()` — prompts behave exactly as they do in a real terminal
-- Automatic package installation — `import numpy`, `import pandas`, etc. work out of the box via Pyodide
-- Execution timer shown after each run
-- `Ctrl+Enter` to run
+Most "online Python compilers" run your code on their servers, fake `input()`, or use a stripped-down interpreter. PyRunner Apex runs **real CPython 3.12** compiled to WebAssembly — the exact same Python you'd install on your machine.
 
-### Output & Errors
-- Terminal-style output with colored text
-- Rich error cards showing line number, traceback, and a plain-English explanation
-- Inline error banner with one-click fix suggestions
-- Copy output and Clear buttons
+```python
+import numpy as np          # ✅ auto-installs
+import pandas as pd         # ✅ auto-installs
 
-### File Management
-- Save `.py` to disk
-- Open/load `.py` from disk
-- Copy code to clipboard
-- Clear editor
+name = input("Your name: ") # ✅ actually pauses and waits
+print(f"Hello {name}!")     # ✅ real output
+```
 
-### UI
-- Dark and light theme toggle
-- Collapsible sidebar with a Python syntax quick reference
-- Toast notifications and a keyboard shortcuts modal
-- Splash screen on load
-
-### Extras
-- 12 built-in code examples via an examples dropdown
-- Daily coding challenge that rotates each day
-- Share button — encodes your code into a URL so others can open it instantly
+- **`input()` works** — prompts pause execution and wait for you to type, exactly like a real terminal
+- **Packages auto-install** — just `import numpy` and it happens. No pip commands.
+- **Infinite loop protection** — 3-second kill switch using `sys.settrace` so a `while True` doesn't hang your tab forever
+- **Nothing leaves your machine** — your code never touches a server
 
 ---
 
-## Getting Started
+### ✏️ An editor you actually want to use
 
-No install needed. Just open the editor and start writing Python:
+PyRunner Apex uses **Monaco Editor** — the same engine that powers VS Code.
 
-**[pyrunner-apex.pages.dev →](https://pyrunner-apex.pages.dev)**
+- Python syntax highlighting with bracket pair colorization
+- Smooth cursor animation and line highlight
+- Error line marked in red the moment your code fails — jump straight to the problem
+- Find & Replace (`Ctrl+H`), comment toggle (`Ctrl+/`), indent with `Tab`
+- Font size control: A− / A / A+
+- Dark and light theme, both persisted across sessions
+- Resizable split pane between editor and output
 
-To run it locally or deploy your own instance, see below.
+On mobile, it switches to **CodeMirror** — a lightweight, touch-friendly editor that actually works on a phone screen.
+
+---
+
+### 📂 Multiple files. One real project.
+
+Click `+` to create a new `.py` file. Give it a name. Switch between files with tabs. Import one from another.
+
+```
+your-project/
+├── main.py       ← active tab
+├── utils.py      ← importable
+└── models.py     ← importable
+```
+
+All files are saved to local storage automatically. Delete and rename anytime. This is how Python projects actually work — not one lonely box of code.
+
+---
+
+### 🔗 Share without a server
+
+Click **Share** and you get a URL. That URL *is* your code — compressed using LZ-String and encoded directly into the link. No upload. No database. No expiry date. No one can take it down.
+
+Anyone who opens the link gets your full multi-file project, ready to run instantly.
+
+---
+
+### 🖥️ Output that tells you what went wrong
+
+Errors don't just dump a traceback. They render as **rich error cards**:
+
+```
+🔴 TypeError                              Line 7
+─────────────────────────────────────────────────
+unsupported operand type(s) for +: 'int' and 'str'
+
+💡 You're mixing a string and a number.
+   Wrap the number in str() or convert with int().
+
+▶ Show full traceback
+```
+
+15+ error types each get their own plain-English explanation — written for humans, not compilers.
+
+---
+
+### ⚡ Keyboard shortcuts that feel right
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl + Enter` | Run code |
+| `Ctrl + S` | Save `.py` to disk |
+| `Ctrl + Shift + C` | Copy code |
+| `Ctrl + H` | Find & Replace |
+| `Ctrl + /` | Toggle comment |
+| `?` | Open shortcuts panel |
+
+---
+
+### 📚 Built-in examples & daily challenges
+
+**12 ready-to-run examples** — Hello World to OOP — load with one click. No copy-pasting from a tutorial page.
+
+**A daily coding challenge** rotates every day (30 challenges, cycling from Jan 1). Open it, hit "Try it", and a starter template is already in your editor.
+
+---
+
+### 🚀 Instant. No setup.
+
+```
+1. Open https://pyrunner-apex.pages.dev
+2. Write Python
+3. Press Ctrl+Enter
+```
+
+That's it. No account. No install. No waiting room. No "free tier expired."
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Python runtime | [Pyodide v0.27.2](https://pyodide.org) — CPython 3.12 → WebAssembly |
+| Desktop editor | [Monaco Editor v0.43.0](https://microsoft.github.io/monaco-editor/) |
+| Mobile editor | [CodeMirror 5](https://codemirror.net/) |
+| URL compression | [LZ-String](https://pieroxy.net/blog/pages/lz-string/index.html) |
+| Split pane | [Split.js](https://split.js.org/) |
+| Framework | [TanStack Start](https://tanstack.com/start) + React |
+| Hosting | [Cloudflare Pages](https://pages.cloudflare.com) |
+| CI/CD | GitHub Actions |
 
 ---
 
@@ -87,7 +195,7 @@ bun run build
 # Deploy .output/public to Cloudflare Pages
 ```
 
-Pushing to `main` triggers automatic deployment via the included GitHub Actions workflow.
+Push to `main` → GitHub Actions deploys automatically.
 
 ---
 
@@ -97,9 +205,9 @@ Pushing to `main` triggers automatic deployment via the included GitHub Actions 
 pyrunner-apex/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml       # auto-deploy on push
+│       └── quality.yml      # CI on every push
 ├── public/
-│   ├── pyrunner.html        # the entire IDE (self-contained)
+│   ├── pyrunner.html        # the entire IDE — one self-contained file
 │   ├── sitemap.xml
 │   └── robots.txt
 ├── src/
@@ -113,26 +221,18 @@ pyrunner-apex/
 
 ---
 
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Python runtime | [Pyodide](https://pyodide.org) — CPython 3.11 compiled to WebAssembly |
-| Editor | [Monaco Editor](https://microsoft.github.io/monaco-editor/) |
-| Framework | [TanStack Start](https://tanstack.com/start) + React |
-| Hosting | Cloudflare Pages |
-| CI/CD | GitHub Actions |
-
----
-
 ## Contributing
 
-Issues and pull requests are welcome. If you find a bug or have a feature idea, open an issue first so we can discuss it before you build.
+Found a bug? Have a feature idea? Open an issue first so we can discuss it before you build. PRs are welcome.
 
 ---
 
 <div align="center">
 
-*by Ashtid D · MIT License*
+**[▶ Open PyRunner Apex](https://pyrunner-apex.pages.dev)**
+
+*Built by Ashtid D · MIT License*
+
+*If this saved you from Programmiz, leave a ⭐*
 
 </div>
