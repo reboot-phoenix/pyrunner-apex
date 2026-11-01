@@ -1543,10 +1543,13 @@ def _pyr_show(*args, **kwargs):
 
 
 def _setup_matplotlib():
+    import contextlib
     try:
-        import matplotlib
-        matplotlib.use('agg')
-        import matplotlib.pyplot as plt
+        # matplotlib prints a scary "building the font cache" message on first import
+        with contextlib.redirect_stderr(io.StringIO()):
+            import matplotlib
+            matplotlib.use('agg')
+            import matplotlib.pyplot as plt
     except Exception:
         return False
     plt.show = _pyr_show
@@ -2006,7 +2009,7 @@ function loadMonaco(cb) {
         suggest: { preview: false, showWords: false, snippetsPreventQuickSuggestions: false },
         quickSuggestions: { other: true, comments: false, strings: false },
         suggestOnTriggerCharacters: true,
-        acceptSuggestionOnEnter: 'smart',
+        acceptSuggestionOnEnter: 'off',
         tabCompletion: 'on',
         parameterHints: { enabled: false },
         hover: { enabled: false },
@@ -2016,6 +2019,7 @@ function loadMonaco(cb) {
       editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => { if (!runBtn.disabled) runCode(); });
       editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => runSelection());
       editor.onDidChangeCursorSelection(() => updateSelBtn());
+      if (editor.onDidAttemptReadOnlyEdit) editor.onDidAttemptReadOnlyEdit(() => showToast('Step mode is on, so the code is locked. Click Exit to edit.'));
       editor.onDidChangeModelContent(() => {
         vfs[currentFile] = editor.getValue();
         saveToLocal();
@@ -2051,6 +2055,14 @@ async function loadPy(cb) {
 
       globalThis._stop_flag = false;
       await pyodide.runPythonAsync($('py-runner').textContent);
+      try {
+        const FS = pyodide.FS;
+        FS.mkdirTree('/idb');
+        FS.mount(FS.filesystems.IDBFS, {}, '/idb');
+        await new Promise((res, rej) => FS.syncfs(true, e => e ? rej(e) : res()));
+        pyodide.runPython("import os\nos.makedirs('/idb/mpl', exist_ok=True)\nos.environ['MPLCONFIGDIR'] = '/idb/mpl'");
+        window._mplPersist = true;
+      } catch (e) { console.warn('Persistent cache unavailable:', e); }
       cb();
     } catch (e) {
       $('status-dot').classList.add('err');
@@ -2161,6 +2173,21 @@ function setTimeLimit(v) {
   timeLimitMs = parseInt(v, 10) || 3000;
   try { localStorage.setItem('pyr_timelimit', String(timeLimitMs)); } catch (_) {}
   showToast('Time limit: ' + (timeLimitMs / 1000) + 's');
+}
+
+// a status line in the output that disappears when the work is done
+function showTransient(text) {
+  const d = document.createElement('div');
+  d.className = 't-sys';
+  d.textContent = text;
+  terminal.appendChild(d);
+  terminal.scrollTop = terminal.scrollHeight;
+  return { set(t) { d.textContent = t; }, remove() { d.remove(); } };
+}
+let mplReady = false;
+function persistMplCache() {      // keep matplotlib's font cache between visits (IndexedDB)
+  if (!window._mplPersist) return;
+  try { pyodide.FS.syncfs(false, () => {}); } catch (_) {}
 }
 
 // plots coming from Python (matplotlib)
@@ -2282,10 +2309,19 @@ async function runCode(opts) {
   try {
     const _ps = $('pkg-stat');
     if (_ps) _ps.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading packages...';
+    const needsMpl = /matplotlib|pyplot|seaborn/.test(allCode);
+    const status = (needsMpl && !mplReady) ? showTransient('⏳ Loading matplotlib… the first time takes a while (it is cached for next time).') : null;
     await pyodide.loadPackagesFromImports(allCode);
-    if (/matplotlib|pyplot|seaborn/.test(allCode)) await globalThis._py_setup_mpl();
+    if (needsMpl && !mplReady) {
+      status.set('⏳ Setting up matplotlib (building its font list, one-time)… the page may pause for a moment.');
+      await new Promise(r => setTimeout(r, 60));          // let the browser paint the message first
+      mplReady = !!(await globalThis._py_setup_mpl());
+      if (mplReady) persistMplCache();
+    }
+    if (status) status.remove();
     if (_ps) _ps.innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
   } catch (_) {
+    document.querySelectorAll('#terminal > .t-sys').forEach(n => { if (/matplotlib/.test(n.textContent)) n.remove(); });
     const _ps2 = $('pkg-stat'); if (_ps2) _ps2.innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
   }
 
