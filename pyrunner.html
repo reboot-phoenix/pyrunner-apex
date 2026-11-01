@@ -1604,10 +1604,11 @@ function showErrBanner(err) {
     +'<div style="padding:8px 12px 10px;display:flex;flex-direction:column;gap:5px">'
     +'<div style="font-size:10px;font-family:var(--mono);color:#c09090;white-space:pre-wrap;word-break:break-word">'+escHTML(err.message||'')+'</div>'
     +(_tip?'<div style="font-size:11px;color:#ffe0a0;border-left:2px solid var(--amber);padding:4px 8px">'+escHTML(_tip)+'</div>':'')+'</div>';
-  _b.style.cssText='position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:20;background:linear-gradient(135deg,#2a0d0d,#1e1010);border:1px solid rgba(255,82,82,.55);border-radius:10px;display:flex;flex-direction:column;max-width:92%;min-width:240px;box-shadow:0 8px 28px rgba(255,82,82,.2),0 2px 8px rgba(0,0,0,.6)';
+  _b.style.cssText='position:absolute;bottom:14px;right:18px;left:auto;top:auto;transform:none;z-index:20;background:linear-gradient(135deg,#2a0d0d,#1e1010);border:1px solid rgba(255,82,82,.55);border-radius:10px;display:flex;flex-direction:column;align-items:stretch;max-width:min(440px,92%);min-width:240px;box-shadow:0 8px 28px rgba(255,82,82,.2),0 2px 8px rgba(0,0,0,.6)';
   _b.style.display='flex';
   _b.classList.add('show');
 }
+document.addEventListener('keydown',e=>{if(e.key==='Escape')hideErrBanner();});
 function hideErrBanner() { const b=$('err-banner'); b.classList.remove('show'); b.style.display='none'; }
 
 // ── RUN ──
