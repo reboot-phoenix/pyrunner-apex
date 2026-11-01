@@ -720,6 +720,64 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
   background: #111420 !important;
   color: #e4e8f4 !important;
 }
+
+/* ══ v2 features: stop, time limit, plots, variables, stepper, autocomplete ══ */
+.hbtn:disabled{opacity:.45;cursor:not-allowed}
+#stop-btn{display:none;border-color:var(--red);color:var(--red);background:rgba(255,82,82,.08);font-weight:700}
+#stop-btn.show{display:flex}
+#stop-btn:hover{background:rgba(255,82,82,.18);border-color:var(--red);color:var(--red)}
+#step-btn{border-color:var(--purple);color:var(--purple);background:rgba(160,120,255,.07)}
+#step-btn:hover:not(:disabled){background:rgba(160,120,255,.16);border-color:var(--purple);color:var(--purple)}
+#sel-btn{display:none;border-color:var(--cyan);color:var(--cyan)}
+#sel-btn.show{display:flex}
+.tl-wrap{display:flex;align-items:center;gap:5px;color:var(--text-3);font-size:11px}
+#time-limit{background:transparent;border:1px solid var(--border-2);color:var(--text-2);font-family:var(--mono);font-size:11px;padding:3px 4px;border-radius:5px;cursor:pointer;outline:none}
+#time-limit:hover{border-color:var(--text-3);color:var(--text-1)}
+#time-limit option{background:var(--bg-panel);color:var(--text-1)}
+
+.t-plot{margin:8px 0 4px}
+.t-plot img{display:block;max-width:100%;height:auto;border-radius:8px;border:1px solid var(--border-2);background:#fff}
+
+/* variables panel */
+#vars-panel{flex-shrink:0;border-top:1px solid var(--border-2);background:var(--bg-deep);display:flex;flex-direction:column;max-height:42%;min-height:0}
+#vars-hd{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--text-3);cursor:pointer;user-select:none;text-transform:uppercase;flex-shrink:0}
+#vars-hd:hover{color:var(--text-1)}
+#vars-hd b{color:var(--cyan);font-weight:700;margin-left:6px}
+#vars-hd .fa-chevron-down{transition:transform .15s}
+#vars-panel.collapsed #vars-hd .fa-chevron-down{transform:rotate(180deg)}
+#vars-body{overflow:auto;padding:0 14px 10px;font-family:var(--mono);font-size:12px;min-height:0}
+#vars-panel.collapsed #vars-body{display:none}
+.v-empty{color:var(--text-3);font-size:11px;padding:2px 0 4px}
+.v-sec{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:8px 0 3px}
+.v-row{display:grid;grid-template-columns:minmax(56px,24%) minmax(48px,20%) 1fr;gap:8px;padding:3px 6px;border-radius:4px;align-items:baseline}
+.v-row:nth-child(even){background:rgba(255,255,255,.025)}
+.v-name{color:var(--cyan)}
+.v-type{color:var(--purple);font-size:10px}
+.v-val{color:#c5cde0;word-break:break-word;white-space:pre-wrap}
+.v-row.chg{background:rgba(255,200,80,.13);box-shadow:inset 2px 0 var(--amber)}
+.v-row.chg .v-val{color:#ffe0a0}
+.v-row.fn .v-val{color:var(--text-3)}
+.v-stack{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 2px}
+.v-chip{font-size:10px;padding:1px 7px;border-radius:10px;border:1px solid var(--border-2);color:var(--text-2)}
+.v-chip.on{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.08)}
+
+/* step-through bar */
+#step-bar{display:none;position:absolute;left:0;right:0;bottom:0;z-index:25;background:linear-gradient(180deg,#10243a,#0b1624);border-top:1px solid var(--cyan);padding:8px 12px;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;color:var(--text-1);flex-wrap:wrap}
+#step-bar.show{display:flex}
+#step-bar .hbtn{padding:4px 8px}
+#step-bar input[type=range]{flex:1;min-width:90px;accent-color:var(--cyan)}
+#step-info{white-space:nowrap;color:var(--cyan)}
+.step-line-bg{background:rgba(0,212,255,.17)!important}
+.step-line-glyph::before{content:'\25B6';color:var(--cyan);font-size:11px;margin-left:3px}
+
+body.light-theme #vars-panel{background:#eef0fb}
+body.light-theme .v-val{color:#1a1d30}
+body.light-theme .v-row:nth-child(even){background:rgba(0,0,0,.035)}
+body.light-theme .v-row.chg{background:rgba(255,170,0,.18)}
+body.light-theme .v-row.chg .v-val{color:#6b4500}
+body.light-theme #step-bar{background:linear-gradient(180deg,#e6f3fb,#d7eaf6);color:#1a1d30}
+body.light-theme #step-info{color:#00689a}
+@media(max-width:700px){#step-btn,#sel-btn,.tl-wrap{display:none!important}#vars-panel{max-height:36%}}
 </style>
 </head>
 <body>
@@ -771,6 +829,8 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
   <div class="sc-box">
     <h3><i class="fa-solid fa-keyboard"></i> Keyboard Shortcuts</h3>
     <div class="sc-row"><span class="sc-desc">Run code</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>Enter</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Run selected lines</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd></span></div>
+    <div class="sc-row"><span class="sc-desc">Step mode: next / back</span><span class="sc-key"><kbd>→</kbd> <kbd>←</kbd></span></div>
     <div class="sc-row"><span class="sc-desc">Save file</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>S</kbd></span></div>
     <div class="sc-row"><span class="sc-desc">Copy code</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd></span></div>
     <div class="sc-row"><span class="sc-desc">Find / Replace</span><span class="sc-key"><kbd>Ctrl</kbd>+<kbd>H</kbd></span></div>
@@ -874,6 +934,7 @@ kbd{background:var(--bg-void);border:1px solid var(--border-2);border-radius:3px
       <span>Files</span>
       <div style="display:flex;gap:2px">
         <button onclick="loadFile()" title="Open .py"><i class="fa-solid fa-folder-open"></i></button>
+        <button onclick="downloadZip()" title="Download all files (.zip)"><i class="fa-solid fa-file-zipper"></i></button>
         <button onclick="openModal()" title="New file"><i class="fa-solid fa-plus"></i></button>
       </div>
     </div>
@@ -1029,6 +1090,9 @@ from module import name</code>
       <button class="hbtn" onclick="loadFile()" title="Open .py"><i class="fa-solid fa-folder-open"></i> Open</button>
       <button class="hbtn danger" onclick="clearCode()" title="Clear code"><i class="fa-solid fa-file-circle-xmark"></i> Clear</button>
       <div style="position:relative;display:inline-block"><button class="hbtn" onclick="toggleExamples()" id="examples-btn"><i class="fa-solid fa-book-open"></i> Examples</button><div id="examples-dropdown" style="display:none;position:absolute;top:calc(100%+4px);left:0;z-index:99;background:var(--bg-panel);border:1px solid var(--border-2);border-radius:8px;min-width:200px;max-height:340px;overflow-y:auto;box-shadow:0 8px 28px rgba(0,0,0,.55)"></div></div>
+      <button class="hbtn" id="sel-btn" onclick="runSelection()" title="Run only the selected lines (Ctrl+Shift+Enter)"><i class="fa-solid fa-play"></i> Run selection</button>
+      <button class="hbtn" onclick="downloadZip()" title="Download all files as .zip"><i class="fa-solid fa-file-zipper"></i> Zip</button>
+      <label class="tl-wrap" title="Stop programs that run longer than this"><i class="fa-regular fa-clock"></i><select id="time-limit" onchange="setTimeLimit(this.value)"><option value="1000">1s</option><option value="3000">3s</option><option value="5000">5s</option><option value="10000">10s</option><option value="30000">30s</option><option value="60000">60s</option></select></label>
       <span id="pkg-stat" style="font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:auto;margin-right:6px"><i class="fa-solid fa-box"></i> stdlib</span>
     </div>
     <div id="tabs-bar"></div>
@@ -1043,6 +1107,16 @@ from module import name</code>
         <span class="eb-msg" id="eb-msg"></span>
         <button class="eb-close" onclick="hideErrBanner()"><i class="fa-solid fa-xmark"></i></button>
       </div>
+      <div id="step-bar">
+        <button class="hbtn" onclick="stepTo('first')" title="First step"><i class="fa-solid fa-backward-fast"></i></button>
+        <button class="hbtn" onclick="stepTo('prev')" title="Previous step (←)"><i class="fa-solid fa-backward-step"></i> Back</button>
+        <button class="hbtn ok" id="step-next" onclick="stepTo('next')" title="Next step (→)">Next <i class="fa-solid fa-forward-step"></i></button>
+        <button class="hbtn" onclick="stepTo('last')" title="Last step"><i class="fa-solid fa-forward-fast"></i></button>
+        <button class="hbtn" id="step-play" onclick="stepPlay()" title="Play / pause"><i class="fa-solid fa-play"></i></button>
+        <input type="range" id="step-slider" min="0" max="0" value="0" oninput="showStep(+this.value)" aria-label="Step">
+        <span id="step-info"></span>
+        <button class="hbtn danger" onclick="exitStepMode(true)" title="Leave step mode"><i class="fa-solid fa-xmark"></i> Exit</button>
+      </div>
     </div>
   </div>
 
@@ -1054,6 +1128,8 @@ from module import name</code>
       <button class="hbtn" onclick="copyOutput()" title="Copy output"><i class="fa-regular fa-copy"></i> Copy</button>
       <button class="hbtn danger" onclick="clearOut()" title="Clear output"><i class="fa-solid fa-trash-can"></i> Clear</button>
       <span id="exec-time"></span>
+      <button id="stop-btn" class="hbtn" onclick="stopRun()" title="Stop the running program"><i class="fa-solid fa-stop"></i> Stop</button>
+      <button id="step-btn" class="hbtn" disabled onclick="runCode({step:true})" title="Step through your code one line at a time"><i class="fa-solid fa-shoe-prints"></i> Step</button>
       <button id="run-btn" class="hbtn" disabled onclick="runCode()" title="Run (Ctrl+Enter)"><i class="fa-solid fa-circle-play"></i> Run</button>
     </div>
     <div id="terminal"></div>
@@ -1061,6 +1137,10 @@ from module import name</code>
       <span class="in-arrow">❯</span>
       <input type="text" id="term-input" autocomplete="off" spellcheck="false" placeholder="type and press Enter…">
       <button type="button" id="submit-input" class="in-hint" aria-label="Submit terminal input">Enter ↵</button>
+    </div>
+    <div id="vars-panel">
+      <div id="vars-hd" onclick="toggleVars()"><span><i class="fa-solid fa-table-list"></i> Variables<b id="vars-count"></b></span><i class="fa-solid fa-chevron-down"></i></div>
+      <div id="vars-body"><div class="v-empty">Variables from your last run show up here.</div></div>
     </div>
   </div>
 </div>
@@ -1085,6 +1165,398 @@ from module import name</code>
   <div class="sb-right"></div>
 </div>
 
+<script type="text/x-python" id="py-runner">
+import builtins, ast, sys, json, io, base64, traceback, textwrap, inspect, reprlib, types
+import js
+from js import _js_input_fn, Date, tAppendStream
+
+_G = js.globalThis
+STOP_TOKEN = chr(0) + '__PYR_STOP__'
+
+
+# ── stdout / stderr go straight to the terminal ───────────────────────────
+class JSStream:
+    def __init__(self, is_err=False):
+        self.is_err = is_err
+
+    def write(self, s):
+        tAppendStream(s, 't-err' if self.is_err else '')
+        return len(s)
+
+    def flush(self):
+        pass
+
+
+sys.stdout = JSStream(False)
+sys.stderr = JSStream(True)
+
+
+# ── time limit + Stop button (checked from the trace function) ────────────
+class ExecutionTimeout:
+    def __init__(self, limit_ms=3000):
+        self.limit = limit_ms
+        self.start = Date.now()
+        self.n = 0
+
+    def check(self):
+        if _G._stop_flag:
+            sys.settrace(None)
+            raise KeyboardInterrupt('Stopped by user')
+        if Date.now() - self.start > self.limit:
+            sys.settrace(None)
+            raise TimeoutError(
+                'Execution time limit exceeded (%gs). Possible infinite loop - '
+                'or raise the time limit in the toolbar if your program is just slow.'
+                % (self.limit / 1000))
+
+    def trace(self, frame, event, arg):
+        self.n += 1
+        if self.n % 40 == 0:
+            self.check()
+        return self.trace
+
+    def reset(self):
+        self.start = Date.now()
+        self.n = 0
+
+
+_timeout_tracker = ExecutionTimeout()
+
+
+# ── input(): works at top level AND inside functions ──────────────────────
+async def _async_input(prompt=''):
+    # A person may need longer than the time limit to answer, and the trace
+    # function must not fire while we wait on JavaScript.
+    prev = sys.gettrace()
+    sys.settrace(None)
+    result = await _js_input_fn(str(prompt) if prompt else '')
+    result = str(result)
+    if result == STOP_TOKEN:
+        raise KeyboardInterrupt('Stopped by user')
+    _timeout_tracker.reset()
+    sys.settrace(prev)
+    return result
+
+
+builtins.input = _async_input
+
+
+async def _pyr_aw(x):
+    if inspect.isawaitable(x):
+        return await x
+    return x
+
+
+def _call_name(call):
+    f = call.func
+    if isinstance(f, ast.Name):
+        return f.id
+    if isinstance(f, ast.Attribute):
+        return f.attr
+    return None
+
+
+def _own_called_names(fn):
+    # names called directly in this function's own scope (not in nested defs/lambdas)
+    names = set()
+    stack = list(fn.body)
+    while stack:
+        n = stack.pop()
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+            continue
+        if isinstance(n, ast.Call):
+            nm = _call_name(n)
+            if nm:
+                names.add(nm)
+        stack.extend(ast.iter_child_nodes(n))
+    return names
+
+
+def _is_dunder(name):
+    return name.startswith('__') and name.endswith('__')
+
+
+def _find_async_funcs(tree):
+    """Functions that (directly or through other functions) call input()."""
+    funcs = [n for n in ast.walk(tree)
+             if isinstance(n, ast.FunctionDef) and not _is_dunder(n.name)]
+    called = {id(f): _own_called_names(f) for f in funcs}
+    needs = {f.name for f in funcs if 'input' in called[id(f)]}
+    changed = True
+    while changed:
+        changed = False
+        for f in funcs:
+            if f.name not in needs and called[id(f)] & needs:
+                needs.add(f.name)
+                changed = True
+    return needs
+
+
+class _AsyncColour(ast.NodeTransformer):
+    def __init__(self, needs):
+        self.needs = needs
+
+    def _flagged(self, call):
+        if isinstance(call.func, ast.Name) and call.func.id == 'input':
+            return True
+        nm = _call_name(call)
+        return nm is not None and nm in self.needs
+
+    def visit_Lambda(self, node):
+        return node
+
+    def visit_FunctionDef(self, node):
+        self.generic_visit(node)
+        if node.name in self.needs and not _is_dunder(node.name):
+            fields = {f: getattr(node, f, None) for f in node._fields}
+            if fields.get('type_params') is None:
+                fields['type_params'] = []
+            return ast.copy_location(ast.AsyncFunctionDef(**fields), node)
+        return node
+
+    def visit_Await(self, node):
+        # the user already wrote `await f()` - don't wrap it a second time
+        if isinstance(node.value, ast.Call) and self._flagged(node.value):
+            self.generic_visit(node.value)
+            return node
+        self.generic_visit(node)
+        return node
+
+    def visit_Call(self, node):
+        self.generic_visit(node)
+        if self._flagged(node):
+            wrapped = ast.Call(func=ast.Name(id='_pyr_aw', ctx=ast.Load()), args=[node], keywords=[])
+            return ast.copy_location(ast.Await(value=wrapped), node)
+        return node
+
+
+# ── tracebacks: show only the user's frames ───────────────────────────────
+def _is_internal(fn):
+    return fn == '<exec>' or 'pyodide' in fn or fn.startswith('<frozen') or fn.endswith('/ast.py')
+
+
+def _clean_te(te):
+    te.stack = traceback.StackSummary.from_list(
+        [f for f in te.stack if not _is_internal(f.filename)])
+    for sub in (te.__cause__, te.__context__):
+        if sub is not None:
+            _clean_te(sub)
+
+
+# ── value formatting for the variables panel ──────────────────────────────
+_R = reprlib.Repr()
+_R.maxlist = _R.maxtuple = _R.maxset = _R.maxfrozenset = _R.maxdeque = _R.maxarray = 10
+_R.maxdict = 8
+_R.maxstring = 60
+_R.maxother = 60
+_R.maxlong = 40
+_R.maxlevel = 3
+_HIDE_TYPES = (types.ModuleType, types.FunctionType, types.BuiltinFunctionType,
+               types.MethodType, type)
+
+
+def _short(v):
+    try:
+        s = _R.repr(v)
+    except Exception:
+        s = '<unprintable>'
+    return s if len(s) <= 200 else s[:197] + '...'
+
+
+def _data_vars(d):
+    out = {}
+    for k, v in list(d.items())[:60]:
+        if not isinstance(k, str) or k.startswith('_') or isinstance(v, _HIDE_TYPES):
+            continue
+        out[k] = [type(v).__name__, _short(v)]
+    return out
+
+
+def _all_vars(ns):
+    out = []
+    for k, v in list(ns.items())[:300]:
+        if not isinstance(k, str) or k.startswith('_') or isinstance(v, types.ModuleType):
+            continue
+        if isinstance(v, type):
+            out.append({'n': k, 't': 'class', 'v': ''})
+        elif isinstance(v, (types.FunctionType, types.BuiltinFunctionType)):
+            try:
+                sig = str(inspect.signature(v))
+            except Exception:
+                sig = '(...)'
+            out.append({'n': k, 't': 'function', 'v': sig})
+        else:
+            out.append({'n': k, 't': type(v).__name__, 'v': _short(v)})
+    return out
+
+
+# ── step-by-step recorder ─────────────────────────────────────────────────
+class _StepLimit(BaseException):
+    pass
+
+
+class _Recorder:
+    MAX_STEPS = 1500
+    MAX_BUDGET = 5000000
+
+    def __init__(self, filename, ns):
+        self.filename = filename
+        self.ns = ns
+        self.steps = []
+        self.budget = 0
+        self.n = 0
+        self.out = _G._outEvents
+
+    def _stack(self, frame):
+        names = []
+        f = frame
+        while f is not None and f.f_code.co_filename == self.filename:
+            names.append(f.f_code.co_name)
+            f = f.f_back
+        names.reverse()
+        return names
+
+    def _add(self, kind, line, local_vars, stack, retval=None):
+        if len(self.steps) >= self.MAX_STEPS or self.budget > self.MAX_BUDGET:
+            raise _StepLimit()
+        g = _data_vars(self.ns)
+        step = {'l': line, 'k': kind, 'o': len(self.out), 'g': g, 'f': None, 's': stack}
+        self.budget += 40
+        for d in (g,):
+            for k, v in d.items():
+                self.budget += len(k) + len(v[1]) + 12
+        if local_vars is not None:
+            f = _data_vars(local_vars)
+            step['f'] = f
+            for k, v in f.items():
+                self.budget += len(k) + len(v[1]) + 12
+        if kind == 'return':
+            step['r'] = _short(retval)
+        self.steps.append(step)
+
+    def trace(self, frame, event, arg):
+        self.n += 1
+        if self.n % 20 == 0:
+            _timeout_tracker.check()
+        if frame.f_code.co_filename != self.filename:
+            return None
+        if event == 'line':
+            is_mod = frame.f_code.co_name == '<module>'
+            self._add('line', frame.f_lineno, None if is_mod else frame.f_locals, self._stack(frame))
+        elif event == 'return' and frame.f_code.co_name != '<module>':
+            self._add('return', frame.f_lineno, frame.f_locals, self._stack(frame), arg)
+        return self.trace
+
+    def finish(self, kind, line=None, local_vars=None, stack=None):
+        sys.settrace(None)
+        stack = stack or ['<module>']
+        g = _data_vars(self.ns)
+        self.steps.append({'l': line, 'k': kind, 'o': len(self.out), 'g': g,
+                           'f': _data_vars(local_vars) if local_vars is not None else None,
+                           's': stack})
+
+
+# ── the entry point called from JavaScript ────────────────────────────────
+_last_ns = None
+
+
+def _new_ns():
+    return {'__name__': '__main__', '__builtins__': builtins, '_pyr_aw': _pyr_aw}
+
+
+async def _run_user_code(source, filename, mode='run', first_line=1):
+    """mode: 'run' | 'selection' | 'step'. Always returns a JSON string."""
+    global _last_ns
+    result = {'tb': None, 'vars': [], 'steps': None, 'truncated': False}
+    rec = None
+    ns = None
+    try:
+        if mode == 'selection' and _last_ns is not None:
+            ns = _last_ns                       # selections share the last run's variables
+        else:
+            ns = _new_ns()
+        _last_ns = ns
+        if mode == 'selection':
+            source = textwrap.dedent(source)
+        if first_line > 1:
+            source = chr(10) * (first_line - 1) + source   # keep editor line numbers
+        # Parse the ORIGINAL source (never re-print it) so line numbers match the editor.
+        tree = ast.parse(source, filename)
+        tree = _AsyncColour(_find_async_funcs(tree)).visit(tree)
+        ast.fix_missing_locations(tree)
+        code = compile(tree, filename, 'exec', flags=ast.PyCF_ALLOW_TOP_LEVEL_AWAIT)
+        _timeout_tracker.reset()
+        if mode == 'step':
+            rec = _Recorder(filename, ns)
+            sys.settrace(rec.trace)
+        else:
+            sys.settrace(_timeout_tracker.trace)
+        res = eval(code, ns)
+        if inspect.iscoroutine(res):
+            await res
+        if rec:
+            rec.finish('end')
+    except SystemExit:
+        if rec:
+            rec.finish('end')
+    except _StepLimit:
+        result['truncated'] = True
+        if rec:
+            rec.finish('end', stack=['<module>'])
+    except BaseException as e:
+        sys.settrace(None)
+        te = traceback.TracebackException.from_exception(e)
+        _clean_te(te)
+        result['tb'] = ''.join(te.format())
+        if rec:
+            line, loc, stack = None, None, ['<module>']
+            tb = e.__traceback__
+            while tb is not None:
+                if tb.tb_frame.f_code.co_filename == filename:
+                    line = tb.tb_lineno
+                    loc = None if tb.tb_frame.f_code.co_name == '<module>' else tb.tb_frame.f_locals
+                    stack = rec._stack(tb.tb_frame)
+                tb = tb.tb_next
+            if isinstance(e, SyntaxError) and line is None:
+                line = e.lineno
+            rec.finish('error', line, loc, stack)
+    finally:
+        sys.settrace(None)
+    try:
+        result['vars'] = _all_vars(ns) if ns is not None else []
+    except Exception:
+        result['vars'] = []
+    if rec:
+        result['steps'] = rec.steps
+    return json.dumps(result, default=str)
+
+
+# ── matplotlib: draw figures into the output panel ────────────────────────
+def _pyr_show(*args, **kwargs):
+    import matplotlib.pyplot as plt
+    for num in plt.get_fignums():
+        fig = plt.figure(num)
+        buf = io.BytesIO()
+        fig.savefig(buf, format='png', dpi=110, bbox_inches='tight')
+        _G.tAppendImage(base64.b64encode(buf.getvalue()).decode('ascii'))
+    plt.close('all')
+
+
+def _setup_matplotlib():
+    try:
+        import matplotlib
+        matplotlib.use('agg')
+        import matplotlib.pyplot as plt
+    except Exception:
+        return False
+    plt.show = _pyr_show
+    return True
+
+
+_G._py_run = _run_user_code
+_G._py_setup_mpl = _setup_matplotlib
+_G._timeout_tracker = _timeout_tracker
+</script>
 <script>
 // STATE
 // ═════════════════════════════════════════════════════════════
@@ -1127,8 +1599,11 @@ function saveToLocal() {
 }
 
 // ── TERMINAL ──
+window._outEvents = [];
+window._recordOut = false;
 window.tAppendStream = function(text, cls) {
   if (!text) return;
+  if (window._recordOut) window._outEvents.push({ t: text, c: cls || '' });
   const lines = text.split('\n');
   for (let i = 0; i < lines.length; i++) {
     if (lines[i]) {
@@ -1270,6 +1745,7 @@ function renderUI() {
   });
 }
 function switchFile(fn) {
+  if (typeof stepState !== 'undefined' && stepState) exitStepMode(true);
   if (mobileEditorInstance) vfs[currentFile] = mobileEditorInstance.getValue();
   else if (editor) vfs[currentFile] = editor.getValue();
   currentFile = fn;
@@ -1357,6 +1833,147 @@ function boot(steps, done) {
   go();
 }
 
+// ═════════════════════════════════════════════════════════════
+// PYTHON AUTOCOMPLETE
+// ═════════════════════════════════════════════════════════════
+const PY_KEYWORDS = ['False','None','True','and','as','assert','async','await','break','class','continue','def','del','elif','else','except','finally','for','from','global','if','import','in','is','lambda','nonlocal','not','or','pass','raise','return','try','while','with','yield'];
+const PY_BUILTINS = {
+  print: 'print(*values, sep=" ", end="\\n") – show output', input: 'input(prompt) – read a line of text',
+  len: 'len(x) – number of items', range: 'range(start, stop, step) – sequence of numbers', type: 'type(x) – the type of a value',
+  int: 'int(x) – convert to integer', float: 'float(x) – convert to decimal', str: 'str(x) – convert to text', bool: 'bool(x) – True / False',
+  list: 'list(iterable) – make a list', dict: 'dict() – make a dictionary', set: 'set(iterable) – unique items', tuple: 'tuple(iterable)',
+  sorted: 'sorted(iterable, reverse=False) – new sorted list', reversed: 'reversed(seq)', enumerate: 'enumerate(iterable) – (index, item) pairs',
+  zip: 'zip(a, b) – pair up items', map: 'map(func, iterable)', filter: 'filter(func, iterable)', sum: 'sum(numbers) – total',
+  min: 'min(a, b) – smallest', max: 'max(a, b) – largest', abs: 'abs(x) – absolute value', round: 'round(x, digits)', pow: 'pow(base, exp)',
+  divmod: 'divmod(a, b) – (quotient, remainder)', any: 'any(iterable) – is any item true?', all: 'all(iterable) – are all items true?',
+  open: 'open(file, mode) – open a file', isinstance: 'isinstance(x, type)', hasattr: 'hasattr(obj, name)', getattr: 'getattr(obj, name)',
+  setattr: 'setattr(obj, name, value)', id: 'id(x)', chr: 'chr(code) – number to character', ord: 'ord(char) – character to number',
+  hex: 'hex(n)', bin: 'bin(n)', oct: 'oct(n)', repr: 'repr(x)', format: 'format(value, spec)', iter: 'iter(x)', next: 'next(iterator)',
+  callable: 'callable(x)', dir: 'dir(x) – list attributes', vars: 'vars(x)', help: 'help(x)', slice: 'slice(start, stop)',
+  frozenset: 'frozenset(iterable)', bytes: 'bytes(x)', complex: 'complex(real, imag)', object: 'object()', super: 'super() – parent class',
+  property: 'property(fget)', staticmethod: 'staticmethod(func)', classmethod: 'classmethod(func)',
+  ValueError: 'ValueError – right type, wrong value', TypeError: 'TypeError – wrong type', KeyError: 'KeyError – missing dict key',
+  IndexError: 'IndexError – list index out of range', ZeroDivisionError: 'ZeroDivisionError', Exception: 'Exception – base error class',
+  NameError: 'NameError', AttributeError: 'AttributeError', FileNotFoundError: 'FileNotFoundError', StopIteration: 'StopIteration',
+};
+const PY_MODULES = ['math','random','time','datetime','json','re','os','sys','string','statistics','itertools','collections','functools','operator','copy','decimal','fractions','textwrap','heapq','bisect','typing','dataclasses','enum','pathlib','csv','io','asyncio','numpy','pandas','matplotlib','matplotlib.pyplot','scipy','sympy'];
+const PY_MEMBERS = {
+  math: ['pi','e','tau','inf','nan','sqrt','pow','floor','ceil','fabs','factorial','gcd','lcm','log','log2','log10','exp','sin','cos','tan','asin','acos','atan','atan2','radians','degrees','hypot','isqrt','comb','perm','isclose','trunc','fsum','prod'],
+  random: ['random','randint','randrange','choice','choices','shuffle','sample','uniform','seed','gauss','getrandbits'],
+  time: ['time','sleep','perf_counter','monotonic','strftime','localtime','gmtime','ctime'],
+  datetime: ['datetime','date','time','timedelta','timezone'],
+  json: ['dumps','loads','dump','load'],
+  statistics: ['mean','median','mode','stdev','variance','pstdev','fmean','quantiles'],
+  string: ['ascii_letters','ascii_lowercase','ascii_uppercase','digits','punctuation','whitespace','capwords'],
+  os: ['getcwd','listdir','path','sep','getenv','mkdir','remove','rename'],
+  sys: ['argv','exit','path','version','maxsize','stdout','stderr','stdin'],
+  re: ['match','search','findall','sub','split','compile','fullmatch','finditer','IGNORECASE','MULTILINE'],
+  itertools: ['count','cycle','repeat','chain','permutations','combinations','product','accumulate','groupby','islice','zip_longest','starmap'],
+  collections: ['Counter','defaultdict','deque','OrderedDict','namedtuple','ChainMap'],
+  functools: ['reduce','partial','lru_cache','wraps','cache'],
+  numpy: ['array','arange','linspace','zeros','ones','full','eye','sum','mean','median','std','min','max','sqrt','sin','cos','exp','log','pi','dot','reshape','random','where','sort','argsort','unique','concatenate','round','abs'],
+  pandas: ['DataFrame','Series','read_csv','concat','merge','to_datetime','date_range'],
+  pyplot: ['plot','show','figure','title','xlabel','ylabel','legend','bar','barh','hist','scatter','subplots','grid','savefig','pie','xlim','ylim','xticks','yticks','tight_layout','axhline','axvline','fill_between','errorbar','boxplot','style'],
+};
+const PY_METHODS = {
+  str: ['upper','lower','title','capitalize','strip','lstrip','rstrip','split','join','replace','find','rfind','index','count','startswith','endswith','isdigit','isalpha','isalnum','isspace','islower','isupper','format','center','ljust','rjust','zfill','splitlines','partition','encode','swapcase'],
+  list: ['append','extend','insert','remove','pop','clear','index','count','sort','reverse','copy'],
+  dict: ['keys','values','items','get','pop','popitem','update','setdefault','clear','copy','fromkeys'],
+  set: ['add','remove','discard','union','intersection','difference','symmetric_difference','issubset','issuperset','update','clear','pop'],
+};
+const PY_SNIPPETS = [
+  ['def', 'def name(args): …', 'def ${1:name}(${2:args}):\n\t${0:pass}'],
+  ['for', 'for item in items: …', 'for ${1:item} in ${2:items}:\n\t${0:pass}'],
+  ['fori', 'for i in range(n): …', 'for ${1:i} in range(${2:n}):\n\t${0:pass}'],
+  ['while', 'while condition: …', 'while ${1:condition}:\n\t${0:pass}'],
+  ['if', 'if condition: …', 'if ${1:condition}:\n\t${0:pass}'],
+  ['ifelse', 'if / else', 'if ${1:condition}:\n\t${2:pass}\nelse:\n\t${0:pass}'],
+  ['elif', 'elif condition: …', 'elif ${1:condition}:\n\t${0:pass}'],
+  ['class', 'class with __init__', 'class ${1:Name}:\n\tdef __init__(self, ${2:args}):\n\t\t${0:pass}'],
+  ['try', 'try / except', 'try:\n\t${1:pass}\nexcept ${2:Exception} as e:\n\t${0:print(e)}'],
+  ['with', 'with open(file) as f', 'with open(${1:"file.txt"}, ${2:"r"}) as ${3:f}:\n\t${0:data = f.read()}'],
+  ['main', 'if __name__ == "__main__"', 'if __name__ == "__main__":\n\t${0:main()}'],
+  ['lc', 'list comprehension', '[${1:x} for ${1:x} in ${2:items}${3: if ${4:condition}}]'],
+  ['pf', 'print(f"…")', 'print(f"${1}")'],
+  ['inp', 'input → int', '${1:n} = int(input("${2:Enter a number: }"))'],
+];
+
+function registerPyCompletions() {
+  const K = monaco.languages.CompletionItemKind;
+  const SNIP = monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet;
+
+  function importAliases(text) {
+    const map = {};
+    let m;
+    const re1 = /^\s*import\s+([\w.]+)(?:\s+as\s+(\w+))?/gm;
+    while ((m = re1.exec(text))) { const mod = m[1].split('.').pop(); map[m[2] || mod] = mod; }
+    const re2 = /^\s*from\s+([\w.]+)\s+import\s+(\w+)(?:\s+as\s+(\w+))?/gm;
+    while ((m = re2.exec(text))) { map[m[3] || m[2]] = m[2]; }
+    return map;
+  }
+
+  monaco.languages.registerCompletionItemProvider('python', {
+    triggerCharacters: ['.'],
+    provideCompletionItems(model, position) {
+      const word = model.getWordUntilPosition(position);
+      const range = { startLineNumber: position.lineNumber, endLineNumber: position.lineNumber, startColumn: word.startColumn, endColumn: word.endColumn };
+      const prefix = model.getValueInRange({ startLineNumber: position.lineNumber, startColumn: 1, endLineNumber: position.lineNumber, endColumn: position.column });
+      const text = model.getValue();
+      const suggestions = [];
+
+      // after "something."
+      const dot = /([A-Za-z_]\w*)\.(\w*)$/.exec(prefix);
+      if (dot) {
+        const target = importAliases(text)[dot[1]] || dot[1];
+        if (PY_MEMBERS[target]) {
+          PY_MEMBERS[target].forEach(n => suggestions.push({ label: n, kind: /^[A-Z_0-9]+$/.test(n) || ['pi','e','tau','inf','nan'].includes(n) ? K.Constant : K.Function, insertText: n, detail: target + '.' + n, range }));
+        } else {
+          Object.entries(PY_METHODS).forEach(([t, list]) => list.forEach(n => suggestions.push({ label: n, kind: K.Method, insertText: n, detail: t + '.' + n + '()', sortText: n, range })));
+        }
+        return { suggestions };
+      }
+      // import ___ / from ___
+      if (/^\s*(import|from)\s+[\w.]*$/.test(prefix)) {
+        PY_MODULES.forEach(n => suggestions.push({ label: n, kind: K.Module, insertText: n, range }));
+        return { suggestions };
+      }
+      // don't pop up inside a comment
+      if (/#/.test(prefix) && !/["'].*#.*["']/.test(prefix)) return { suggestions: [] };
+
+      PY_KEYWORDS.forEach(n => suggestions.push({ label: n, kind: K.Keyword, insertText: n, range, sortText: '2' + n }));
+      Object.entries(PY_BUILTINS).forEach(([n, d]) => {
+        const isFn = /^[a-z]/.test(n);
+        suggestions.push({ label: n, kind: isFn ? K.Function : K.Class, insertText: isFn ? n + '($0)' : n, insertTextRules: SNIP, detail: d, range, sortText: '1' + n });
+      });
+      PY_SNIPPETS.forEach(([n, d, body]) => suggestions.push({ label: n, kind: K.Snippet, insertText: body, insertTextRules: SNIP, detail: d, documentation: body.replace(/\$\{\d+:?([^}]*)\}/g, '$1').replace(/\$0/g, ''), range, sortText: '0' + n }));
+
+      // names defined in this file
+      const seen = new Set(PY_KEYWORDS.concat(Object.keys(PY_BUILTINS)));
+      let m;
+      const reDef = /^\s*(?:async\s+)?def\s+(\w+)\s*\(([^)]*)\)/gm;
+      while ((m = reDef.exec(text))) {
+        if (seen.has(m[1])) continue; seen.add(m[1]);
+        suggestions.push({ label: m[1], kind: K.Function, insertText: m[1] + '($0)', insertTextRules: SNIP, detail: 'def ' + m[1] + '(' + m[2].trim() + ')', range, sortText: '0' + m[1] });
+      }
+      const reCls = /^\s*class\s+(\w+)/gm;
+      while ((m = reCls.exec(text))) {
+        if (seen.has(m[1])) continue; seen.add(m[1]);
+        suggestions.push({ label: m[1], kind: K.Class, insertText: m[1], detail: 'class', range, sortText: '0' + m[1] });
+      }
+      const reId = /\b[A-Za-z_]\w*\b/g;
+      while ((m = reId.exec(text))) {
+        const w = m[0];
+        if (seen.has(w) || w.length < 2) continue;
+        if (m.index >= model.getOffsetAt(position) - word.word.length && m.index <= model.getOffsetAt(position)) continue; // the word being typed
+        seen.add(w);
+        suggestions.push({ label: w, kind: K.Variable, insertText: w, range, sortText: '3' + w });
+      }
+      Object.keys(importAliases(text)).forEach(a => { if (!seen.has(a)) { seen.add(a); } });
+      return { suggestions };
+    },
+  });
+}
+
 // ── MONACO ──
 function loadMonaco(cb) {
   const s = document.createElement('script');
@@ -1386,12 +2003,19 @@ function loadMonaco(cb) {
         lineNumbers: 'on',
         renderLineHighlight: 'line',
         glyphMargin: true,
-        suggest: { preview: false, showWords: false, showSnippets: false, showClasses: false, showFunctions: false, showVariables: false, showModules: false, showKeywords: false },
-        quickSuggestions: false,
+        suggest: { preview: false, showWords: false, snippetsPreventQuickSuggestions: false },
+        quickSuggestions: { other: true, comments: false, strings: false },
+        suggestOnTriggerCharacters: true,
+        acceptSuggestionOnEnter: 'smart',
+        tabCompletion: 'on',
         parameterHints: { enabled: false },
         hover: { enabled: false },
         wordBasedSuggestions: 'off',
       });
+      registerPyCompletions();
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => { if (!runBtn.disabled) runCode(); });
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => runSelection());
+      editor.onDidChangeCursorSelection(() => updateSelBtn());
       editor.onDidChangeModelContent(() => {
         vfs[currentFile] = editor.getValue();
         saveToLocal();
@@ -1425,94 +2049,8 @@ async function loadPy(cb) {
         return new Promise(resolve => { inputResolver = resolve; });
       };
 
-      await pyodide.runPythonAsync(`
-import builtins, ast, sys
-from js import _js_input_fn, Date, tAppendStream
-
-# Issue #3 Fix: Bypass Pyodide buffering completely
-class JSStream:
-    def __init__(self, is_err=False):
-        self.is_err = is_err
-    def write(self, s):
-        tAppendStream(s, 't-err' if self.is_err else '')
-        return len(s)
-    def flush(self): pass
-
-sys.stdout = JSStream(False)
-sys.stderr = JSStream(True)
-
-# Issue #11 Fix: Safe Thread Kill Switch (Timeout)
-class ExecutionTimeout:
-    def __init__(self, limit_ms=3000):
-        self.limit = limit_ms
-        self.start = Date.now()
-    def trace(self, frame, event, arg):
-        if Date.now() - self.start > self.limit:
-            sys.settrace(None)
-            raise TimeoutError("Execution time limit exceeded (Infinite loop protection).")
-        return self.trace
-    def reset(self):
-        self.start = Date.now()
-
-_timeout_tracker = ExecutionTimeout()
-
-async def _async_input(prompt=""):
-    # A person may need longer than the execution limit to answer a prompt.
-    # Disable tracing before awaiting JavaScript input so the next trace event
-    # cannot time out before this coroutine gets a chance to resume.
-    sys.settrace(None)
-    result = await _js_input_fn(str(prompt) if prompt else "")
-    _timeout_tracker.reset()
-    sys.settrace(_timeout_tracker.trace)
-    return str(result)
-builtins.input = _async_input
-
-import traceback
-
-class _InputToAwait(ast.NodeTransformer):
-    def visit_Call(self, node):
-        self.generic_visit(node)
-        if isinstance(node.func, ast.Name) and node.func.id == 'input':
-            return ast.copy_location(ast.Await(value=node), node)
-        return node
-
-def _is_internal(fn):
-    return fn == '<exec>' or 'pyodide' in fn or fn.startswith('<frozen') or fn.endswith('/ast.py')
-
-def _clean_te(te):
-    # drop PyRunner / Pyodide internal frames so only the user's frames remain
-    te.stack = traceback.StackSummary.from_list([f for f in te.stack if not _is_internal(f.filename)])
-    for sub in (te.__cause__, te.__context__):
-        if sub is not None: _clean_te(sub)
-
-async def _run_user_code(source, filename):
-    """Run user code. Returns None on success, or a clean traceback string."""
-    try:
-        # Parse the ORIGINAL source (no unparse) so reported line numbers match the editor.
-        tree = ast.parse(source, filename)
-        tree = _InputToAwait().visit(tree)
-        fn = ast.AsyncFunctionDef(
-            name='<module>',
-            args=ast.arguments(posonlyargs=[], args=[], kwonlyargs=[], kw_defaults=[], defaults=[]),
-            body=tree.body or [ast.Pass()], decorator_list=[], returns=None, type_params=[])
-        mod = ast.Module(body=[fn], type_ignores=[])
-        ast.fix_missing_locations(mod)
-        ns = {'__name__': '__main__'}
-        exec(compile(mod, filename, 'exec'), ns)
-        await ns['<module>']()
-        return None
-    except SystemExit:
-        return None
-    except BaseException as e:
-        sys.settrace(None)
-        te = traceback.TracebackException.from_exception(e)
-        _clean_te(te)
-        return ''.join(te.format())
-
-import js
-js.globalThis._py_run = _run_user_code
-js.globalThis._timeout_tracker = _timeout_tracker
-`);
+      globalThis._stop_flag = false;
+      await pyodide.runPythonAsync($('py-runner').textContent);
       cb();
     } catch (e) {
       $('status-dot').classList.add('err');
@@ -1611,66 +2149,179 @@ function showErrBanner(err) {
 document.addEventListener('keydown',e=>{if(e.key==='Escape')hideErrBanner();});
 function hideErrBanner() { const b=$('err-banner'); b.classList.remove('show'); b.style.display='none'; }
 
-// ── RUN ──
-async function runCode() {
+// ── RUN ──────────────────────────────────────────────────────
+const STOP_TOKEN = '\u0000__PYR_STOP__';
+let isRunning = false;
+let stepState = null;
+let stepTimer = null;
+let timeLimitMs = 3000;
+try { const t = parseInt(localStorage.getItem('pyr_timelimit'), 10); if (t > 0) timeLimitMs = t; } catch (_) {}
+
+function setTimeLimit(v) {
+  timeLimitMs = parseInt(v, 10) || 3000;
+  try { localStorage.setItem('pyr_timelimit', String(timeLimitMs)); } catch (_) {}
+  showToast('Time limit: ' + (timeLimitMs / 1000) + 's');
+}
+
+// plots coming from Python (matplotlib)
+function addPlotImage(b64) {
+  const d = document.createElement('div');
+  d.className = 't-plot';
+  const img = document.createElement('img');
+  img.alt = 'Plot';
+  img.src = 'data:image/png;base64,' + b64;
+  d.appendChild(img);
+  terminal.appendChild(d);
+  terminal.appendChild(document.createElement('br'));
+  terminal.scrollTop = terminal.scrollHeight;
+}
+window.tAppendImage = function (b64) {
+  if (window._recordOut) window._outEvents.push({ img: b64 });
+  addPlotImage(b64);
+};
+
+// ── variables panel ──
+function toggleVars() {
+  const p = $('vars-panel');
+  p.classList.toggle('collapsed');
+  try { localStorage.setItem('pyr_vars_collapsed', p.classList.contains('collapsed') ? '1' : '0'); } catch (_) {}
+}
+try { if (localStorage.getItem('pyr_vars_collapsed') === '1') $('vars-panel').classList.add('collapsed'); } catch (_) {}
+
+function renderVars(vars) {
+  const body = $('vars-body');
+  $('vars-count').textContent = vars && vars.length ? vars.length : '';
+  if (!vars || !vars.length) {
+    body.innerHTML = '<div class="v-empty">Variables from your last run show up here.</div>';
+    return;
+  }
+  body.innerHTML = vars.map(v =>
+    '<div class="v-row' + (v.t === 'function' || v.t === 'class' ? ' fn' : '') + '">'
+    + '<span class="v-name">' + escHTML(v.n) + '</span>'
+    + '<span class="v-type">' + escHTML(v.t) + '</span>'
+    + '<span class="v-val">' + escHTML(v.v) + '</span></div>').join('');
+}
+
+// ── choose what to run ──
+function getSelectionRun() {
+  if (!editor || mobileEditorInstance || typeof monaco === 'undefined') return null;
+  const sel = editor.getSelection();
+  if (!sel || sel.isEmpty()) return null;
+  const model = editor.getModel();
+  let endLine = sel.endLineNumber;
+  if (sel.endColumn === 1 && endLine > sel.startLineNumber) endLine--;
+  const range = new monaco.Range(sel.startLineNumber, 1, endLine, model.getLineMaxColumn(endLine));
+  const text = model.getValueInRange(range);
+  if (!text.trim()) return null;
+  return { text, start: sel.startLineNumber, end: endLine };
+}
+function runSelection() {
+  const s = getSelectionRun();
+  if (!s) { showToast('Select some lines first'); return; }
+  runCode({ selection: s });
+}
+function updateSelBtn() {
+  const b = $('sel-btn'); if (!b) return;
+  const s = editor && !stepState ? editor.getSelection() : null;
+  b.classList.toggle('show', !!(s && !s.isEmpty()));
+}
+
+// ── stop ──
+function stopRun() {
+  if (!isRunning) return;
+  globalThis._stop_flag = true;
+  if (inputResolver) {            // program is waiting for input(): wake it up so it can stop
+    const r = inputResolver;
+    inputResolver = null;
+    $('input-row').style.display = 'none';
+    r(STOP_TOKEN);
+  }
+}
+
+function handleRunError(tb, quiet) {
+  const last = tb.trim().split('\n').pop() || '';
+  if (/^KeyboardInterrupt/.test(last)) {
+    tAppend('■ Stopped by user', 't-warn');
+    return null;
+  }
+  const parsed = parseTraceback(tb, currentFile);
+  if (!quiet) { renderErrCard(parsed, parsed.message); highlightError(parsed); }
+  return parsed;
+}
+
+async function runCode(opts) {
+  opts = (opts && typeof opts === 'object' && !opts.target) ? opts : {};
   if (!pyodide) { showToast('Python engine still loading…'); return; }
-  if(mobileEditorInstance) vfs[currentFile]=mobileEditorInstance.getValue();
-  else if(editor) vfs[currentFile]=editor.getValue();
+  if (isRunning) return;
+  if (stepState) exitStepMode(false);
+  if (mobileEditorInstance) vfs[currentFile] = mobileEditorInstance.getValue();
+  else if (editor) vfs[currentFile] = editor.getValue();
   saveToLocal();
 
+  const mode = opts.step ? 'step' : (opts.selection ? 'selection' : 'run');
+  if (mode === 'step' && !editor) { showToast('Step mode needs the desktop editor'); return; }
+
+  isRunning = true;
+  globalThis._stop_flag = false;
   runBtn.disabled = true;
   runBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running';
+  $('stop-btn').classList.add('show');
+  updateSelBtn();
   clearOut();
-  tRaw(`<span class="t-prompt">❯ python ${escHTML(currentFile)}</span>`);
+  const header = '❯ python ' + currentFile + (mode === 'selection' ? '  (lines ' + opts.selection.start + '–' + opts.selection.end + ')' : '') + (mode === 'step' ? '  (recording steps…)' : '');
+  tRaw('<span class="t-prompt">' + escHTML(header) + '</span>');
+  window._outEvents.length = 0;
+  window._recordOut = (mode === 'step');
 
   const t0 = performance.now();
-
   for (const [fn, code] of Object.entries(vfs)) {
     try { pyodide.FS.writeFile('/' + fn, code); } catch (_) {}
   }
 
+  const allCode = Object.values(vfs).join('\n');
   try {
-    const _ps=$('pkg-stat');
-    if(_ps)_ps.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Loading packages...';
-    await pyodide.loadPackagesFromImports(Object.values(vfs).join('\n'));
-    if(_ps)_ps.innerHTML='<i class="fa-solid fa-box"></i> stdlib ready';
-  } catch(_){
-    const _ps2=$('pkg-stat');if(_ps2)_ps2.innerHTML='<i class="fa-solid fa-box"></i> stdlib ready';
+    const _ps = $('pkg-stat');
+    if (_ps) _ps.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading packages...';
+    await pyodide.loadPackagesFromImports(allCode);
+    if (/matplotlib|pyplot|seaborn/.test(allCode)) await globalThis._py_setup_mpl();
+    if (_ps) _ps.innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
+  } catch (_) {
+    const _ps2 = $('pkg-stat'); if (_ps2) _ps2.innerHTML = '<i class="fa-solid fa-box"></i> stdlib ready';
   }
 
+  let res = null, parsedErr = null;
   try {
-    const userCode = vfs[currentFile] || vfs['main.py'];
-
-    // Enable loop killswitch
-    globalThis._timeout_tracker.reset();
-    await pyodide.runPythonAsync(`import sys; sys.settrace(_timeout_tracker.trace)`);
-
-    // Errors are caught inside Python and returned as a clean traceback string
-    // (Pyodide's JS PythonError has an empty .message when stderr is redirected).
-    const tb = await globalThis._py_run(userCode, currentFile);
-    if (tb) {
-      const _parsed = parseTraceback(tb, currentFile);
-      renderErrCard(_parsed, _parsed.message);
-      highlightError(_parsed);
-    }
+    globalThis._timeout_tracker.limit = timeLimitMs;
+    const source = mode === 'selection' ? opts.selection.text : (vfs[currentFile] || vfs['main.py'] || '');
+    const raw = await globalThis._py_run(source, currentFile, mode, mode === 'selection' ? opts.selection.start : 1);
+    res = JSON.parse(raw);
+    const hasSteps = mode === 'step' && res.steps && res.steps.length;
+    if (res.tb) parsedErr = handleRunError(res.tb, hasSteps);
+    renderVars(res.vars);
   } catch (err) {
     const msg = err.message || String(err);
-    const _parsed = parseTraceback(msg, currentFile);
-    renderErrCard(_parsed, msg);
-    highlightError(_parsed);
+    parsedErr = handleRunError(msg, false);
   } finally {
-    await pyodide.runPythonAsync(`import sys; sys.settrace(None)`); // Release switch
+    window._recordOut = false;
     const ms = ((performance.now() - t0) / 1000).toFixed(2);
-    window.tAppendStream('\n');
-    window.tAppendStream(`Finished in ${ms}s`, 't-sys');
-    const _et2=$('exec-time');if(_et2)_et2.textContent=ms+'s';
+    isRunning = false;
+    $('stop-btn').classList.remove('show');
     runBtn.disabled = false;
     runBtn.innerHTML = '<i class="fa-solid fa-circle-play"></i> Run';
     if (!inputResolver) $('input-row').style.display = 'none';
+    const _et2 = $('exec-time'); if (_et2) _et2.textContent = ms + 's';
+    if (!(mode === 'step' && res && res.steps && res.steps.length)) {
+      window.tAppendStream('\n');
+      window.tAppendStream('Finished in ' + ms + 's', 't-sys');
+    }
+    updateSelBtn();
+  }
+  if (mode === 'step' && res && res.steps && res.steps.length) {
+    enterStepMode(res, parsedErr, header.replace('  (recording steps…)', ''));
   }
 }
 
-// ── INPUT ──
+// ── input ──
 function submitInput() {
   if (!inputResolver) return;
   const val = $('term-input').value;
@@ -1680,6 +2331,188 @@ function submitInput() {
   inputResolver = null;
   $('input-row').style.display = 'none';
   res(val);
+}
+
+// ═════════════════════════════════════════════════════════════
+// STEP-BY-STEP MODE  (record the run, then replay it one line at a time)
+// ═════════════════════════════════════════════════════════════
+function enterStepMode(res, err, header) {
+  stepState = {
+    steps: res.steps, idx: 0, events: window._outEvents.slice(), err: err || null,
+    vars: res.vars, file: currentFile, header: header, deco: [], rendered: Infinity, errShown: false,
+    truncated: !!res.truncated,
+  };
+  editor.updateOptions({ readOnly: true });
+  hideErrBanner();
+  $('step-bar').classList.add('show');
+  $('vars-panel').classList.remove('collapsed');
+  $('step-slider').max = res.steps.length - 1;
+  updateSelBtn();
+  if (res.truncated) showToast('Recorded the first ' + (res.steps.length - 1) + ' steps (program is long)');
+  showStep(0);
+}
+
+function replayEvents(from, to) {
+  const st = stepState;
+  for (let i = from; i < to; i++) {
+    const e = st.events[i];
+    if (e.img) addPlotImage(e.img); else window.tAppendStream(e.t, e.c);
+  }
+}
+
+function stepVarRows(obj, old) {
+  const keys = Object.keys(obj);
+  if (!keys.length) return '<div class="v-empty">(nothing yet)</div>';
+  return keys.map(k => {
+    const v = obj[k];
+    const chg = old && (!(k in old) || old[k][1] !== v[1]);
+    return '<div class="v-row' + (chg ? ' chg' : '') + '"><span class="v-name">' + escHTML(k)
+      + '</span><span class="v-type">' + escHTML(v[0]) + '</span><span class="v-val">' + escHTML(v[1]) + '</span></div>';
+  }).join('');
+}
+
+function showStep(i) {
+  const st = stepState; if (!st) return;
+  const n = st.steps.length;
+  i = Math.max(0, Math.min(n - 1, i));
+  st.idx = i;
+  const s = st.steps[i], prev = i > 0 ? st.steps[i - 1] : null;
+  const isLast = i === n - 1;
+  $('step-slider').value = i;
+
+  // highlight the line in the editor
+  if (s.l && editor.getModel()) {
+    const line = Math.min(s.l, editor.getModel().getLineCount());
+    st.deco = editor.deltaDecorations(st.deco, [{
+      range: new monaco.Range(line, 1, line, 1),
+      options: { isWholeLine: true, className: 'step-line-bg', glyphMarginClassName: 'step-line-glyph' },
+    }]);
+    editor.revealLineInCenterIfOutsideViewport(line);
+  } else {
+    st.deco = editor.deltaDecorations(st.deco, []);
+  }
+
+  const what = s.k === 'line' ? 'about to run line ' + s.l
+    : s.k === 'return' ? 'line ' + s.l + ' returns ' + s.r
+    : s.k === 'error' ? 'error on line ' + s.l : 'program finished';
+  $('step-info').textContent = 'Step ' + (i + 1) + '/' + n + ' · ' + what;
+  $('step-next').disabled = isLast;
+
+  // output so far
+  const showErr = isLast && !!st.err;
+  if (s.o < st.rendered || st.errShown !== showErr && !showErr) {
+    clearOut();
+    tRaw('<span class="t-prompt">' + escHTML(st.header) + '</span>');
+    st.rendered = 0; st.errShown = false;
+  }
+  replayEvents(st.rendered, s.o);
+  st.rendered = s.o;
+  if (showErr && !st.errShown) { renderErrCard(st.err, st.err.message); st.errShown = true; }
+
+  // variables at this step
+  const stack = s.s || ['<module>'];
+  let h = '<div class="v-stack">' + stack.map((nme, k) =>
+    '<span class="v-chip' + (k === stack.length - 1 ? ' on' : '') + '">' + escHTML(nme === '<module>' ? 'main program' : nme + '()') + '</span>').join('') + '</div>';
+  let count = Object.keys(s.g).length;
+  if (s.f) {
+    const sameFrame = prev && prev.f && (prev.s || []).join() === stack.join();
+    h += '<div class="v-sec">Inside ' + escHTML(stack[stack.length - 1]) + '()</div>' + stepVarRows(s.f, sameFrame ? prev.f : null);
+    count += Object.keys(s.f).length;
+  }
+  h += '<div class="v-sec">Global variables</div>' + stepVarRows(s.g, prev ? prev.g : null);
+  $('vars-body').innerHTML = h;
+  $('vars-count').textContent = count || '';
+}
+
+function stepTo(where) {
+  const st = stepState; if (!st) return;
+  if (where === 'first') showStep(0);
+  else if (where === 'last') showStep(st.steps.length - 1);
+  else if (where === 'prev') showStep(st.idx - 1);
+  else showStep(st.idx + 1);
+}
+function stepPlay() {
+  const st = stepState; if (!st) return;
+  const btn = $('step-play');
+  if (stepTimer) { clearInterval(stepTimer); stepTimer = null; btn.innerHTML = '<i class="fa-solid fa-play"></i>'; return; }
+  if (st.idx >= st.steps.length - 1) showStep(0);
+  btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+  stepTimer = setInterval(() => {
+    if (!stepState || stepState.idx >= stepState.steps.length - 1) { stepPlay(); return; }
+    showStep(stepState.idx + 1);
+  }, 650);
+}
+function exitStepMode(restore) {
+  const st = stepState; if (!st) return;
+  stepState = null;
+  if (stepTimer) { clearInterval(stepTimer); stepTimer = null; }
+  $('step-play').innerHTML = '<i class="fa-solid fa-play"></i>';
+  if (editor) { editor.deltaDecorations(st.deco, []); editor.updateOptions({ readOnly: false }); }
+  $('step-bar').classList.remove('show');
+  if (restore) {
+    clearOut();
+    tRaw('<span class="t-prompt">' + escHTML(st.header) + '</span>');
+    stepState = st; st.rendered = 0; replayEvents(0, st.events.length); stepState = null;
+    if (st.err) renderErrCard(st.err, st.err.message);
+    renderVars(st.vars);
+  }
+  updateSelBtn();
+}
+
+// ═════════════════════════════════════════════════════════════
+// DOWNLOAD ALL FILES AS .ZIP  (no library needed)
+// ═════════════════════════════════════════════════════════════
+const _crcTable = (() => {
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+  return t;
+})();
+function crc32(u8) {
+  let c = 0xFFFFFFFF;
+  for (let i = 0; i < u8.length; i++) c = _crcTable[(c ^ u8[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+function makeZip(entries) {
+  const enc = new TextEncoder(), chunks = [], central = [];
+  let offset = 0;
+  const d = new Date();
+  const dosTime = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+  const dosDate = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  for (const [name, text] of entries) {
+    const nb = enc.encode(name), data = enc.encode(text), crc = crc32(data);
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true);
+    lh.setUint16(8, 0, true); lh.setUint16(10, dosTime, true); lh.setUint16(12, dosDate, true);
+    lh.setUint32(14, crc, true); lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true);
+    lh.setUint16(26, nb.length, true); lh.setUint16(28, 0, true);
+    chunks.push(new Uint8Array(lh.buffer), nb, data);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true);
+    ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true); ch.setUint16(12, dosTime, true); ch.setUint16(14, dosDate, true);
+    ch.setUint32(16, crc, true); ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true);
+    ch.setUint16(28, nb.length, true); ch.setUint32(42, offset, true);
+    central.push(new Uint8Array(ch.buffer), nb);
+    offset += 30 + nb.length + data.length;
+  }
+  const cdSize = central.reduce((a, c) => a + c.length, 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, entries.length, true); end.setUint16(10, entries.length, true);
+  end.setUint32(12, cdSize, true); end.setUint32(16, offset, true);
+  return new Blob([...chunks, ...central, new Uint8Array(end.buffer)], { type: 'application/zip' });
+}
+function downloadZip() {
+  if (mobileEditorInstance) vfs[currentFile] = mobileEditorInstance.getValue();
+  else if (editor) vfs[currentFile] = editor.getValue();
+  saveToLocal();
+  const entries = Object.entries(vfs);
+  if (!entries.length) { showToast('No files to download'); return; }
+  const blob = makeZip(entries);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'pyrunner-project.zip';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+  showToast('Downloaded ' + entries.length + ' file' + (entries.length === 1 ? '' : 's') + ' as .zip');
 }
 
 // ═════════════════════════════════════════════════════════════
@@ -1827,7 +2660,8 @@ const FRIENDLY_ERRORS = [
   { match: /RecursionError/, tip: () => `💡 Infinite recursion — your function keeps calling itself. Make sure you have a base case that stops it.` },
   { match: /FileNotFoundError/, tip: () => `💡 File not found. Check the filename and path are correct.` },
   { match: /ModuleNotFoundError.*'(.+?)'/, tip: (m) => `💡 Module "${m[1]}" isn't installed. PyRunner will try to install it automatically — just run again.` },
-  { match: /TimeoutError/, tip: () => `💡 Infinite loop protection triggered. Your code ran for 3 seconds without an input() call.` }
+  { match: /TimeoutError/, tip: () => `💡 Time limit reached - this is often an infinite loop (a while loop that never ends). If your program is just slow, raise the time limit (clock menu above the editor).` },
+  { match: /'await' outside async function/, tip: () => `💡 input() can't be used inside __init__, other __dunder__ methods or lambdas. Ask for the value outside (e.g. name = input()) and pass it in as an argument.` }
 ];
 
 function getFriendlyTip(errorMsg) {
@@ -1936,7 +2770,8 @@ function updateLineCount() {
 
 // ── KEYBOARD SHORTCUTS ──
 document.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !runBtn.disabled) { e.preventDefault(); runCode(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); if (e.shiftKey) runSelection(); else if (!runBtn.disabled) runCode(); }
+  if (stepState && (e.key === 'ArrowRight' || e.key === 'ArrowLeft') && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) { e.preventDefault(); stepTo(e.key === 'ArrowRight' ? 'next' : 'prev'); }
   if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveFile(); }
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'C' || e.key === 'c')) { e.preventDefault(); copyCode(); }
   if (e.key === '?' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') { openShortcutModal(); }
@@ -2023,6 +2858,11 @@ function mobileBack() {
   setTimeout(() => { if (editor) editor.layout({}); }, 300);
 }
 
+(function(){
+  const sb = $('step-btn'), tl = $('time-limit');
+  if (tl) { if (![...tl.options].some(o => +o.value === timeLimitMs)) { const o = document.createElement('option'); o.value = timeLimitMs; o.textContent = (timeLimitMs/1000) + 's'; tl.appendChild(o); } tl.value = String(timeLimitMs); }
+  if (sb) { sb.disabled = runBtn.disabled; new MutationObserver(() => { sb.disabled = runBtn.disabled; }).observe(runBtn, { attributes: true, attributeFilter: ['disabled'] }); }
+})();
 const runBtnMobile = $('run-btn-mobile');
 if (runBtnMobile) {
   new MutationObserver(() => {
@@ -2031,11 +2871,11 @@ if (runBtnMobile) {
 }
 
 const _origRunCode2 = window.runCode;
-window.runCode = async function() {
+window.runCode = async function(opts) {
   if (window.innerWidth <= 700) {
     document.body.classList.add('mobile-output');
   }
-  await _origRunCode2();
+  await _origRunCode2(opts);
 };
 if (runBtnMobile) runBtnMobile.onclick = () => window.runCode();
 
@@ -2128,6 +2968,7 @@ function closeMobileExamples() {
 }
 function loadExample(i) {
   const ex = EXAMPLES[i]; if (!ex) return;
+  if (stepState) exitStepMode(true);
   vfs[currentFile] = ex.code;
   saveToLocal();
   if (mobileEditorInstance) { mobileEditorInstance.setValue(ex.code); mobileEditorInstance.focus(); }
