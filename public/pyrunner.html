@@ -1399,6 +1399,7 @@ function loadMonaco(cb) {
         if (errDecorations.length) {
           errDecorations = editor.deltaDecorations(errDecorations, []);
           monaco.editor.setModelMarkers(editor.getModel(), 'pyerr', []);
+          hideErrBanner();
         }
       });
       cb();
@@ -1466,25 +1467,50 @@ async def _async_input(prompt=""):
     return str(result)
 builtins.input = _async_input
 
+import traceback
+
 class _InputToAwait(ast.NodeTransformer):
     def visit_Call(self, node):
         self.generic_visit(node)
         if isinstance(node.func, ast.Name) and node.func.id == 'input':
-            return ast.Await(value=node)
+            return ast.copy_location(ast.Await(value=node), node)
         return node
 
-def _transform_user_code(source):
-    try: tree = ast.parse(source)
-    except SyntaxError: return source 
-    tree = _InputToAwait().visit(tree)
-    ast.fix_missing_locations(tree)
-    wrapper = ast.parse("async def __main__(): pass\\nawait __main__()")
-    wrapper.body[0].body = tree.body if tree.body else [ast.Pass()]
-    ast.fix_missing_locations(wrapper)
-    return ast.unparse(wrapper)
+def _is_internal(fn):
+    return fn == '<exec>' or 'pyodide' in fn or fn.startswith('<frozen') or fn.endswith('/ast.py')
+
+def _clean_te(te):
+    # drop PyRunner / Pyodide internal frames so only the user's frames remain
+    te.stack = traceback.StackSummary.from_list([f for f in te.stack if not _is_internal(f.filename)])
+    for sub in (te.__cause__, te.__context__):
+        if sub is not None: _clean_te(sub)
+
+async def _run_user_code(source, filename):
+    """Run user code. Returns None on success, or a clean traceback string."""
+    try:
+        # Parse the ORIGINAL source (no unparse) so reported line numbers match the editor.
+        tree = ast.parse(source, filename)
+        tree = _InputToAwait().visit(tree)
+        fn = ast.AsyncFunctionDef(
+            name='<module>',
+            args=ast.arguments(posonlyargs=[], args=[], kwonlyargs=[], kw_defaults=[], defaults=[]),
+            body=tree.body or [ast.Pass()], decorator_list=[], returns=None, type_params=[])
+        mod = ast.Module(body=[fn], type_ignores=[])
+        ast.fix_missing_locations(mod)
+        ns = {'__name__': '__main__'}
+        exec(compile(mod, filename, 'exec'), ns)
+        await ns['<module>']()
+        return None
+    except SystemExit:
+        return None
+    except BaseException as e:
+        sys.settrace(None)
+        te = traceback.TracebackException.from_exception(e)
+        _clean_te(te)
+        return ''.join(te.format())
 
 import js
-js.globalThis._py_transform = _transform_user_code
+js.globalThis._py_run = _run_user_code
 js.globalThis._timeout_tracker = _timeout_tracker
 `);
       cb();
@@ -1507,7 +1533,7 @@ js.globalThis._timeout_tracker = _timeout_tracker
 // ═════════════════════════════════════════════════════════════
 // ERROR HIGHLIGHTING
 // ═════════════════════════════════════════════════════════════
-const WRAPPER_LINE_OFFSET = 1;
+const WRAPPER_LINE_OFFSET = 0; // code is no longer re-printed, so editor lines match
 
 function parseTraceback(tb, activeFile) {
   const re = /File "([^"]+)", line (\d+)/g;
@@ -1525,7 +1551,7 @@ function parseTraceback(tb, activeFile) {
 
   const lines = tb.trim().split('\n');
   const errLine = lines[lines.length - 1] || 'Error';
-  const typeMatch = errLine.match(/^([A-Za-z]+Error|SyntaxError|IndentationError|TimeoutError)/);
+  const typeMatch = errLine.match(/^([A-Za-z_][\w.]*)(?::|$)/);
   const errType = typeMatch ? typeMatch[1] : 'Error';
   return { file: last?.file || activeFile, line: last?.line || 1, message: errLine, traceback: tb, type: errType };
 }
@@ -1570,18 +1596,20 @@ function showErrBanner(err) {
   const _tn=_t?_t[1]:'Error';
   const _em={'SyntaxError':'🔴','IndentationError':'📏','NameError':'🔍','TypeError':'🔀','IndexError':'📋','ValueError':'⚠️','ZeroDivisionError':'➗','AttributeError':'🔧','RecursionError':'🔁','ModuleNotFoundError':'📦','TimeoutError':'⏱️'};
   const _e=_em[_tn]||'❌';
-  const _tip=getFriendlyTip(err.message||'');
+  const _tip=(getFriendlyTip(err.message||'')||'').replace(/^💡\s*/,'')||null;
   const _b=$('err-banner');
   _b.innerHTML='<div style="display:flex;align-items:center;gap:8px;padding:8px 12px 6px;border-bottom:1px solid rgba(255,82,82,.2)">'
     +'<span>'+_e+'</span><span style="font-size:11px;font-weight:700;color:#ff8080;flex:1;font-family:var(--mono)">'+escHTML(_tn)+'</span>'
-    +(err.line?'<span style="font-size:10px;color:#ff5252;font-family:var(--mono)">Line '+err.line+'</span>':'')+'<button onclick="hideErrBanner()" style="background:none;border:none;color:#ff8080;cursor:pointer;font-size:14px;padding:2px 6px">✕</button></div>'
+    +(err.line?'<span style="font-size:10px;color:#ff5252;font-family:var(--mono)">Line '+err.line+'</span>':'')+'<button type="button" onclick="event.stopPropagation();hideErrBanner()" aria-label="Close error" style="background:none;border:none;color:#ff8080;cursor:pointer;font-size:14px;padding:2px 6px">✕</button></div>'
     +'<div style="padding:8px 12px 10px;display:flex;flex-direction:column;gap:5px">'
     +'<div style="font-size:10px;font-family:var(--mono);color:#c09090;white-space:pre-wrap;word-break:break-word">'+escHTML(err.message||'')+'</div>'
     +(_tip?'<div style="font-size:11px;color:#ffe0a0;border-left:2px solid var(--amber);padding:4px 8px">'+escHTML(_tip)+'</div>':'')+'</div>';
-  _b.style.cssText='position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:20;background:linear-gradient(135deg,#2a0d0d,#1e1010);border:1px solid rgba(255,82,82,.55);border-radius:10px;display:flex;flex-direction:column;max-width:92%;min-width:240px;box-shadow:0 8px 28px rgba(255,82,82,.2),0 2px 8px rgba(0,0,0,.6)';
+  _b.style.cssText='position:absolute;bottom:14px;right:18px;left:auto;top:auto;transform:none;z-index:20;background:linear-gradient(135deg,#2a0d0d,#1e1010);border:1px solid rgba(255,82,82,.55);border-radius:10px;display:flex;flex-direction:column;align-items:stretch;max-width:min(440px,92%);min-width:240px;box-shadow:0 8px 28px rgba(255,82,82,.2),0 2px 8px rgba(0,0,0,.6)';
+  _b.style.display='flex';
   _b.classList.add('show');
 }
-function hideErrBanner() { $('err-banner').classList.remove('show'); }
+document.addEventListener('keydown',e=>{if(e.key==='Escape')hideErrBanner();});
+function hideErrBanner() { const b=$('err-banner'); b.classList.remove('show'); b.style.display='none'; }
 
 // ── RUN ──
 async function runCode() {
@@ -1612,13 +1640,19 @@ async function runCode() {
 
   try {
     const userCode = vfs[currentFile] || vfs['main.py'];
-    const transformed = globalThis._py_transform(userCode);
-    
+
     // Enable loop killswitch
     globalThis._timeout_tracker.reset();
     await pyodide.runPythonAsync(`import sys; sys.settrace(_timeout_tracker.trace)`);
-    
-    await pyodide.runPythonAsync(transformed);
+
+    // Errors are caught inside Python and returned as a clean traceback string
+    // (Pyodide's JS PythonError has an empty .message when stderr is redirected).
+    const tb = await globalThis._py_run(userCode, currentFile);
+    if (tb) {
+      const _parsed = parseTraceback(tb, currentFile);
+      renderErrCard(_parsed, _parsed.message);
+      highlightError(_parsed);
+    }
   } catch (err) {
     const msg = err.message || String(err);
     const _parsed = parseTraceback(msg, currentFile);
@@ -1770,6 +1804,14 @@ function loadChallenge() {
 // FRIENDLY ERROR MESSAGES
 // ═════════════════════════════════════════════════════════════
 const FRIENDLY_ERRORS = [
+  { match: /SyntaxError: '([(\[{])' was never closed/,
+    tip: (m) => `💡 You opened "${m[1]}" but never closed it. Check this line (and the ones just before it) for a missing "${({'(':')','[':']','{':'}'})[m[1]]}".`,
+    fix: (line, text, m) => {
+      const open = m[1], close = ({'(':')','[':']','{':'}'})[open];
+      const opens = text.split(open).length - 1, closes = text.split(close).length - 1;
+      if (opens <= closes) return null;
+      return { label: 'Add missing "' + close + '"', newLine: text.replace(/\s+$/, '') + close.repeat(opens - closes) };
+    } },
   { match: /NameError.*name '(.+?)' is not defined/, tip: (m) => `💡 "${m[1]}" doesn't exist yet. Did you spell it right or forget to define it above?` },
   { match: /IndentationError/, tip: () => `💡 Indentation issue. Use 4 spaces consistently — don't mix tabs and spaces.` },
   { match: /SyntaxError.*EOL while scanning string/, tip: () => `💡 You opened a string with " or ' but never closed it.` },
@@ -2107,7 +2149,7 @@ const _ERREMO = {SyntaxError:'🔴',IndentationError:'📏',NameError:'🔍',Typ
 
 function renderErrCard(err, rawMsg) {
   const emoji = _ERREMO[err.type] || '❌';
-  const tip = getFriendlyTip(rawMsg);
+  const tip = (getFriendlyTip(rawMsg) || '').replace(/^💡\s*/, '') || null;
   const tbId = 'tb' + Date.now();
   const me = mobileEditorInstance;
   const lineText = (editor && editor.getModel())
@@ -2117,7 +2159,7 @@ function renderErrCard(err, rawMsg) {
   for (const fe of FRIENDLY_ERRORS) {
     const m = rawMsg.match(fe.match);
     if (m && fe.fix) {
-      const r = fe.fix(err.line, lineText);
+      const r = fe.fix(err.line, lineText, m);
       if (r) {
         window._pendingFix = { line: err.line, newText: r.newLine };
         fixHtml = '<div class="err-card-fix" onclick="applyErrFix()">'
