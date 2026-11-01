@@ -324,6 +324,8 @@ Ideas that would be great to see:
 - ✨ **Autocomplete** for keywords, built-ins, snippets, your own code and common modules
 - ✨ **Plots**: `matplotlib` charts render in the output panel
 - ✨ **Download all files** as a `.zip`
+- ⚡ First `matplotlib` use is friendlier: clear progress messages instead of a scary red warning, and its font cache is now remembered between visits, so only your very first plot is slow
+- 🐛 Pressing Enter with the autocomplete popup open always inserts a new line now (`Tab` accepts a suggestion)
 - 🐛 Error cards now show the real error type, message and **correct line number** (they used to show a blank "PythonError" on the wrong line)
 - 🐛 The error popup's ✕ button now works, and the popup no longer covers your code
 - 🐛 Top-level code now runs in a real module scope, so `global` and variable sharing between functions behave like normal Python
