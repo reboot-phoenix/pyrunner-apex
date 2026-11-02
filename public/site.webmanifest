@@ -1,0 +1,13 @@
+{
+  "name": "PyRunner Apex",
+  "short_name": "PyRunner",
+  "description": "A full Python 3 IDE that runs in your browser and never loses your work.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#14110F",
+  "theme_color": "#14110F",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
