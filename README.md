@@ -1,6 +1,11 @@
 <div align="center">
 
-# PyRunner Apex
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/brand/logo-lockup-dark.svg">
+  <img src="public/brand/logo-lockup-light.svg" alt="PyRunner Apex" width="380">
+</picture>
+
+<br/>
 
 **A full Python 3 IDE that runs in your browser, and never loses your work.**
 
@@ -8,14 +13,14 @@
 
 <br/>
 
-[![Try It Now](https://img.shields.io/badge/▶%20Try%20It%20Live-pyrunner--apex.pages.dev-00d4ff?style=for-the-badge&logo=python&logoColor=white)](https://pyrunner-apex.pages.dev)
+[![Try It Now](https://img.shields.io/badge/▶%20Try%20It%20Live-pyrunner--apex.pages.dev-ff5a1f?style=for-the-badge&logo=python&logoColor=white)](https://pyrunner-apex.pages.dev)
 
 <br/>
 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12_·_WebAssembly-3776AB?style=flat-square&logo=python&logoColor=white)](https://pyodide.org)
-[![Zero Backend](https://img.shields.io/badge/Backend-None_·_100%25_Browser-00e676?style=flat-square)](#how-it-works)
+[![Zero Backend](https://img.shields.io/badge/Backend-None_·_100%25_Browser-5fd68a?style=flat-square)](#how-it-works)
 [![Editor](https://img.shields.io/badge/Editor-Monaco_(VS_Code_Engine)-007ACC?style=flat-square&logo=visualstudiocode)](https://microsoft.github.io/monaco-editor/)
-[![License](https://img.shields.io/badge/License-MIT-b57bee?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-ff7a45?style=flat-square)](LICENSE)
 [![Deploy](https://img.shields.io/badge/Deploy-Cloudflare_Pages-F38020?style=flat-square&logo=cloudflare)](DEPLOY_GUIDE.md)
 
 <br/>
@@ -287,6 +292,10 @@ pyrunner-apex/
 │       └── quality.yml       # lint + build on every push
 ├── public/
 │   ├── pyrunner.html         # the entire IDE, one self-contained file
+│   ├── brand/                # logo mark + light/dark lockups (SVG + PNG)
+│   ├── favicon.ico / .svg    # favicons (+ 16/32/48 png, apple-touch-icon)
+│   ├── site.webmanifest      # app name + 192/512 icons
+│   ├── og-image.png          # social share preview (1200x630)
 │   ├── _headers              # security headers (CSP etc.)
 │   ├── sitemap.xml
 │   └── robots.txt
@@ -298,6 +307,23 @@ pyrunner-apex/
 ├── DEPLOY_GUIDE.md
 └── package.json
 ```
+
+---
+
+## Brand assets
+
+Everything lives in `public/brand/` and `public/`:
+
+| File | Use |
+|---|---|
+| `brand/logo-mark.svg` / `.png` | The icon on its own |
+| `brand/logo-lockup-dark.svg` / `.png` | Mark + wordmark for dark backgrounds |
+| `brand/logo-lockup-light.svg` / `.png` | Mark + wordmark for light backgrounds |
+| `favicon.ico`, `favicon.svg`, `favicon-16/32/48.png` | Browser tab icons |
+| `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` | Home-screen / PWA icons |
+| `og-image.png` | Link preview card (Discord, Twitter, LinkedIn…) |
+
+Palette: charcoal `#14110F`, orange `#FF7A45` / `#FF5A1F`, cream `#FFF6EC`, sand `#E7B98A`.
 
 ---
 
@@ -316,6 +342,7 @@ Ideas that would be great to see:
 ## Changelog
 
 **Latest**
+- 🎨 **New brand**: new logo, favicon set and social preview, plus a warm charcoal / cream / orange theme across the whole IDE (dark and light), with matching editor colours
 - ✨ `input()` now works inside functions, methods and recursion
 - ✨ **Step mode**: replay your program line by line, forwards and backwards, with variables, call stack and output at each step
 - ✨ **Variables panel** after every run
