@@ -20,32 +20,37 @@ function NotFoundComponent() {
         minHeight: "100vh",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0a0b0f",
-        color: "#e4e8f4",
+        background: "#14110F",
+        color: "#FFF6EC",
         fontFamily: "'JetBrains Mono',monospace",
         flexDirection: "column",
         gap: 16,
       }}
     >
+      <img
+        src="/brand/logo-lockup-dark.svg"
+        alt="PyRunner Apex"
+        style={{ width: 240, maxWidth: "70vw", height: "auto" }}
+      />
       <div
         style={{
           fontSize: 72,
           fontWeight: 800,
-          background: "linear-gradient(135deg,#00d4ff,#b57bee)",
+          background: "linear-gradient(135deg,#FF5A1F,#FFB26B)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
         }}
       >
         404
       </div>
-      <div style={{ fontSize: 16, color: "#7a849e" }}>Page not found</div>
+      <div style={{ fontSize: 16, color: "#B0A395" }}>Page not found</div>
       <a
         href="/"
         style={{
           marginTop: 8,
           padding: "8px 20px",
-          border: "1px solid #00d4ff",
-          color: "#00d4ff",
+          border: "1px solid #FF7A45",
+          color: "#FF7A45",
           borderRadius: 6,
           textDecoration: "none",
           fontSize: 13,
@@ -71,8 +76,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         minHeight: "100vh",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0a0b0f",
-        color: "#e4e8f4",
+        background: "#14110F",
+        color: "#FFF6EC",
         fontFamily: "'JetBrains Mono',monospace",
         flexDirection: "column",
         gap: 16,
@@ -81,7 +86,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
       }}
     >
       <div style={{ fontSize: 20, fontWeight: 600 }}>Something went wrong</div>
-      <div style={{ fontSize: 13, color: "#7a849e", maxWidth: 380 }}>
+      <div style={{ fontSize: 13, color: "#B0A395", maxWidth: 380 }}>
         {error?.message || "An unexpected error occurred."}
       </div>
       <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
@@ -92,9 +97,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           }}
           style={{
             padding: "8px 18px",
-            background: "rgba(0,212,255,.1)",
-            border: "1px solid #00d4ff",
-            color: "#00d4ff",
+            background: "rgba(255,90,31,.12)",
+            border: "1px solid #FF7A45",
+            color: "#FF7A45",
             borderRadius: 6,
             cursor: "pointer",
             fontFamily: "inherit",
@@ -107,8 +112,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           href="/"
           style={{
             padding: "8px 18px",
-            border: "1px solid #2a2f4a",
-            color: "#7a849e",
+            border: "1px solid #372F27",
+            color: "#B0A395",
             borderRadius: 6,
             textDecoration: "none",
             fontSize: 12,
@@ -135,7 +140,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "keywords",
         content:
-          "python online, python compiler, run python browser, python editor online, online IDE, python 3, free python, python interpreter, AI python",
+          "python online, python compiler, run python browser, python editor online, online IDE, python 3, free python, python interpreter, python debugger, step through python",
       },
       { name: "author", content: "Ashtid D" },
       { name: "robots", content: "index, follow" },
@@ -145,19 +150,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Run Python 3 in your browser. Monaco editor, interactive input(), AI assistant, auto package install. No account needed.",
+          "Run Python 3 in your browser. Monaco editor, interactive input(), step-by-step debugger, auto package install. No account needed.",
       },
+      { property: "og:image", content: "https://pyrunner-apex.pages.dev/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "PyRunner Apex logo: Python in your browser, your work never disappears",
+      },
+      { property: "og:site_name", content: "PyRunner Apex" },
+      { name: "theme-color", content: "#14110F" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "PyRunner Apex — Free Online Python Editor" },
       {
         name: "twitter:description",
         content:
-          "Run Python 3 in your browser with AI help from Gemini, ChatGPT, and Claude. No install needed.",
+          "Run Python 3 in your browser. Real input(), step-by-step debugger, plots. No install, no account.",
       },
+      { name: "twitter:image", content: "https://pyrunner-apex.pages.dev/og-image.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "icon", href: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { rel: "icon", href: "/favicon-16.png", type: "image/png", sizes: "16x16" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com" },
     ],
@@ -174,7 +194,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body style={{ margin: 0, padding: 0, background: "#0a0b0f" }}>
+      <body style={{ margin: 0, padding: 0, background: "#14110F" }}>
         {children}
         <Scripts />
       </body>

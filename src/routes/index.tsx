@@ -13,9 +13,11 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Run Python 3 in your browser. Monaco editor, interactive input(), AI assistant, auto package install. No account needed.",
+          "Run Python 3 in your browser. Monaco editor, interactive input(), step-by-step debugger, auto package install. No account needed.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://pyrunner-apex.pages.dev/og-image.png" },
+      { name: "twitter:image", content: "https://pyrunner-apex.pages.dev/og-image.png" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
